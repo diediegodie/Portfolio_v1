@@ -127,7 +127,8 @@ reports/
 
 # Project docs
 docs/
-
+.github/instructions
+node_modules/
 # Ignore lock files if not needed
 package-lock.json
 yarn.lock

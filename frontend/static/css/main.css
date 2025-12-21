@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .icon-base {
+    @apply inline-block h-5 w-5 mx-2 align-middle;
+  }
+  .icon-hover {
+    @apply transition duration-200 ease-in-out hover:opacity-80 hover:text-accent;
+  }
+  .icon-link {
+    @apply cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent rounded;
+  }
+  .bg-dark {
+    @apply bg-[#282a36];
+  }
+  .hero-bg {
+    @apply bg-cover bg-center bg-no-repeat relative min-h-screen;
+    background-image: url('/static/images/bg_image_1.jpg');
+  }
+  .hero-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-60;
+    pointer-events: none;
+  }
+}
