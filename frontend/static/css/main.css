@@ -7,17 +7,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Coordinated button animations */
-a:hover ~ a {
-  opacity: 0.7;
-  transform: translateX(0.25rem);
-  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-a:hover ~ a:hover {
-  opacity: 1;
-  transform: translateX(0);
-}
+/* global sibling animations removed to avoid conflicts; header and right-buttons use scoped classes */
 
 @layer components {
   .icon-base {
@@ -28,5 +18,42 @@ a:hover ~ a:hover {
   }
   .icon-link {
     @apply cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent rounded;
+  }
+  .left-info {
+    @apply flex flex-col justify-center items-end pr-6;
+  }
+  .right-buttons {
+    @apply flex flex-col justify-center items-start pl-6 leading-070;
+  }
+  .hover-effect {
+    @apply transition-all duration-500 ease-in-out hover:scale-105 hover:text-accent;
+  }
+
+  .right-buttons a {
+    @apply block uppercase font-bold text-giant sm:text-giant-sm lg:text-giant-lg leading-070 transition-all duration-500 hover:text-accent;
+  }
+
+  .right-buttons a:hover {
+    @apply text-accent scale-105 translate-x-1;
+  }
+
+  .right-buttons a:not(:hover) {
+    @apply opacity-80;
+  }
+  .right-buttons a + a {
+    @apply mt-gap-md;
+  }
+
+  /* Header icons coordinated hover animations */
+  .header-icons a {
+    @apply transition-all duration-500 ease-in-out;
+  }
+
+  .header-icons a:hover {
+    @apply text-accent scale-105 translate-y-1;
+  }
+
+  .header-icons a:not(:hover) {
+    @apply opacity-80;
   }
 }
