@@ -1,59 +1,225 @@
-/* =====================================
-   Theme Variables & Mode Classes
-   - .light-theme: default (black on white)
-   - .dark-theme: inverted (white on black)
-   - Uses CSS variables for semantic color
-===================================== */
+/*
+  Theme: Centralized variables and Dracula dark theme
+  - Keep themes modular: only variables in :root and semantic component tokens
+  - Light theme: minimal white background, dark text
+  - Dark theme: Dracula palette for backgrounds, text, accents
+*/
 
-
-/* =====================================
-  Theme Variables & Mode Classes
-  - .light-theme: default (black on white)
-  - .dark-theme: inverted (white on black)
-  - Uses CSS variables for semantic color
-===================================== */
-
+/* Light theme (semantic tokens) */
 :root.light-theme {
   --bg-color: #ffffff;
-  --text-color: #000000;
+  --surface: #f6f6f8;
+  --text-color: #0b0b0b;
+  --muted-text: #4b5563;
+  --accent-color: #bd93f9; /* purple accent kept for continuity */
+  --button-bg: #ffffff;
+  --button-border: #e6e6e9;
+  --button-text: #0b0b0b;
+  --link-color: #1a56db;
+  --focus-ring: rgba(189,147,249,0.28);
+  --shadow-sm: 0 1px 2px rgba(16,24,40,0.04);
+  --muted-bg: #f0f2f5;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
+/* Dracula dark theme (semantic tokens) */
 :root.dark-theme {
-  --bg-color: #000000;
-  --text-color: #ffffff;
+  --bg-color: #282a36;
+  --surface: #44475a;
+  --text-color: #f8f8f2;
+  --muted-text: #6272a4;
+  --accent-color: #bd93f9; /* purple */
+  --cyan: #8be9fd;
+  --green: #50fa7b;
+  --orange: #ffb86c;
+  --pink: #ff79c6;
+  --purple: #bd93f9;
+  --red: #ff5555;
+  --yellow: #f1fa8c;
+  --button-bg: #44475a;
+  --button-border: rgba(255,255,255,0.04);
+  --button-text: #f8f8f2;
+  --link-color: var(--pink);
+  --focus-ring: rgba(139,233,253,0.15);
+  --shadow-sm: 0 4px 12px rgba(2,6,23,0.6);
+  --muted-bg: #3b3f58;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
+/* Base */
+html, body {
+  height: 100%;
+}
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background 0.2s, color 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  line-height: 1.4;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
-/* Theme toggle button container */
-/* Theme Variables */
-:root.light-theme { --bg-color: #ffffff; --text-color: #000000; }
-:root.dark-theme { --bg-color: #000000; --text-color: #ffffff; }
-body { background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s ease, color 0.3s ease; }
-/* Theme Variables */
-:root.light-theme { --bg-color: #ffffff; --text-color: #000000; }
-:root.dark-theme { --bg-color: #000000; --text-color: #ffffff; }
-body { background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s ease, color 0.3s ease; }
+/* Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 1s ease, transform 1s ease;
+}
+a:hover,
+a:focus {
+  color: var(--cyan);
+  text-decoration: underline;
+}
 
-/* iOS-style Theme Switcher */
-/* iOS-style theme switcher */
+/* Buttons */
+.btn, button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--button-border, transparent);
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover,
+button:hover { transform: translateY(-1px); }
+
+/* Primary variant uses accent */
+.btn--primary {
+  background: none; /* Ensure text-only */
+  color: var(--accent-color); /* Use accent color */
+  border: 1px solid transparent;
+}
+.btn--primary:hover { filter: brightness(1.03); }
+
+/* Outlined variant */
+.btn, .switch, button, .hero__button {
+  /* Text-only interactive elements: no background, border, or shadow */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  color: var(--button-text);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.4s ease, transform 0.3s cubic-bezier(0.25,0.8,0.25,1);
+}
+
+.btn:hover, .switch:hover, button:hover, .hero__button:hover {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+/* Ensure consistent transitions for interactive elements */
+.btn, .switch, button {
+  transition: color 0.4s ease, transform 0.3s ease;
+}
+
+.switch:hover {
+  color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+/* Accessible focus for interactive elements */
+:is(a, button, .btn, input, textarea, select):focus-visible {
+  /* Keep a visible focus but avoid heavy boxes on text-only elements */
+  outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Theme switcher (compact accessible toggle) */
 .theme-switch { position: fixed; top: 1rem; left: 1rem; z-index: 1000; }
-/* Visually hide input but keep it focusable and interactive */
 #theme-toggle { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.switch { position: relative; display: inline-block; width: 56px; height: 32px; background: #ccc; border-radius: 32px; cursor: pointer; transition: background 0.25s ease; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
-.switch::after { content: ''; position: absolute; left: 4px; top: 4px; width: 24px; height: 24px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: transform 0.25s ease; }
-#theme-toggle:checked + .switch { background: #4cd964; }
+.switch {
+  /* Text-only toggle styling: no filled background */
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0.15rem 0.35rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+.switch::after {
+  /* hide the decorative knob for text-only appearance */
+  content: '';
+  position: absolute;
+  left: -9999px;
+  width: 0;
+  height: 0;
+}
+/* Visual states for the switch label */
+.switch.inactive { color: var(--muted-text); }
+.switch.active { color: var(--accent-color); transform: scale(1.06); }
 #theme-toggle:checked + .switch::after { transform: translateX(24px); }
-.switch:focus-visible { outline: 2px solid #4cd964; outline-offset: 3px; }
-/* Ensure no overlapping elements block clicks */
-header, .theme-switch, .switch { pointer-events: auto; }
-.theme-switch { position: absolute; top: 1rem; left: 1rem; }
-.switch { position: relative; display: inline-block; width: 50px; height: 28px; background: #ccc; border-radius: 34px; cursor: pointer; transition: background 0.3s ease; }
-.switch::after { content: ''; position: absolute; left: 4px; top: 4px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform 0.3s ease; }
-input:checked + .switch { background: #4cd964; }
-input:checked + .switch::after { transform: translateX(22px); }
-input { display: none; }
+.switch:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+/* Pill-style toggle (iOS-style) */
+.pill-toggle {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: 9999px;
+  background-color: var(--muted-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.4s ease, transform 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+}
+.pill-toggle.active { background-color: var(--accent-color); color: #ffffff; transform: translateY(-1px); }
+.pill-toggle:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--focus-ring); }
+
+/* iOS-style toggle (sliding knob) */
+.ios-toggle { position: relative; display: inline-block; width: 50px; height: 28px; }
+.ios-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.ios-toggle .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--muted-bg);
+  transition: background-color 0.4s ease;
+  border-radius: 9999px;
+}
+.ios-toggle .slider:before {
+  position: absolute;
+  content: '';
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: transform 0.4s ease;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(2,6,23,0.15);
+}
+.ios-toggle input:checked + .slider { background-color: var(--accent-color); }
+.ios-toggle input:checked + .slider:before { transform: translateX(22px); }
+.ios-toggle input:focus-visible + .slider { box-shadow: 0 0 0 4px var(--focus-ring); }
+
+/* Small utilities */
+.muted { color: var(--muted-text); }
+.kbd { background: var(--surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
+
+/* Ensure images and other media tone adapt */
+img, video { max-width: 100%; height: auto; display: block; }
+
+/* Responsive tweak for switch position on small screens */
+@media (max-width: 640px) {
+  .theme-switch { left: 0.75rem; top: 0.75rem; }
+}

@@ -10,11 +10,14 @@
     <link rel="stylesheet" href="/static/css/theme.css">
 </head>
 
-<body class="light-theme">
+<body>
     <header>
         <div class="theme-switch" aria-label="Theme toggle">
-            <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode" />
-            <label for="theme-toggle" class="switch" tabindex="0"></label>
+            <label class="ios-toggle" aria-hidden="false">
+                <input type="checkbox" id="theme-toggle" role="switch" aria-checked="false"
+                    aria-label="Toggle dark mode">
+                <span class="slider" aria-hidden="true"></span>
+            </label>
         </div>
     </header>
     <div class="hero">
