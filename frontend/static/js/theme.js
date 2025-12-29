@@ -4,8 +4,8 @@
 // - Falls back to prefers-color-scheme when no preference stored
 document.addEventListener('DOMContentLoaded', () => {
   const checkbox = document.getElementById('theme-toggle');
-  // Prefer the new iOS-style toggle, then pill, then generic switch
-  const label = document.querySelector('label.ios-toggle') || document.querySelector('label.pill-toggle') || document.querySelector('label.switch');
+  // Prefer the new iOS-style toggle, then generic switch
+  const label = document.querySelector('label.ios-toggle') || document.querySelector('label.switch');
   const root = document.documentElement;
   if (!checkbox) return;
 

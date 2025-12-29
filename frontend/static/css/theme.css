@@ -5,25 +5,115 @@
   - Dark theme: Dracula palette for backgrounds, text, accents
 */
 
+/* Shared semantic tokens */
+
+:root {
+  --color-off-white: #f9f9f9;
+  --color-dark-gray: #333333;
+  --purple: #bd93f9;
+  /* Semantic spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --radius-md: 8px;
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.1);
+}
+.modal__card {
+  margin: var(--spacing-md) auto;
+  padding: var(--spacing-lg);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.modal__card h2, .modal__card p {
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+.modal__card .card__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+.modal__overlay {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+}
+/* Accessibility: focus trap and visible focus for modal buttons */
+.modal__card button:focus-visible, .modal__card a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+/* Minimalist scrollbar styling for modal and card content */
+.work-modal__panel,
+.work-card__content {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--scrollbar-thumb, #888) transparent;
+}
+
+.work-modal__panel::-webkit-scrollbar,
+.work-card__content::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+
+.work-modal__panel::-webkit-scrollbar-thumb,
+.work-card__content::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, #888);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.work-modal__panel::-webkit-scrollbar-thumb:hover,
+.work-card__content::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover, #555);
+}
+
+.work-modal__panel::-webkit-scrollbar-track,
+.work-card__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:root {
+  --scrollbar-thumb: #888;
+  --scrollbar-thumb-hover: #555;
+}
+
+[data-theme="dark"] {
+  --scrollbar-thumb: #555;
+  --scrollbar-thumb-hover: #222;
+}
+.modal__overlay[aria-hidden="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 /* Light theme (semantic tokens) */
 :root.light-theme {
-  --bg-color: #ffffff;
+  --bg-color: var(--color-off-white);
   --surface: #f6f6f8;
   --text-color: #0b0b0b;
   --muted-text: #4b5563;
   --accent-color: #bd93f9; /* purple accent kept for continuity */
-  --button-bg: #ffffff;
-  --button-border: #e6e6e9;
-  --button-text: #0b0b0b;
+  --button-text: var(--color-dark-gray);
   --link-color: #1a56db;
   --focus-ring: rgba(189,147,249,0.28);
-  --shadow-sm: 0 1px 2px rgba(16,24,40,0.04);
+  --shadow-sm: 0 4px 16px rgba(16,24,40,0.13);
   --muted-bg: #f0f2f5;
+  --ios-toggle-track: var(--color-dark-gray);
   transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 /* Dracula dark theme (semantic tokens) */
 :root.dark-theme {
+  --color-dark-gray: #f8f8f2;
   --bg-color: #282a36;
   --surface: #44475a;
   --text-color: #f8f8f2;
@@ -36,13 +126,12 @@
   --purple: #bd93f9;
   --red: #ff5555;
   --yellow: #f1fa8c;
-  --button-bg: #44475a;
-  --button-border: rgba(255,255,255,0.04);
   --button-text: #f8f8f2;
   --link-color: var(--pink);
   --focus-ring: rgba(139,233,253,0.15);
   --shadow-sm: 0 4px 12px rgba(2,6,23,0.6);
   --muted-bg: #3b3f58;
+  --ios-toggle-track: var(--muted-bg);
   transition: background-color 0.6s ease, color 0.6s ease;
 }
 
@@ -58,6 +147,11 @@ body {
   transition: background-color 0.6s ease, color 0.6s ease;
 }
 
+body.modal-open .theme-switch {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Links */
 a {
   color: var(--link-color);
@@ -70,26 +164,6 @@ a:focus {
   text-decoration: underline;
 }
 
-/* Buttons */
-.btn, button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--button-border, transparent);
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.btn:hover,
-button:hover { transform: translateY(-1px); }
-
 /* Primary variant uses accent */
 .btn--primary {
   background: none; /* Ensure text-only */
@@ -98,12 +172,18 @@ button:hover { transform: translateY(-1px); }
 }
 .btn--primary:hover { filter: brightness(1.03); }
 
-/* Outlined variant */
-.btn, .switch, button, .hero__button {
-  /* Text-only interactive elements: no background, border, or shadow */
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
+/* Text-only interactive reset (exclude .ios-toggle and .pill-toggle)
+   Keep toggle widgets like .ios-toggle/.pill-toggle unaffected so their
+   pill track/knob visuals remain intact. */
+.btn, .switch, .hero__button {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Basic interactive element appearance (kept separate from the reset)
+   so we preserve cursor/spacing/transition behavior. */
+button, .btn, .hero__button {
   display: inline-block;
   padding: 0.15rem 0.35rem;
   color: var(--button-text);
@@ -112,20 +192,26 @@ button:hover { transform: translateY(-1px); }
   transition: color 0.4s ease, transform 0.3s cubic-bezier(0.25,0.8,0.25,1);
 }
 
-.btn:hover, .switch:hover, button:hover, .hero__button:hover {
+.btn:hover, button:hover, .hero__button:hover {
   color: var(--accent-color);
   transform: scale(1.1);
 }
 
-/* Ensure consistent transitions for interactive elements */
-.btn, .switch, button {
-  transition: color 0.4s ease, transform 0.3s ease;
+/* Ensure hero buttons do not show underline by default or on hover,
+   but remain underline-visible when focused via keyboard for accessibility. */
+.hero__button {
+  text-decoration: none;
+}
+.hero__button:hover {
+  text-decoration: none; /* prevent underline on mouse hover */
+}
+.hero__button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-color);
 }
 
-.switch:hover {
-  color: var(--accent-color);
-  transform: scale(1.05);
-}
+.switch:hover { color: var(--accent-color); transform: scale(1.05); }
 
 /* Accessible focus for interactive elements */
 :is(a, button, .btn, input, textarea, select):focus-visible {
@@ -137,18 +223,22 @@ button:hover { transform: translateY(-1px); }
   outline-offset: 2px;
 }
 
-/* Theme switcher (compact accessible toggle) */
-.theme-switch { position: fixed; top: 1rem; left: 1rem; z-index: 1000; }
+.theme-switch {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 #theme-toggle { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .switch {
-  /* Text-only toggle styling: no filled background */
+  /* Text-only toggle styling (visual reset handled above) */
   position: relative;
   display: inline-block;
   width: auto;
   height: auto;
-  background: none;
-  border: none;
-  box-shadow: none;
   padding: 0.15rem 0.35rem;
   border-radius: 6px;
   cursor: pointer;
@@ -168,6 +258,7 @@ button:hover { transform: translateY(-1px); }
 #theme-toggle:checked + .switch::after { transform: translateX(24px); }
 .switch:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
 
+
 /* Pill-style toggle (iOS-style) */
 .pill-toggle {
   display: inline-block;
@@ -179,7 +270,7 @@ button:hover { transform: translateY(-1px); }
   transition: background-color 0.4s ease, transform 0.3s ease, color 0.3s ease;
   font-weight: 600;
 }
-.pill-toggle.active { background-color: var(--accent-color); color: #ffffff; transform: translateY(-1px); }
+.pill-toggle.active { background-color: var(--accent-color); color: var(--color-off-white); transform: translateY(-1px); }
 .pill-toggle:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--focus-ring); }
 
 /* iOS-style toggle (sliding knob) */
@@ -192,7 +283,7 @@ button:hover { transform: translateY(-1px); }
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--muted-bg);
+  background-color: var(--ios-toggle-track);
   transition: background-color 0.4s ease;
   border-radius: 9999px;
 }
@@ -203,7 +294,7 @@ button:hover { transform: translateY(-1px); }
   width: 22px;
   left: 3px;
   bottom: 3px;
-  background-color: #ffffff;
+  background-color: var(--color-off-white);
   transition: transform 0.4s ease;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(2,6,23,0.15);
@@ -220,6 +311,247 @@ button:hover { transform: translateY(-1px); }
 img, video { max-width: 100%; height: auto; display: block; }
 
 /* Responsive tweak for switch position on small screens */
-@media (max-width: 640px) {
-  .theme-switch { left: 0.75rem; top: 0.75rem; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.work-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1100;
+}
+.work-modal[hidden] {
+  display: none;
+}
+.work-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+.work-modal__panel {
+  position: relative;
+  width: min(1100px, 92vw);
+  max-height: calc(100vh - (var(--spacing-xl) * 1));
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  overflow: auto;
+}
+.work-modal__panel:focus-visible {
+  outline: 4px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.work-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.work-modal__header h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+/* Support selector variants used in other templates */
+.modal__header h1,
+.work-modal h1 {
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+.work-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  overflow: auto;
+  padding-right: 0.5rem;
+  margin-top: var(--spacing-lg);
+}
+
+/* Optional card container class for templates using different markup */
+.modal__card-container {
+  margin-top: var(--spacing-lg);
+}
+.work-modal__close {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.25rem;
+  color: var(--color-dark-gray);
+  cursor: pointer;
+}
+
+.work-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--text-color);
+}
+
+/* Ensure card shadow is visible in both themes */
+.light-theme .work-card,
+.dark-theme .work-card {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Ensure dark theme card text is legible */
+.dark-theme .work-card {
+  color: var(--color-off-white);
+}
+.work-card__image {
+  width: 100%;
+  min-height: 140px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(189, 147, 249, 0.25), var(--muted-bg));
+}
+.work-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.work-card__content h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.work-card__content p {
+  margin: 0;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+
+/* Improve readability of card descriptions */
+.work-card p,
+.work-card__description {
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Ensure descriptions are readable in dark theme */
+.dark-theme .work-card p,
+.dark-theme .work-card__description {
+  color: var(--color-off-white);
+}
+.work-card__links {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Button variants for cards: ensure contrast and hover/focus color */
+.work-card .card__actions a.button--dark,
+.work-card__link.button--dark {
+  background-color: var(--color-dark-gray);
+  color: var(--color-off-white);
+}
+.work-card .card__actions a.button--dark:hover,
+.work-card .card__actions a.button--dark:focus-visible,
+.work-card__link.button--dark:hover,
+.work-card__link.button--dark:focus-visible {
+  color: var(--purple);
+}
+
+.work-card .card__actions a.button--light,
+.work-card__link.button--light {
+  background-color: var(--color-off-white);
+  color: var(--color-dark-gray);
+}
+.work-card .card__actions a.button--light:hover,
+.work-card .card__actions a.button--light:focus-visible,
+.work-card__link.button--light:hover,
+.work-card__link.button--light:focus-visible {
+  color: var(--purple);
+}
+.work-card__link {
+  font-weight: 600;
+  color: var(--accent-color);
+  text-decoration: none;
+  background: var(--color-dark-gray);
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.work-card__link:hover,
+.work-card__link:focus {
+  filter: brightness(1.05);
+}
+.work-card__link--disabled {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--muted-text);
+  cursor: not-allowed;
+}
+
+/* Modal card link/button styling for theme contrast and hover behavior */
+.work-card .card__actions a,
+.work-card__links a,
+.work-card__link {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-align: center;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.work-card .card__actions a.button--light,
+.work-card__link.button--light {
+  background-color: var(--color-off-white);
+  color: var(--color-dark-gray);
+}
+
+.work-card .card__actions a.button--dark,
+.work-card__link.button--dark {
+  background-color: var(--color-dark-gray);
+  color: var(--color-off-white);
+}
+
+.work-card .card__actions a:hover,
+.work-card .card__actions a:focus-visible,
+.work-card__links a:hover,
+.work-card__links a:focus-visible,
+.work-card__link:hover,
+.work-card__link:focus-visible {
+  color: var(--purple, purple);
+}
+
+@media (max-width: 720px) {
+  .work-modal {
+    padding: 1rem;
+  }
+
+  .work-modal__panel {
+    padding: 1.25rem;
+  }
 }

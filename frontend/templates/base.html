@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Portfolio{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/theme.css">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <div class="theme-switch" aria-label="Theme toggle">
+            <label class="ios-toggle" aria-hidden="false">
+                <input type="checkbox" id="theme-toggle" role="switch" aria-checked="false"
+                    aria-label="Toggle dark mode">
+                <span class="slider" aria-hidden="true"></span>
+            </label>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <script src="/static/js/theme.js" defer></script>
+    <script src="/static/js/work.js" defer></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "title": "User Auth Service",
+    "stack": ["Python", "Flask", "PostgreSQL", "Docker"],
+    "description": "Lightweight authentication and session management microservice.",
+    "long_description": "A Flask-based microservice providing JWT authentication, refresh tokens, and role-based access controls. Includes Docker Compose manifests and SQL migrations.",
+    "features": ["JWT auth", "Refresh tokens", "Role-based access"],
+    "github_url": "https://github.com/example/auth-service",
+    "demo_url": ""
+  },
+  {
+    "title": "Task API",
+    "stack": ["Python", "FastAPI", "PostgreSQL"],
+    "description": "REST API for task management with background workers.",
+    "long_description": "Built with FastAPI and SQLAlchemy, supports background jobs via Celery and Redis. Includes OpenAPI docs and CI pipelines.",
+    "features": ["OpenAPI", "Background workers", "Pagination"],
+    "github_url": "https://github.com/example/task-api",
+    "demo_url": ""
+  },
+  {
+    "title": "Portfolio Backend",
+    "stack": ["Python", "Flask"],
+    "description": "The backend serving this portfolio and content translations.",
+    "long_description": "Small Flask app with blueprint structure, service/repository separation, and JSON-backed content storage for quick edits.",
+    "features": ["Blueprints", "Service layer", "Translation support"],
+    "github_url": "https://github.com/example/portfolio-backend",
+    "demo_url": ""
+  },
+  {
+    "title": "Portfolio Frontend",
+    "stack": ["HTML5", "CSS", "JavaScript"],
+    "description": "Frontend for the portfolio with responsive modal and card UI.",
+    "long_description": "A clean, minimal, and accessible frontend for the portfolio, featuring a modal work showcase and semantic card components.",
+    "features": ["Responsive modal", "Semantic cards", "Accessibility"],
+    "github_url": "https://github.com/example/portfolio-frontend",
+    "demo_url": ""
+  }
+]

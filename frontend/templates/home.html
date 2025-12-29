@@ -1,26 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diego Rodriguez - Fullstack Developer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="/static/css/theme.css">
-</head>
+{% block title %}Diego Rodriguez - Fullstack Developer{% endblock %}
 
-<body>
-    <header>
-        <div class="theme-switch" aria-label="Theme toggle">
-            <label class="ios-toggle" aria-hidden="false">
-                <input type="checkbox" id="theme-toggle" role="switch" aria-checked="false"
-                    aria-label="Toggle dark mode">
-                <span class="slider" aria-hidden="true"></span>
-            </label>
-        </div>
-    </header>
-    <div class="hero">
+{% block content %}
+<main id="home-main">
+    <section class="hero">
         <div class="hero__info">
             <h3>Diego Rodriguez</h3>
             <h3>Full Stack Developer</h3>
@@ -28,12 +12,14 @@
         </div>
         <div class="split-pane-divider" aria-hidden="true"></div>
         <div class="hero__actions">
-            <button class="hero__button">WORK</button>
-            <button class="hero__button">ABOUT</button>
-            <button class="hero__button">CONTACT</button>
+            <button class="hero__button" type="button" data-work-trigger aria-controls="work-modal"
+                aria-expanded="false">WORK</button>
+            <button class="hero__button" type="button">ABOUT</button>
+            <button class="hero__button" type="button">CONTACT</button>
         </div>
-    </div>
-</body>
-<script src="/static/js/theme.js" defer></script>
+    </section>
+</main>
 
-</html>
+
+{% include 'work.html' %}
+{% endblock %}
