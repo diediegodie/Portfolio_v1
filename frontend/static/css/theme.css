@@ -18,6 +18,40 @@
   --spacing-xl: 3rem;
   --radius-md: 8px;
   --shadow-sm: 0 2px 6px rgba(0,0,0,0.1);
+  --home-btn-bg: #fff;
+  --home-btn-text: #222;
+  --home-btn-hover-bg: var(--purple, #bd93f9);
+  --home-btn-hover-text: #fff;
+}
+
+
+/* Hero button minimalist hover effect */
+.hero__button {
+  background: var(--home-btn-bg);
+  color: var(--home-btn-text);
+  font-style: normal;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  transition: transform 0.7s cubic-bezier(0.25,0.8,0.25,1);
+  font-weight: 500;
+  /* box-shadow intentionally omitted for minimalist hover */
+  will-change: transform;
+}
+
+.hero__button:hover,
+.hero__button:focus-visible {
+  transform: skew(-10deg) scale(1.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --home-btn-bg: #222;
+    --home-btn-text: #fff;
+    --home-btn-hover-bg: var(--purple, #bd93f9);
+    --home-btn-hover-text: #222;
+  }
 }
 .modal__card {
   margin: var(--spacing-md) auto;
@@ -156,6 +190,8 @@ body.modal-open .theme-switch {
 a {
   color: var(--link-color);
   text-decoration: none;
+  font-style: normal;
+  font-synthesis: none;
   transition: color 1s ease, transform 1s ease;
 }
 a:hover,
@@ -175,14 +211,13 @@ a:focus {
 /* Text-only interactive reset (exclude .ios-toggle and .pill-toggle)
    Keep toggle widgets like .ios-toggle/.pill-toggle unaffected so their
    pill track/knob visuals remain intact. */
+/* Restore original hero__button styles and keep minimalist hover effect as override */
 .btn, .switch, .hero__button {
   background: none;
   border: none;
   box-shadow: none;
 }
 
-/* Basic interactive element appearance (kept separate from the reset)
-   so we preserve cursor/spacing/transition behavior. */
 button, .btn, .hero__button {
   display: inline-block;
   padding: 0.15rem 0.35rem;
@@ -204,6 +239,8 @@ button, .btn, .hero__button {
 }
 .hero__button:hover {
   text-decoration: none; /* prevent underline on mouse hover */
+  transform: skew(-10deg) scale(1.1);
+  transition: transform 0.7s cubic-bezier(0.25,0.8,0.25,1);
 }
 .hero__button:focus-visible {
   outline: none;
