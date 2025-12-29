@@ -38,14 +38,29 @@
     if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
     if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'false');
     triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
-    if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
+    // Accessibility: blur the triggering button if focused, then focus body
+    if (lastFocusedElement instanceof HTMLElement) {
+      if (document.activeElement === lastFocusedElement) {
+        lastFocusedElement.blur();
+      }
+    }
+    // Optionally, set focus to a safe element (body)
+    if (typeof document.body.focus === 'function') {
+      document.body.focus();
+    }
   }
 
   function handleKeyDown(event) {
     if (modal.dataset.open !== 'true') return;
     if (event.key === 'Escape') {
       event.preventDefault();
+      // Before closing, blur the active button if it's a trigger or close button
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'BUTTON' || activeEl.tagName === 'A')) {
+        activeEl.blur();
+      }
       closeModal();
+      // Focus is set to body in closeModal
       return;
     }
     if (event.key === 'Tab') {

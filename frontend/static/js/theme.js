@@ -1,43 +1,35 @@
-// Theme toggle script
-// - Toggles `light-theme` / `dark-theme` on <body>
-// - Persists choice to localStorage
-// - Falls back to prefers-color-scheme when no preference stored
+// Theme toggle script (data-theme version)
+// - Uses <html data-theme="dark|light">
+// - Persists user choice to localStorage ('theme')
+// - Defaults to dark if no preference
 document.addEventListener('DOMContentLoaded', () => {
   const checkbox = document.getElementById('theme-toggle');
-  // Prefer the new iOS-style toggle, then generic switch
   const label = document.querySelector('label.ios-toggle') || document.querySelector('label.switch');
   const root = document.documentElement;
   if (!checkbox) return;
 
-  const STORAGE_KEY = 'site-theme';
+  const STORAGE_KEY = 'theme';
 
   function setLabelState(theme) {
     if (!label) return;
     const isDark = theme === 'dark';
     label.classList.toggle('active', isDark);
     label.classList.toggle('inactive', !isDark);
-    // Keep both aria-pressed and aria-checked for wider AT support
     label.setAttribute('aria-pressed', String(isDark));
     label.setAttribute('aria-checked', String(isDark));
   }
 
   function applyTheme(theme) {
-    root.classList.remove('light-theme', 'dark-theme');
-    root.classList.add(theme + '-theme');
+    root.setAttribute('data-theme', theme);
     checkbox.checked = theme === 'dark';
     checkbox.setAttribute('aria-checked', String(theme === 'dark'));
     setLabelState(theme);
   }
 
-  // Determine initial theme: localStorage -> media query -> default light
+  // Determine initial theme: localStorage -> default dark
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'dark' || stored === 'light') {
-    applyTheme(stored);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  } else {
-    applyTheme('light');
-  }
+  const initialTheme = (stored === 'dark' || stored === 'light') ? stored : 'dark';
+  applyTheme(initialTheme);
 
   checkbox.addEventListener('change', () => {
     const theme = checkbox.checked ? 'dark' : 'light';
