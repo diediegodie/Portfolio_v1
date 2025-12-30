@@ -19,7 +19,13 @@
   function openModal() {
     if (modal.dataset.open === 'true') return;
     lastFocusedElement = document.activeElement;
+    // Remove close class if present
+    panel.classList.remove('close');
+    // Show modal, then animate in
     modal.removeAttribute('hidden');
+    // Force reflow to restart animation
+    void panel.offsetWidth;
+    panel.classList.add('open');
     modal.dataset.open = 'true';
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
@@ -31,23 +37,29 @@
 
   function closeModal() {
     if (modal.dataset.open !== 'true') return;
-    modal.setAttribute('hidden', '');
-    delete modal.dataset.open;
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-    if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
-    if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'false');
-    triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
-    // Accessibility: blur the triggering button if focused, then focus body
-    if (lastFocusedElement instanceof HTMLElement) {
-      if (document.activeElement === lastFocusedElement) {
-        lastFocusedElement.blur();
-      }
-    }
-    // Optionally, set focus to a safe element (body)
-    if (typeof document.body.focus === 'function') {
-      document.body.focus();
-    }
+    // Animate out
+    panel.classList.remove('open');
+    panel.classList.add('close');
+     setTimeout(() => {
+       modal.setAttribute('hidden', '');
+       delete modal.dataset.open;
+       modal.setAttribute('aria-hidden', 'true');
+       document.body.classList.remove('modal-open');
+       if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
+       if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'false');
+       triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+       // Accessibility: blur the triggering button if focused, then focus body
+       if (lastFocusedElement instanceof HTMLElement) {
+         if (document.activeElement === lastFocusedElement) {
+           lastFocusedElement.blur();
+         }
+       }
+       if (typeof document.body.focus === 'function') {
+         document.body.focus();
+       }
+       // Remove close class after animation
+       panel.classList.remove('close');
+     }, 300);
   }
 
   function handleKeyDown(event) {
