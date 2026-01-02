@@ -1,47 +1,83 @@
+.lang-switch {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Modifier: position the language switch below theme toggle (used in header) */
+.lang-switch--below {
+  top: 3.5rem;
+  left: 1rem;
+  right: auto;
+}
 /* Unified card button style for all card actions and links */
-.work-card__link,
-.work-card .card__actions a {
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
+
+
+/* Unified modal card button style for all card actions and links (GitHub and Live identical) */
+.work-modal__btn,
+.about-modal__btn {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 1rem;
   font-weight: 600;
-  font-size: 1rem;
-  transition: color 0.2s, background 0.2s;
+  text-align: center;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  background-color: #333333;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(16,24,40,0.10);
+  outline: none;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+
+.work-modal__btn:hover,
+.work-modal__btn:focus-visible,
+.about-modal__btn:hover,
+.about-modal__btn:focus-visible {
+  color: #bd93f9;
+  /* keep background and size unchanged */
+}
+
+/* Disabled state for modal card buttons */
+.work-modal__btn[aria-disabled='true'],
+.work-modal__btn:disabled,
+.about-modal__btn[aria-disabled='true'],
+.about-modal__btn:disabled {
+  background: rgba(120,120,120,0.18);
+  color: var(--muted-text, #888);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Disabled state for modal card buttons */
+.work-modal__btn[aria-disabled='true'],
+.work-modal__btn:disabled,
+.about-modal__btn[aria-disabled='true'],
+.about-modal__btn:disabled {
+  background: rgba(120,120,120,0.18);
+  color: var(--muted-text, #888);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Ensure modal card container has sufficient contrast in dark theme */
+[data-theme='dark'] .modal__card.work-card,
+[data-theme='dark'] .modal__card.about-card,
+[data-theme='dark'] .work-card,
+[data-theme='dark'] .about-card {
+  background-color: #393b4a;
+  color: #f8f8f2;
+  box-shadow: 0 4px 16px rgba(16,24,40,0.28);
 }
 
 /* Dark theme: all card buttons like 'live' */
-[data-theme='dark'] .work-card__link,
-[data-theme='dark'] .work-card .card__actions a {
-  background-color: var(--surface, #44475a);
-  /* Unify text style */
-  font: inherit;
-  color: var(--color-off-white, #f9f9f9);
-}
-[data-theme='dark'] .work-card__link:hover,
-[data-theme='dark'] .work-card__link:focus-visible,
-[data-theme='dark'] .work-card .card__actions a:hover,
-[data-theme='dark'] .work-card .card__actions a:focus-visible {
-  color: var(--purple, #bd93f9);
-  background-color: var(--surface, #44475a);
-}
-
-/* Light theme: all card buttons like 'live' */
-[data-theme='light'] .work-card__link,
-[data-theme='light'] .work-card .card__actions a {
-  background-color: var(--color-dark-gray, #333333);
-  color: var(--color-off-white, #f9f9f9);
-}
-[data-theme='light'] .work-card__link:hover,
-[data-theme='light'] .work-card__link:focus-visible,
-[data-theme='light'] .work-card .card__actions a:hover,
-[data-theme='light'] .work-card .card__actions a:focus-visible {
-  color: var(--purple, #bd93f9);
-  background-color: var(--color-dark-gray, #333333);
-}
 /* Persistent header for theme toggle */
 .app-header {
   position: fixed;
@@ -96,15 +132,18 @@
   }
 }
 
-.work-modal__panel {
+.work-modal__panel,
+.about-modal__panel {
   transform-origin: center center;
   opacity: 0;
   transform: scale(0);
 }
-.work-modal__panel.open {
+.work-modal__panel.open,
+.about-modal__panel.open {
   animation: modalOpen 0.7s forwards;
 }
-.work-modal__panel.close {
+.work-modal__panel.close,
+.about-modal__panel.close {
   animation: modalClose 0.3s forwards;
 }
 /*
@@ -175,7 +214,9 @@
   line-height: 1.6;
   margin-bottom: var(--spacing-sm);
 }
-.modal__card .card__actions {
+.modal__card .card__actions,
+.work-card__links,
+.about-card__links {
   display: flex;
   justify-content: center;
   gap: var(--spacing-md);
@@ -196,18 +237,21 @@
 
 /* Minimalist scrollbar styling for modal and card content */
 .work-modal__panel,
+.about-modal__panel,
 .work-card__content {
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: var(--scrollbar-thumb, #888) transparent;
 }
 
 .work-modal__panel::-webkit-scrollbar,
+.about-modal__panel::-webkit-scrollbar,
 .work-card__content::-webkit-scrollbar {
   width: 6px;
   background: transparent;
 }
 
 .work-modal__panel::-webkit-scrollbar-thumb,
+.about-modal__panel::-webkit-scrollbar-thumb,
 .work-card__content::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb, #888);
   border-radius: 4px;
@@ -215,11 +259,13 @@
 }
 
 .work-modal__panel::-webkit-scrollbar-thumb:hover,
+.about-modal__panel::-webkit-scrollbar-thumb:hover,
 .work-card__content::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover, #555);
 }
 
 .work-modal__panel::-webkit-scrollbar-track,
+.about-modal__panel::-webkit-scrollbar-track,
 .work-card__content::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -287,11 +333,6 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   line-height: 1.4;
   transition: background-color 0.6s ease, color 0.6s ease;
-}
-
-body.modal-open .theme-switch {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* Links */
@@ -368,16 +409,52 @@ button, .btn, .hero__button {
   outline-offset: 2px;
 }
 
-.theme-switch {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1000;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
 #theme-toggle { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+/* Toggle icon sizing and layout adjustments */
+.theme-switch, .lang-switch {
+  position: fixed;
+  left: 1rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem; /* consistent spacing */
+}
+
+/* Positioning: theme on top, language below (keep same left offset) */
+.theme-switch { top: 1rem; }
+.lang-switch { top: 3.5rem; }
+
+.icon, .lang-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Theme: show sun in light, moon in dark via CSS (SVGs use currentColor) */
+/* Theme: show sun in light, moon in dark via CSS (SVGs use currentColor)
+  Use unified color variable so icons match language label color across themes */
+.theme-switch .sun { display: inline-block; }
+.theme-switch .moon { display: none; }
+html[data-theme='dark'] .theme-switch .sun { display: none; }
+html[data-theme='dark'] .theme-switch .moon { display: inline-block; }
+
+/* Unified icon color: use button text variable which differs per theme */
+.theme-switch .icon { color: var(--button-text); }
+
+/* Language: show label based on html[lang] */
+.lang-label { 
+  display: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+html[lang='en'] .lang-label.en { display: inline-block; color: inherit; }
+html[lang='pt'] .lang-label.pt { display: inline-block; color: inherit; }
+
+/* Ensure the visually hidden state for non-displayed labels still accessible via ARIA if needed */
+.lang-label { font-size: 0.9rem; font-weight: 600; }
 .switch {
   /* Text-only toggle styling (visual reset handled above) */
   position: relative;
@@ -466,7 +543,8 @@ img, video { max-width: 100%; height: auto; display: block; }
   border: 0;
 }
 
-.work-modal {
+.work-modal,
+.about-modal {
   position: fixed;
   inset: 0;
   display: flex;
@@ -475,15 +553,18 @@ img, video { max-width: 100%; height: auto; display: block; }
   padding: 1.5rem;
   z-index: 1100;
 }
-.work-modal[hidden] {
+.work-modal[hidden],
+.about-modal[hidden] {
   display: none;
 }
-.work-modal__overlay {
+.work-modal__overlay,
+.about-modal__overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
 }
-.work-modal__panel {
+.work-modal__panel,
+.about-modal__panel {
   position: relative;
   width: min(1100px, 92vw);
   max-height: calc(100vh - (var(--spacing-xl) * 1));
@@ -497,17 +578,20 @@ img, video { max-width: 100%; height: auto; display: block; }
   gap: var(--spacing-md);
   overflow: auto;
 }
-.work-modal__panel:focus-visible {
+.work-modal__panel:focus-visible,
+.about-modal__panel:focus-visible {
   outline: 4px solid var(--focus-ring);
   outline-offset: 2px;
 }
-.work-modal__header {
+.work-modal__header,
+.about-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
 }
-.work-modal__header h2 {
+.work-modal__header h2,
+.about-modal__header h2 {
   margin: 0;
   font-size: clamp(1.5rem, 3vw, 2rem);
   margin-bottom: var(--spacing-lg);
@@ -521,14 +605,6 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--spacing-lg);
   letter-spacing: 0.03em;
   line-height: 1.4;
-}
-.work-modal__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-  overflow: auto;
-  padding-right: 0.5rem;
-  margin-top: var(--spacing-lg);
 }
 
 /* Optional card container class for templates using different markup */
@@ -597,117 +673,27 @@ img, video { max-width: 100%; height: auto; display: block; }
   letter-spacing: 0.02em;
   line-height: 1.4;
 }
-.work-card__content p {
-  margin: 0;
-  color: var(--muted-text);
+/* Work card description should match modal/about card description styling */
+.work-card__content p,
+.work-card .card-description {
+  margin: 0 0 var(--spacing-sm) 0; /* same bottom spacing as .modal__card p */
+  color: var(--text-color);
   line-height: 1.6;
+  font-weight: 400; /* match modal/default paragraph weight */
+  font-size: 1rem;
 }
 
-/* Improve readability of card descriptions */
-.work-card p,
-.work-card__description {
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-/* Ensure descriptions are readable in dark theme */
-.dark-theme .work-card p,
-.dark-theme .work-card__description {
-  color: var(--color-off-white);
-}
-.work-card__links {
-  display: flex;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* Button variants for cards: ensure contrast and hover/focus color */
-.work-card .card__actions a.button--dark,
-.work-card__link.button--dark {
-  background-color: var(--color-dark-gray);
-  color: var(--color-off-white);
-}
-.work-card .card__actions a.button--dark:hover,
-.work-card .card__actions a.button--dark:focus-visible,
-.work-card__link.button--dark:hover,
-.work-card__link.button--dark:focus-visible {
-  color: var(--purple);
-}
-
-.work-card .card__actions a.button--light,
-.work-card__link.button--light {
-  background-color: var(--color-off-white);
-  color: var(--color-dark-gray);
-}
-.work-card .card__actions a.button--light:hover,
-.work-card .card__actions a.button--light:focus-visible,
-.work-card__link.button--light:hover,
-.work-card__link.button--light:focus-visible {
-  color: var(--purple);
-}
-.work-card__link {
-  font-weight: 600;
-  color: var(--accent-color);
-  text-decoration: none;
-  background: var(--color-dark-gray);
-  padding: 0.35rem 0.65rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.work-card__link:hover,
-.work-card__link:focus {
-  filter: brightness(1.05);
-}
-.work-card__link--disabled {
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--muted-text);
-  cursor: not-allowed;
-}
-
-/* Modal card link/button styling for theme contrast and hover behavior */
-.work-card .card__actions a,
-.work-card__links a,
-.work-card__link {
-  display: inline-block;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  text-align: center;
-  text-decoration: none;
-  transition: color 0.2s ease, background-color 0.2s ease;
-}
-
-.work-card .card__actions a.button--light,
-.work-card__link.button--light {
-  background-color: var(--color-off-white);
-  color: var(--color-dark-gray);
-}
-
-.work-card .card__actions a.button--dark,
-.work-card__link.button--dark {
-  background-color: var(--color-dark-gray);
-  color: var(--color-off-white);
-}
-
-.work-card .card__actions a:hover,
-.work-card .card__actions a:focus-visible,
-.work-card__links a:hover,
-.work-card__links a:focus-visible,
-.work-card__link:hover,
-.work-card__link:focus-visible {
-  color: var(--purple, purple);
-}
+/* Ensure descriptions follow theme color variables (no special overrides) */
+.work-card .card-description { color: var(--text-color); }
 
 @media (max-width: 720px) {
-  .work-modal {
+  .work-modal,
+  .about-modal {
     padding: 1rem;
   }
 
-  .work-modal__panel {
+  .work-modal__panel,
+  .about-modal__panel {
     padding: 1.25rem;
   }
 }

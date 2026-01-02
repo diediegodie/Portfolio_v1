@@ -1,0 +1,60 @@
+<div class="about-modal" id="about-modal" hidden aria-hidden="true">
+    <div class="modal__overlay about-modal__overlay" data-about-overlay></div>
+    <div class="about-modal__panel" role="dialog" aria-modal="true" aria-labelledby="about-dialog-title" tabindex="-1">
+        <header class="about-modal__header">
+            <div>
+                <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
+                <h2 id="about-dialog-title" data-i18n="about.title">{{ _('about.title') }}</h2>
+            </div>
+            <button class="modal-close" type="button" data-about-close data-i18n-attr="aria-label:modal.close">
+                <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
+                    focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="8" y1="8" x2="24" y2="24" />
+                    <line x1="24" y1="8" x2="8" y2="24" />
+                </svg>
+            </button>
+        </header>
+
+        <div class="about-modal__grid">
+            <article class="about-card about__intro">
+                <h3 data-i18n="about.summary_title">{{ _('about.summary_title') }}</h3>
+                <p data-i18n="about.summary">{{ _('about.summary') }}</p>
+            </article>
+
+            <article class="about-card about__background">
+                <h3 data-i18n="about.background_title">{{ _('about.background_title') }}</h3>
+                <p data-i18n="about.background">{{ _('about.background') }}</p>
+            </article>
+
+            <article class="about-card about__skills">
+                <h3 data-i18n="about.skills_title">{{ _('about.skills_title') }}</h3>
+                <ul>
+                    <li data-i18n="about.skill_1">{{ _('about.skill_1') }}</li>
+                    <li data-i18n="about.skill_2">{{ _('about.skill_2') }}</li>
+                    <li data-i18n="about.skill_3">{{ _('about.skill_3') }}</li>
+                    <li data-i18n="about.skill_4">{{ _('about.skill_4') }}</li>
+                </ul>
+            </article>
+
+            <article class="about-card about__philosophy">
+                <h3 data-i18n="about.philosophy_title">{{ _('about.philosophy_title') }}</h3>
+                <p data-i18n="about.philosophy">{{ _('about.philosophy') }}</p>
+            </article>
+
+            <article class="about-card about__personal">
+                <h3 data-i18n="about.personal_title">{{ _('about.personal_title') }}</h3>
+                <p data-i18n="about.personal">{{ _('about.personal') }}</p>
+            </article>
+
+            <footer class="about-card modal__footer about__actions">
+                <div class="about-card__links">
+                    <button class="about-modal__btn" type="button" data-i18n="about.cta.contact">{{
+                        _('about.cta.contact') }}</button>
+                    <button class="about-modal__btn" type="button" data-i18n="about.cta.resume">{{ _('about.cta.resume')
+                        }}</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

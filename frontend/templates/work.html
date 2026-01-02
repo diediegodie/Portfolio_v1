@@ -1,13 +1,12 @@
 <div class="work-modal" id="work-modal" hidden aria-hidden="true">
     <div class="modal__overlay work-modal__overlay" data-work-overlay></div>
-    <div class="modal__card work-modal__panel" role="dialog" aria-modal="true" aria-labelledby="work-dialog-title"
-        tabindex="-1">
+    <div class="work-modal__panel" role="dialog" aria-modal="true" aria-labelledby="work-dialog-title" tabindex="-1">
         <header class="work-modal__header">
             <div>
-                <p class="muted">Portfolio</p>
-                <h2 id="work-dialog-title">Work</h2>
+                <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
+                <h2 id="work-dialog-title" data-i18n="work.title">{{ _('work.title') }}</h2>
             </div>
-            <button class="modal-close" type="button" data-work-close aria-label="Close">
+            <button class="modal-close" type="button" data-work-close data-i18n-attr="aria-label:modal.close">
                 <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
                     focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -20,21 +19,29 @@
             {% set cards = projects | list %}
             {% for i in range(4) %}
             {% set project = cards[i] if i < cards|length else { 'title' : '' , 'description' : '' , 'github_url' : ''
-                , 'demo_url' : None } %} <article class="modal__card work-card" role="listitem">
-                <div class="work-card__image" aria-hidden="true">
-                    <span class="visually-hidden">Project illustration for {{ project.title if project.title else 'No
-                        project data' }}</span>
+                , 'demo_url' : None } %} <article class="work-card" role="listitem">
+                <div class="work-card__image" aria-hidden="true" data-i18n-attr="aria-label:work.project_aria"
+                    data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">
+                    <span class="visually-hidden" data-i18n="work.project_aria"
+                        data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">{{
+                        project.title if project.title else
+                        _('work.no_data') }}</span>
                 </div>
                 <div class="work-card__content">
                     <h3>{{ project.title }}</h3>
-                    <p>{{ project.description }}</p>
+                    <p class="card-description">{{ project.description }}
+                    </p>
                     <div class="card__actions work-card__links">
-                        <a class="work-card__link" href="{{ project.github_url }}" target="_blank"
-                            rel="noopener">GitHub</a>
+                        <a class="work-modal__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"
+                            data-i18n="button.github">{{
+                            _('button.github') }}</a>
                         {% if project.demo_url %}
-                        <a class="work-card__link" href="{{ project.demo_url }}" target="_blank" rel="noopener">Live</a>
+                        <a class="work-modal__btn" href="{{ project.demo_url }}" target="_blank" rel="noopener"
+                            data-i18n="button.live">{{
+                            _('button.live') }}</a>
                         {% else %}
-                        <span class="work-card__link work-card__link--disabled" aria-disabled="true">Live</span>
+                        <span class="work-modal__btn" aria-disabled="true" data-i18n="button.live">{{ _('button.live')
+                            }}</span>
                         {% endif %}
                     </div>
                 </div>
