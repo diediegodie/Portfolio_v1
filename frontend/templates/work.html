@@ -28,8 +28,10 @@
                         _('work.no_data') }}</span>
                 </div>
                 <div class="work-card__content">
-                    <h3>{{ project.title }}</h3>
-                    <p class="card-description">{{ project.description }}
+                    <h3 data-i18n="work.projects.{{ i }}.title" data-i18n-fallback="{{ project.title }}">{{
+                        project.title }}</h3>
+                    <p class="card-description" data-i18n="work.projects.{{ i }}.description"
+                        data-i18n-fallback="{{ project.description }}">{{ project.description }}
                     </p>
                     <div class="card__actions work-card__links">
                         <a class="work-modal__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"

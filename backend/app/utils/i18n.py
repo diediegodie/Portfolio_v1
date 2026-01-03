@@ -33,6 +33,8 @@ def load_translations():
             logging.warning("i18n: unexpected error loading %s: %s", file_path, e)
             TRANSLATIONS[lang] = {}
 
+    return TRANSLATIONS
+
 
 def get_locale():
     # Priority: session > cookie > Accept-Language > default
