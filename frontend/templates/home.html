@@ -18,7 +18,8 @@
                 aria-expanded="false" data-i18n="button.work">{{ _('button.work') }}</button>
             <button class="hero__button" type="button" data-about-trigger aria-controls="about-modal"
                 aria-expanded="false" data-i18n="button.about">{{ _('button.about') }}</button>
-            <button class="hero__button" type="button" data-i18n="button.contact">{{ _('button.contact') }}</button>
+            <button class="hero__button" type="button" data-contact-trigger aria-controls="contact-modal"
+                aria-expanded="false" data-i18n="button.contact">{{ _('button.contact') }}</button>
         </div>
     </section>
 </main>
@@ -26,4 +27,5 @@
 
 {% include 'work.html' %}
 {% include 'about.html' %}
+{% include 'contact.html' %}
 {% endblock %}
