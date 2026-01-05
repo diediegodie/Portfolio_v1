@@ -2,9 +2,11 @@
   {
     "title": "work.projects.0.title",
     "description": "work.projects.0.description",
-    "stack": ["Python", "Flask", "PostgreSQL", "Docker"],
-    "github_url": "https://github.com/example/auth-service",
-    "demo_url": ""
+    "stack": ["Python", "Flask", "SQLAlchemy", "PostgreSQL", "Docker", "GitHub Actions"],
+    "github_url": "https://github.com/diediegodie/tattoo_studio_system_v4",
+    "demo_url": "https://almanegra.onrender.com",
+    "images": [
+     "tattoo studio menager 1.png",  "clientes.png",  "estoque.png",  "gastos.jpg",  "historico.png"  ]
   },
   {
     "title": "work.projects.1.title",

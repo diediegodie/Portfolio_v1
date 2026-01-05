@@ -30,8 +30,8 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
-  background-color: #333333;
-  color: #fff;
+  background-color: var(--accent-color);
+  color: var(--button-text);
   box-shadow: 0 2px 8px rgba(16,24,40,0.10);
   outline: none;
   transition: color 0.2s, background 0.2s, box-shadow 0.2s;
@@ -50,27 +50,17 @@
 
 /* Disabled state for modal card buttons */
 .work-modal__btn[aria-disabled='true'],
-.work-modal__btn:disabled,
 .about-modal__btn[aria-disabled='true'],
-.about-modal__btn:disabled,
-.contact-modal__btn[aria-disabled='true'],
-.contact-modal__btn:disabled {
-  background: rgba(120,120,120,0.18);
-  color: var(--muted-text, #888);
+.contact-modal__btn[aria-disabled='true'] {
+  background-color: #666;
+  color: #999;
   cursor: not-allowed;
-  box-shadow: none;
+  opacity: 0.6;
 }
 
-/* Ensure modal card container has sufficient contrast in dark theme */
-[data-theme='dark'] .modal__card.work-card,
-[data-theme='dark'] .modal__card.about-card,
-[data-theme='dark'] .modal__card.contact-card,
-[data-theme='dark'] .work-card,
-[data-theme='dark'] .about-card,
-[data-theme='dark'] .contact-card {
-  background-color: #393b4a;
-  color: #f8f8f2;
-  box-shadow: 0 4px 16px rgba(16,24,40,0.28);
+/* Prevent underline on modal action links */
+.work-modal__btn, .work-modal__btn:hover, .work-card__links a, .work-card__links a:hover {
+  text-decoration: none;
 }
 
 /* Dark theme: all card buttons like 'live' */
@@ -162,8 +152,8 @@
   --modal-card-fixed-height: 440px;
   --modal-card-fixed-height-mobile: min(340px, 58vh);
   /* Work-card specific sizes */
-  --work-card-fixed-height: max(480px, calc(var(--modal-card-fixed-height) * 1.12));
-  --work-card-fixed-height-mobile: min(420px, 72vh);
+  --work-card-fixed-height: max(560px, calc(var(--modal-card-fixed-height) * 1.25));
+  --work-card-fixed-height-mobile: min(520px, 78vh);
   /* Button padding variables (used for modal action buttons) */
   --btn-padding-y: 0.35rem;
   --btn-padding-x: 0.6rem;
@@ -405,6 +395,51 @@ html[data-theme='dark'] {
   transition: background-color 0.6s ease, color 0.6s ease;
 }
 
+/* Ensure about/contact modal text is readable in dark theme */
+html[data-theme='dark'] .about-modal__panel,
+html[data-theme='dark'] .contact-modal__panel {
+  /* guarantee panel uses semantic contrast tokens */
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Improve readable muted text inside modals (headings/descriptions) */
+html[data-theme='dark'] .about-modal__panel .muted,
+html[data-theme='dark'] .contact-modal__panel .muted {
+  color: rgba(248,248,242,0.85); /* slightly reduced white for secondary text */
+}
+
+/* Ensure card articles inside modals use surface/bg and readable text */
+html[data-theme='dark'] .about-card,
+html[data-theme='dark'] .contact-card {
+  background: var(--surface); /* keeps cards visually distinct from page bg */
+  color: var(--text-color);
+}
+
+/* Strengthen link/button contrast inside modals */
+html[data-theme='dark'] .about-modal__panel a,
+html[data-theme='dark'] .contact-modal__panel a {
+  color: var(--link-color, var(--accent-color));
+}
+html[data-theme='dark'] .about-modal__panel .about-modal__btn,
+html[data-theme='dark'] .contact-modal__panel .contact-modal__btn {
+  background-color: var(--accent-color);
+  color: var(--button-text, #fff);
+}
+
+/* Lightbox should let theme define close icon color; fallback to white on dark overlay */
+.image-lightbox {
+  color: var(--color-on-surface, #fff); /* inherit theme color; fallback to white */
+}
+.image-lightbox .modal-close {
+  background: transparent;
+  border: none;
+}
+.image-lightbox .modal-close__icon {
+  width: 32px;
+  height: 32px;
+}
+
 /* Base */
 html, body {
   height: 100%;
@@ -416,8 +451,6 @@ body {
   line-height: 1.4;
   transition: background-color 0.6s ease, color 0.6s ease;
 }
-
-/* Links */
 a {
   color: var(--link-color);
   text-decoration: none;
@@ -481,6 +514,13 @@ button, .btn, .hero__button {
 
 .switch:hover { color: var(--accent-color); transform: scale(1.05); }
 
+/* Ensure header and toggles sit below modal overlays when a modal is open */
+.modal-open .app-header,
+.modal-open #theme-toggle,
+.modal-open .lang-switch {
+  z-index: 100 !important;
+}
+
 /* Accessible focus for interactive elements */
 :is(a, button, .btn, input, textarea, select):focus-visible {
   /* Keep a visible focus but avoid heavy boxes on text-only elements */
@@ -497,7 +537,7 @@ button, .btn, .hero__button {
 .theme-switch, .lang-switch {
   position: fixed;
   left: 1rem;
-  z-index: 999;
+  z-index: 1200; /* raised so they remain above other content */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -532,8 +572,8 @@ html[data-theme='dark'] .theme-switch .moon { display: inline-block; }
   font-size: 0.85rem;
   font-weight: 600;
 }
-html[lang='en'] .lang-label.en { display: inline-block; color: inherit; }
-html[lang='pt'] .lang-label.pt { display: inline-block; color: inherit; }
+html[lang^='en'] .lang-label.en { display: inline-block; color: var(--button-text); }
+html[lang^='pt'] .lang-label.pt { display: inline-block; color: var(--button-text); }
 
 /* Ensure the visually hidden state for non-displayed labels still accessible via ARIA if needed */
 .lang-label { font-size: 0.9rem; font-weight: 600; }
@@ -634,7 +674,7 @@ img, video { max-width: 100%; height: auto; display: block; }
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  z-index: 1100;
+  z-index: 3000; /* raised so modals overlay header/toggles */
 }
 .work-modal[hidden],
 .about-modal[hidden],
@@ -741,12 +781,12 @@ img, video { max-width: 100%; height: auto; display: block; }
 
 /* Ensure card shadow is visible in both themes */
 .light-theme .work-card,
-.dark-theme .work-card {
+html[data-theme='dark'] .work-card {
   box-shadow: var(--shadow-sm);
 }
 
 /* Ensure dark theme card text is legible */
-.dark-theme .work-card {
+html[data-theme='dark'] .work-card {
   color: var(--color-off-white);
 }
 .work-card__image {
@@ -758,6 +798,72 @@ img, video { max-width: 100%; height: auto; display: block; }
   border-radius: 12px;
   background: linear-gradient(135deg, rgba(189, 147, 249, 0.25), var(--muted-bg));
 }
+
+
+
+/* Lightbox styles (keep nav slightly smaller and remove hover transitions) */
+.image-lightbox { position: fixed; inset: 0; z-index: 3000; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.85); }
+.image-lightbox__panel { position: relative; max-width: 95vw; max-height: 95vh; display:flex; align-items:center; justify-content:center; }
+.image-lightbox__img { max-width: 100%; max-height: 100%; border-radius: 6px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+.work-card__image { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.work-card__img { width: 100%; height: auto; cursor: zoom-in; display: block; border-radius: 12px; position: relative; z-index: 1; transition: transform 300ms cubic-bezier(0.25,0.8,0.25,1), opacity 220ms ease; }
+
+/* Smaller, vertically-centered nav buttons; scale on hover (no layout shift) */
+.image-nav {  z-index: 10; /* ensure buttons sit above images and temp sliding images */  pointer-events: auto;  background: rgba(0,0,0,0.45);  color: #fff;  border: 0;  width: 28px;  height: 28px;  border-radius: 50%;  display: flex;  align-items: center;  justify-content: center;  padding: 0;  cursor: pointer;  font-size: 0.95rem;  line-height: 1;  position: absolute;  top: 50%;  transform: translateY(-50%) scale(1);  transform-origin: center center;  transition: transform 260ms cubic-bezier(0.25,0.8,0.25,1), background-color 240ms ease, opacity 180ms ease;  opacity: 0.95; }
+.image-nav:hover {  transform: translateY(-50%) scale(1.12);  /* slight increase on hover, no displacement */  background: var(--purple);  /* uses existing theme purple */  color: #fff;  opacity: 1; }
+/* Ensure glyphs centered inside the circle; micro-adjust if needed */
+.image-nav .icon { display: inline-block; line-height: 1; margin: 0; padding: 0; transform: translateY(-0.6px); }
+
+/* Focus-visible for keyboard users */
+.image-nav:focus-visible {  outline: 2px solid var(--focus-ring);  outline-offset: 2px; }
+
+.image-prev { left: 8px; }
+.image-next { right: 8px; }
+
+/* Slide animation helpers used by JS */
+.work-card__img.animate-out-left { transform: translateX(-100%); opacity: 0; }
+.work-card__img.animate-out-right { transform: translateX(100%); opacity: 0; }
+.work-card__img.temp { position: absolute; left: 0; top: 0; width: 100%; height: auto; z-index: 2; transform: translateX(0); opacity: 1; transition: transform 300ms cubic-bezier(0.25,0.8,0.25,1), opacity 220ms ease; }
+.work-card__img.temp.start-from-right { transform: translateX(100%); opacity: 0; }
+.work-card__img.temp.start-from-left { transform: translateX(-100%); opacity: 0; }
+.work-card__img.temp.animate-in { transform: translateX(0); opacity: 1; }
+.image-lightbox__img.temp { position: absolute; left: 0; top: 0; max-width: 100%; max-height: 100%; z-index: 40; } /* temp below navs but above overlay */
+.image-lightbox__close,
+.image-lightbox .modal-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: var(--surface);
+  color: var(--text-color);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.image-lightbox__nav,
+.image-lightbox__nav:hover {
+  transition: none !important;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 1.35rem;
+  cursor:pointer;
+  z-index: 50;
+  pointer-events: auto;
+}
+.image-lightbox__prev { left: calc(2vw); }
+.image-lightbox__next { right: calc(2vw); }
 
 /* Normalize modal footer appearance but allow it to size naturally (no fixed height) */
 .modal__footer {

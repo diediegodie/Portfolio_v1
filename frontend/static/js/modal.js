@@ -18,6 +18,8 @@
     const triggers = Array.from(document.querySelectorAll(`[${triggerAttr}]`));
     const mainContent = document.getElementById('home-main');
     const themeSwitch = document.querySelector('.theme-switch');
+    const headerEl = document.querySelector('.header-layout');
+    const heroEl = document.querySelector('section.hero');
     const focusableSelectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
     let lastFocusedElement = null;
 
@@ -38,6 +40,8 @@
       document.body.classList.add('modal-open');
       if (mainContent) mainContent.setAttribute('aria-hidden', 'true');
       if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'true');
+      if (headerEl) { headerEl.setAttribute('inert', ''); headerEl.setAttribute('aria-hidden', 'true'); }
+      if (heroEl) { heroEl.setAttribute('inert', ''); heroEl.setAttribute('aria-hidden', 'true'); }
       triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'true'));
       if (panel) panel.focus();
     }
@@ -53,6 +57,8 @@
         document.body.classList.remove('modal-open');
         if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
         if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'false');
+        if (headerEl) { headerEl.removeAttribute('inert'); headerEl.setAttribute('aria-hidden', 'false'); }
+        if (heroEl) { heroEl.removeAttribute('inert'); heroEl.setAttribute('aria-hidden', 'false'); }
         triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
         if (lastFocusedElement instanceof HTMLElement) {
           if (document.activeElement === lastFocusedElement) {

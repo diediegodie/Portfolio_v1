@@ -45,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
     window.i18n.current = lang;
     const lt = document.getElementById('lang-toggle');
     if (lt) lt.setAttribute('aria-checked', lt.checked ? 'true' : 'false');
+
+    // Ensure language label visibility is set from JS (robust against varied html@lang values)
+    try {
+      document.querySelectorAll('.lang-label').forEach(el => { el.style.display = 'none'; });
+      const activeLabel = document.querySelector('.lang-label.' + lang);
+      if (activeLabel) activeLabel.style.display = 'inline-block';
+    } catch (e) {
+      // non-critical: do not break i18n if DOM shape differs
+      console.debug('i18n: failed to toggle language labels (non-critical)', e);
+    }
   };
 
   // initial run

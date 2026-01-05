@@ -19,13 +19,38 @@
             {% set cards = projects | list %}
             {% for i in range(4) %}
             {% set project = cards[i] if i < cards|length else { 'title' : '' , 'description' : '' , 'github_url' : ''
-                , 'demo_url' : None } %} <article class="work-card" role="listitem">
+                , 'demo_url' : None } %} <article class="work-card" role="listitem" data-images='{{ project.images | default([]) |
+  tojson | safe }}'>
                 <div class="work-card__image" aria-hidden="true" data-i18n-attr="aria-label:work.project_aria"
                     data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">
                     <span class="visually-hidden" data-i18n="work.project_aria"
                         data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">{{
                         project.title if project.title else
                         _('work.no_data') }}</span>
+
+                    <!-- Carousel markup: prev / image / next -->
+                    {% if project.images and (project.images | length) > 0 %}
+                    {% set first_img = project.images[0] %}
+                    {% if project.images | length > 1 %}
+                    <button class="image-nav image-prev" type="button"
+                        aria-label="{{ _('button.prev') if _('button.prev') else 'Previous' }}"><span
+                            class="icon">‹</span></button>
+                    {% endif %}
+
+                    <img class="work-card__img" src="{{ url_for('static', filename='images/' + first_img) }}"
+                        alt="{{ project.title if project.title else _('work.no_data') }}" tabindex="0" loading="lazy" />
+
+                    {% if project.images | length > 1 %}
+                    <button class="image-nav image-next" type="button"
+                        aria-label="{{ _('button.next') if _('button.next') else 'Next' }}"><span
+                            class="icon">›</span></button>
+                    {% endif %}
+
+                    {% else %}
+                    <!-- No images: render an empty, inert image element to keep layout stable -->
+                    <img class="work-card__img" src="" alt="{{ project.title if project.title else
+                        _('work.no_data') }}" tabindex="-1" aria-hidden="true" />
+                    {% endif %}
                 </div>
                 <div class="work-card__content">
                     <h3 data-i18n="work.projects.{{ i }}.title" data-i18n-fallback="{{ project.title }}">{{
