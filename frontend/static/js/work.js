@@ -83,9 +83,45 @@ window.initModal && window.initModal({
       const nextBtn = card.querySelector('.image-next');
       if (!imgEl || !images.length) return;
       let idx = 0;
+      let pendingFadeTimeout = null;
+
       function update() {
-        imgEl.src = '/static/images/' + images[idx];
-        imgEl.setAttribute('data-current-index', idx);
+        const nextSrc = '/static/images/' + images[idx];
+        // If no current src rendered by template, just set it without animation
+        const currentSrc = imgEl.getAttribute('src') || imgEl.src || '';
+        if (!currentSrc) {
+          imgEl.src = nextSrc;
+          imgEl.setAttribute('data-current-index', idx);
+          return;
+        }
+        if (imgEl.src.endsWith(nextSrc)) { imgEl.setAttribute('data-current-index', idx); return; }
+
+        // Preload the next image in an off-DOM Image element
+        const preloader = new Image();
+        preloader.onload = () => {
+          clearTimeout(pendingFadeTimeout);
+          // Start fade-out
+          imgEl.classList.add('is-fading');
+          // Wait for fade-out to complete, then swap src and fade back in
+          pendingFadeTimeout = setTimeout(() => {
+            imgEl.src = nextSrc;
+            imgEl.setAttribute('data-current-index', idx);
+            // Remove fading class to trigger fade-in
+            imgEl.classList.remove('is-fading');
+          }, 220);
+        };
+        preloader.onerror = () => {
+          clearTimeout(pendingFadeTimeout);
+          // Even on error, try to animate the swap
+          imgEl.classList.add('is-fading');
+          pendingFadeTimeout = setTimeout(() => {
+            imgEl.src = nextSrc;
+            imgEl.setAttribute('data-current-index', idx);
+            imgEl.classList.remove('is-fading');
+          }, 220);
+        };
+        // Start the preload
+        preloader.src = nextSrc;
       }
       // initialize image (in case template rendered a different first image)
       update();
