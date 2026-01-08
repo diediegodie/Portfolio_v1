@@ -12,10 +12,23 @@ document.addEventListener('DOMContentLoaded', function() {
   window.i18n.updateAll = function(lang) {
     const dict = (window.i18n.cache && window.i18n.cache[lang]) ? window.i18n.cache[lang] : {};
 
+    function resolveKey(dct, dottedKey) {
+      if (!dct || !dottedKey) return undefined;
+      // direct property (flat mapping) short-circuit
+      if (Object.prototype.hasOwnProperty.call(dct, dottedKey)) return dct[dottedKey];
+      const parts = dottedKey.split('.');
+      let cur = dct;
+      for (let i = 0; i < parts.length; i++) {
+        if (typeof cur !== 'object' || cur === null || !(parts[i] in cur)) return undefined;
+        cur = cur[parts[i]];
+      }
+      return cur;
+    }
+
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       const key = el.getAttribute('data-i18n');
       if (!key) return;
-      const val = dict[key];
+      const val = resolveKey(dict, key);
       if (val === undefined) return;
       const fallback = el.getAttribute('data-i18n-fallback') || '';
       const final = (typeof val === 'string') ? val.replace('{0}', fallback) : val;
@@ -31,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length < 2) return;
         const attr = parts[0].trim();
         const key = parts.slice(1).join(':').trim();
-        const val = dict[key];
+        const val = resolveKey(dict, key);
         if (val === undefined) return;
         const fallback = el.getAttribute('data-i18n-fallback') || '';
         // replace placeholder {0} with fallback if present

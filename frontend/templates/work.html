@@ -32,7 +32,7 @@
                     {% set first_img = project.images[0] %}
                     {% if project.images | length > 1 %}
                     <button class="image-nav image-prev" type="button"
-                        aria-label="{{ _('button.prev') if _('button.prev') else 'Previous' }}"><span
+                        aria-label="{{ _('buttons.prev') if _('buttons.prev') else 'Previous' }}"><span
                             class="icon">‹</span></button>
                     {% endif %}
 
@@ -41,7 +41,7 @@
 
                     {% if project.images | length > 1 %}
                     <button class="image-nav image-next" type="button"
-                        aria-label="{{ _('button.next') if _('button.next') else 'Next' }}"><span
+                        aria-label="{{ _('buttons.next') if _('buttons.next') else 'Next' }}"><span
                             class="icon">›</span></button>
                     {% endif %}
 
@@ -57,23 +57,23 @@
                     <p class="card-description" data-i18n="work.projects.{{ loop.index0 }}.description"
                         data-i18n-fallback="{{ project.description }}">{{ project.description }}</p>
                     <div class="card__actions work-card__links">
-                        <a class="work-modal__btn about-btn" href="#" data-i18n="button.card_about"
-                            aria-label="About project">{{ _('button.card_about') }}</a>
+                        <a class="work-modal__btn about-btn" href="#" data-i18n="buttons.card_about"
+                            aria-label="About project">{{ _('buttons.card_about') }}</a>
                         <a class="work-modal__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"
-                            data-i18n="button.github">{{ _('button.github') }}</a>
+                            data-i18n="buttons.github">{{ _('buttons.github') }}</a>
                         {% if project.demo_url %}
                         <a class="work-modal__btn" href="{{ project.demo_url }}" target="_blank" rel="noopener"
-                            data-i18n="button.live">{{
-                            _('button.live') }}</a>
+                            data-i18n="buttons.live">{{
+                            _('buttons.live') }}</a>
                         {% else %}
-                        <span class="work-modal__btn" aria-disabled="true" data-i18n="button.live">{{ _('button.live')
+                        <span class="work-modal__btn" aria-disabled="true" data-i18n="buttons.live">{{ _('buttons.live')
                             }}</span>
                         {% endif %}
                     </div>
                     {% if project.readme_html %}
                     <div class="card__meta">
-                        <button class="readme-toggle" type="button" aria-expanded="false" data-i18n="button.details">{{
-                            _('button.details') }}</button>
+                        <button class="readme-toggle" type="button" aria-expanded="false" data-i18n="buttons.details">{{
+                            _('buttons.details') }}</button>
                         <div class="card-readme" hidden>{{ project.readme_html | safe }}</div>
                     </div>
                     {% endif %}
