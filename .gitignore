@@ -169,5 +169,8 @@ config.json
 # Ignore test results
 *.xml
 
-# Ignore test temp files
+# Ignore
 *.tmp.beads/
+# Track beads DB
+!.beads/
+!.beads/**
