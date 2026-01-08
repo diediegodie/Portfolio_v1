@@ -170,4 +170,4 @@ config.json
 *.xml
 
 # Ignore test temp files
-*.tmp
+*.tmp.beads/
