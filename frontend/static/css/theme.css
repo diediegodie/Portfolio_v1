@@ -35,6 +35,126 @@
   box-shadow: 0 2px 8px rgba(16,24,40,0.10);
   outline: none;
   transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+  text-transform: none;
+}
+
+/* Force explicit typography for all card action buttons so <button> and
+   <a> variants render identically across browsers and themes. */
+.work-card__links .work-modal__btn,
+.work-card__links button.work-modal__btn,
+.work-card__links a.work-modal__btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1;
+  color: var(--button-text); /* use theme-aware button text */
+}
+.work-card__links a.work-modal__btn {
+  display: inline-block;
+}
+
+/* Hover/active state: only change weight/opacity; keep text dark */
+.work-card__links .work-modal__btn:hover,
+.work-card__links .work-modal__btn:focus-visible,
+.work-card__links a.work-modal__btn:hover,
+.work-card__links a.work-modal__btn:focus-visible {
+  opacity: 0.85;
+  font-weight: 500;
+  color: var(--button-text);
+}
+
+/* Make anchor and span variants visually match the button element exactly */
+.work-card__links a.work-modal__btn,
+.work-card__links span.work-modal__btn {
+  background-color: var(--accent-color);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(16,24,40,0.10);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.work-card__links span.work-modal__btn[aria-disabled='true'] {
+  background-color: #e9e9e9;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Strong override: ensure card action labels remain dark and visible
+   regardless of theme variables. This targets buttons within the modal
+   panel specifically and uses increased specificity to win the cascade. */
+.work-modal__panel .work-card__links .work-modal__btn,
+.work-modal__panel .work-card__links a.work-modal__btn,
+.work-modal__panel .work-card__links span.work-modal__btn {
+  color: #111 !important;
+}
+.work-modal__panel .work-card__links .work-modal__btn:hover,
+.work-modal__panel .work-card__links a.work-modal__btn:hover,
+.work-modal__panel .work-card__links span.work-modal__btn:hover {
+  color: #111 !important;
+  opacity: 0.85 !important;
+}
+
+/* Normalize all card action elements to look and behave exactly like the
+   About <button>. This forces anchors/spans to use button-like chrome so
+   typography, padding and hover are identical across element types. */
+.work-modal__panel .work-card__links .work-modal__btn,
+.work-modal__panel .work-card__links a.work-modal__btn,
+.work-modal__panel .work-card__links span.work-modal__btn,
+.work-modal__panel .work-card__links button.work-modal__btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem;
+  box-sizing: border-box !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: none !important;
+  background-color: var(--accent-color) !important;
+  color: #111 !important; /* keep button text dark instead of following theme variable */
+  padding: var(--btn-padding-y) var(--btn-padding-x) !important;
+  border-radius: var(--radius-md) !important;
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 8px rgba(16,24,40,0.10) !important;
+}
+.work-modal__panel .work-card__links a.work-modal__btn:visited { color: #111 !important; }
+.work-modal__panel .work-card__links .work-modal__btn[aria-disabled='true'] {
+  background-color: #e9e9e9 !important;
+  color: #999 !important;
+  cursor: not-allowed !important;
+  opacity: 0.9 !important;
+}
+.work-modal__panel .work-card__links .work-modal__btn:hover,
+.work-modal__panel .work-card__links a.work-modal__btn:hover,
+.work-modal__panel .work-card__links button.work-modal__btn:hover {
+  opacity: 0.88 !important;
+  font-weight: 500 !important;
+  transform: none !important;
+}
+
+/* Ensure anchor-styled buttons inside card links inherit the same text styling
+   as real button elements so their labels look identical. This prevents the
+   generic `a { color: var(--link-color) }` rule from changing their color. */
+.work-card__links a.work-modal__btn,
+.work-card__links a.work-modal__btn:visited {
+  color: var(--button-text);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.work-card__links a.work-modal__btn:hover,
+.work-card__links a.work-modal__btn:focus-visible {
+  opacity: 0.88;
+  font-weight: 500;
+  color: var(--button-text);
 }
 
 
@@ -44,8 +164,13 @@
 .about-modal__btn:focus-visible,
 .contact-modal__btn:hover,
 .contact-modal__btn:focus-visible {
-  color: #bd93f9;
-  /* keep background and size unchanged */
+  /* Keep button text visually consistent with other card links.
+     On hover we reduce weight/opacity instead of changing to accent purple
+     (which conflicted with the button background). */
+  color: var(--button-text);
+  opacity: 0.88;
+  font-weight: 500;
+  transform: none;
 }
 
 /* Disabled state for modal card buttons */
@@ -306,7 +431,9 @@
 .work-modal__panel,
 .about-modal__panel,
 .contact-modal__panel,
-.work-card__content {
+.work-card__content,
+.project-readme__panel,
+.project-readme__content {
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: var(--scrollbar-thumb, #888) transparent;
 }
@@ -314,7 +441,9 @@
 .work-modal__panel::-webkit-scrollbar,
 .about-modal__panel::-webkit-scrollbar,
 .contact-modal__panel::-webkit-scrollbar,
-.work-card__content::-webkit-scrollbar {
+.work-card__content::-webkit-scrollbar,
+.project-readme__panel::-webkit-scrollbar,
+.project-readme__content::-webkit-scrollbar {
   width: 6px;
   background: transparent;
 }
@@ -322,7 +451,9 @@
 .work-modal__panel::-webkit-scrollbar-thumb,
 .about-modal__panel::-webkit-scrollbar-thumb,
 .contact-modal__panel::-webkit-scrollbar-thumb,
-.work-card__content::-webkit-scrollbar-thumb {
+.work-card__content::-webkit-scrollbar-thumb,
+.project-readme__panel::-webkit-scrollbar-thumb,
+.project-readme__content::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb, #888);
   border-radius: 4px;
   transition: background 0.2s;
@@ -331,14 +462,18 @@
 .work-modal__panel::-webkit-scrollbar-thumb:hover,
 .about-modal__panel::-webkit-scrollbar-thumb:hover,
 .contact-modal__panel::-webkit-scrollbar-thumb:hover,
-.work-card__content::-webkit-scrollbar-thumb:hover {
+.work-card__content::-webkit-scrollbar-thumb:hover,
+.project-readme__panel::-webkit-scrollbar-thumb:hover,
+.project-readme__content::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover, #555);
 }
 
 .work-modal__panel::-webkit-scrollbar-track,
 .about-modal__panel::-webkit-scrollbar-track,
 .contact-modal__panel::-webkit-scrollbar-track,
-.work-card__content::-webkit-scrollbar-track {
+.work-card__content::-webkit-scrollbar-track,
+.project-readme__panel::-webkit-scrollbar-track,
+.project-readme__content::-webkit-scrollbar-track {
   background: transparent;
 }
 
@@ -741,26 +876,26 @@ img, video { max-width: 100%; height: auto; display: block; }
   margin-top: var(--spacing-lg);
 }
 .modal-close {
-  background: none;
+  background: transparent;
+  color: inherit;
   border: none;
   padding: 0.25em;
   cursor: pointer;
-  color: inherit;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25em;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, transform 0.12s ease;
 }
 .modal-close__icon {
-  width: 2.2em;
-  height: 2.2em;
+  width: 22px;
+  height: 22px;
   display: block;
   stroke: currentColor;
 }
 .modal-close:hover, .modal-close:focus-visible {
   color: var(--accent-color, #bd93f9);
-  background: none;
+  background: var(--surface);
   outline: none;
 }
 
@@ -830,19 +965,81 @@ html[data-theme='dark'] .work-card {
 .work-card__img.temp.animate-in { transform: translateX(0); opacity: 1; }
 .image-lightbox__img.temp { position: absolute; left: 0; top: 0; max-width: 100%; max-height: 100%; z-index: 40; } /* temp below navs but above overlay */
 .image-lightbox__close,
-.image-lightbox .modal-close {
+.image-lightbox .modal-close,
+.project-readme__panel .modal-close {
   position: absolute;
   top: -12px;
   right: -12px;
+}
+
+/* Floating project README panel (used by About button) */
+.project-readme-float {
+  position: fixed;
+  inset: 0;
+  display: none; /* shown/hidden by JS */
+  align-items: center;
+  justify-content: center;
+  z-index: 10050;
+}
+.project-readme-float[role="dialog"] { display: flex; }
+.project-readme__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+.project-readme__panel {
+  position: relative;
+  z-index: 10051;
+  max-width: min(1000px, 94vw);
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+.project-readme__close { /* no-op: visual controlled by .modal-close */ }
+.project-readme__close .modal-close__icon { width: 22px; height: 22px; }
+.project-readme__content {
+  color: var(--text-color);
+  background: transparent;
+  line-height: 1.6;
+}
+
+/* Ensure common README elements follow theme */
+.project-readme__content a { color: var(--link-color); }
+.project-readme__content h1,
+.project-readme__content h2,
+.project-readme__content h3,
+.project-readme__content h4,
+.project-readme__content h5,
+.project-readme__content h6,
+.project-readme__content p,
+.project-readme__content li,
+.project-readme__content blockquote {
+  color: var(--text-color);
+}
+.project-readme__content pre,
+.project-readme__content code {
+  background: var(--muted-bg) !important;
+  color: var(--text-color) !important;
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+}
+.project-readme__content table { background: transparent; color: var(--text-color); }
+.project-readme__content img { max-width: 100%; height: auto; }
+
+/* Dark theme: ensure README panel uses surface token for better contrast */
+html[data-theme='dark'] .project-readme__panel {
   background: var(--surface);
   color: var(--text-color);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  font-size: 1.1rem;
-  cursor: pointer;
 }
+html[data-theme='dark'] .project-readme__content pre,
+html[data-theme='dark'] .project-readme__content code {
+  background: rgba(0,0,0,0.35) !important;
+}
+
 .image-lightbox__nav,
 .image-lightbox__nav:hover {
   transition: none !important;

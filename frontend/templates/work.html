@@ -16,11 +16,10 @@
             </button>
         </header>
         <div class="work-modal__grid" role="list">
-            {% set cards = projects | list %}
-            {% for i in range(4) %}
-            {% set project = cards[i] if i < cards|length else { 'title' : '' , 'description' : '' , 'github_url' : ''
-                , 'demo_url' : None } %} <article class="work-card" role="listitem" data-images='{{ project.images | default([]) |
-  tojson | safe }}'>
+            {% for project in projects %}
+            <article class="work-card" role="listitem" data-project-index="{{ loop.index0 }}"
+                data-images='{{ project.images | default([]) | tojson | safe }}'
+                data-github-url="{{ project.github_url }}">
                 <div class="work-card__image" aria-hidden="true" data-i18n-attr="aria-label:work.project_aria"
                     data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">
                     <span class="visually-hidden" data-i18n="work.project_aria"
@@ -48,20 +47,20 @@
 
                     {% else %}
                     <!-- No images: render an empty, inert image element to keep layout stable -->
-                    <img class="work-card__img" src="" alt="{{ project.title if project.title else
-                        _('work.no_data') }}" tabindex="-1" aria-hidden="true" />
+                    <img class="work-card__img" src="" alt="{{ project.title if project.title else _('work.no_data') }}"
+                        tabindex="-1" aria-hidden="true" />
                     {% endif %}
                 </div>
                 <div class="work-card__content">
-                    <h3 data-i18n="work.projects.{{ i }}.title" data-i18n-fallback="{{ project.title }}">{{
+                    <h3 data-i18n="work.projects.{{ loop.index0 }}.title" data-i18n-fallback="{{ project.title }}">{{
                         project.title }}</h3>
-                    <p class="card-description" data-i18n="work.projects.{{ i }}.description"
-                        data-i18n-fallback="{{ project.description }}">{{ project.description }}
-                    </p>
+                    <p class="card-description" data-i18n="work.projects.{{ loop.index0 }}.description"
+                        data-i18n-fallback="{{ project.description }}">{{ project.description }}</p>
                     <div class="card__actions work-card__links">
+                        <a class="work-modal__btn about-btn" href="#" data-i18n="button.card_about"
+                            aria-label="About project">{{ _('button.card_about') }}</a>
                         <a class="work-modal__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"
-                            data-i18n="button.github">{{
-                            _('button.github') }}</a>
+                            data-i18n="button.github">{{ _('button.github') }}</a>
                         {% if project.demo_url %}
                         <a class="work-modal__btn" href="{{ project.demo_url }}" target="_blank" rel="noopener"
                             data-i18n="button.live">{{
@@ -71,9 +70,16 @@
                             }}</span>
                         {% endif %}
                     </div>
+                    {% if project.readme_html %}
+                    <div class="card__meta">
+                        <button class="readme-toggle" type="button" aria-expanded="false" data-i18n="button.details">{{
+                            _('button.details') }}</button>
+                        <div class="card-readme" hidden>{{ project.readme_html | safe }}</div>
+                    </div>
+                    {% endif %}
                 </div>
-                </article>
-                {% endfor %}
+            </article>
+            {% endfor %}
         </div>
     </div>
 </div>

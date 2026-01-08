@@ -25,6 +25,10 @@ i18n.load_translations()
 # Register context processor that returns a dict with the current TRANSLATIONS state
 @app.context_processor
 def inject_translations():
+    # In debug mode, reload translations on each request so changes to
+    # translation JSON files are reflected without restarting the server.
+    if app.debug:
+        i18n.load_translations()
     return {"_": i18n._, "TRANSLATIONS": i18n.TRANSLATIONS}
 
 
