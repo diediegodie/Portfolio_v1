@@ -7,7 +7,7 @@
                 <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
                 <h2 id="contact-dialog-title" data-i18n="contact.title">{{ _('contact.title') }}</h2>
             </div>
-            <button class="modal-close" type="button" data-contact-close data-i18n-attr="aria-label:modal.close">
+            <button class="modal-close lightbox-close" type="button" data-contact-close data-i18n-attr="aria-label:modal.close" aria-label="Close" style="position:absolute;top:16px;right:16px;background:transparent;border:none;">
                 <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
                     focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -17,38 +17,34 @@
             </button>
         </header>
         <div class="contact-modal__grid">
-            <article class="contact-card contact__intro">
-                <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
-                <p data-i18n="contact.intro">{{ _('contact.intro') }}</p>
-            </article>
-            <article class="contact-card contact__email">
-                <h3 data-i18n="contact.email_title">{{ _('contact.email_title') }}</h3>
-                <p>
-                    <a href="mailto:contact@example.com" data-i18n="contact.email"
-                        data-i18n-fallback="contact@example.com">{{ _('contact.email') }}</a>
-                </p>
-            </article>
-            <article class="contact-card contact__social">
-                <h3 data-i18n="contact.social_title">{{ _('contact.social_title') }}</h3>
-                <ul>
-                    <li><a href="#" data-i18n="contact.social_github" data-i18n-fallback="GitHub">{{
-                            _('contact.social_github') }}</a></li>
-                    <li><a href="#" data-i18n="contact.social_linkedin" data-i18n-fallback="LinkedIn">{{
-                            _('contact.social_linkedin') }}</a></li>
-                </ul>
-            </article>
-            <article class="contact-card contact__availability">
-                <h3 data-i18n="contact.availability_title">{{ _('contact.availability_title') }}</h3>
-                <p data-i18n="contact.availability">{{ _('contact.availability') }}</p>
-            </article>
-            <footer class="contact-card modal__footer contact__actions">
-                <div class="contact-card__links">
-                    <button class="contact-modal__btn" type="button" data-i18n="contact.cta.email">{{
-                        _('contact.cta.email') }}</button>
-                    <button class="contact-modal__btn" type="button" data-i18n="contact.cta.connect">{{
-                        _('contact.cta.connect') }}</button>
-                </div>
-            </footer>
+          <!-- Card 1: Texts (Centered) -->
+          <article class="contact-card contact__intro modal__card" role="listitem">
+            <!-- Inline envelope SVG (decorative, aria-hidden) -->
+            <div style="text-align:center;">
+              <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;">
+                <path d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5h-13A2.5 2.5 0 0 0 3 7.5z"></path>
+                <polyline points="3.5 7.5 12 13 20.5 7.5"></polyline>
+              </svg>
+
+              <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
+              <p data-i18n="contact.intro_short">{{ _('contact.intro_short') }}</p>
+              <p data-i18n="contact.availability">{{ _('contact.availability') }}</p>
+            </div>
+          </article>
+
+          <!-- Card 2: Actions / Links (stacked anchors using work button styling) -->
+          <article class="contact-card contact__actions modal__card" role="listitem">
+            <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
+            <div class="contact-card__links" style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-sm);">
+              <a class="work-modal__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{ _('contact.cta.email') }}</a>
+              <a class="work-modal__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
+              <a class="work-modal__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
+              <!-- Optional: Instagram if available in config -->
+              {% if config.INSTAGRAM_URL %}
+              <a class="work-modal__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
+              {% endif %}
+            </div>
+          </article>
         </div>
     </div>
 </div>
