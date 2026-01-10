@@ -68,9 +68,20 @@
 		"philosophy": "Abordagem prática de aprender fazendo; engenharia pragmática com melhoria iterativa; aproveito ferramentas de IA para acelerar o aprendizado e melhorar a qualidade do código.",
 		"personal_title": "Nota Pessoal",
 		"personal": "Ex-tatuador freelancer (14+ anos), trazendo autonomia, adaptabilidade, comunicação orientada ao cliente e fortes habilidades de resolução de problemas para o desenvolvimento de software.",
+		"backend_title": "Backend / DevOps",
+		"backend_group_1_title": "Backend",
+		"backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
+		"backend_group_2_title": "DevOps",
+		"backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
+		"frontend_title": "Frontend",
+		"frontend_group_1": "HTML5, CSS3, Flet, design responsivo",
+		"frontend_group_2": "Padrões modernos de frontend e acessibilidade",
+		"connect_title": "Conectar",
 		"cta": {
 			"contact": "Contato",
-			"resume": "Currículo"
+			"resume": "Currículo",
+			"github": "GitHub",
+			"linkedin": "LinkedIn"
 		}
 	},
 

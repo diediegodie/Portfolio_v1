@@ -68,9 +68,20 @@
 		"philosophy": "Practical, learning‑by‑doing approach; pragmatic engineering with iterative improvement; leverage AI tools to accelerate learning and improve code quality.",
 		"personal_title": "Personal Note",
 		"personal": "Former freelance tattoo artist (14+ years), bringing autonomy, adaptability, client‑focused communication, and strong problem‑solving skills to software development.",
+		"backend_title": "Backend / DevOps",
+		"backend_group_1_title": "Backend",
+		"backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
+		"backend_group_2_title": "DevOps",
+		"backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
+		"frontend_title": "Frontend",
+		"frontend_group_1": "HTML5, CSS3, Flet, responsive design",
+		"frontend_group_2": "Modern frontend patterns & accessibility",
+		"connect_title": "Connect",
 		"cta": {
 			"contact": "Contact",
-			"resume": "Resume"
+			"resume": "Resume",
+			"github": "GitHub",
+			"linkedin": "LinkedIn"
 		}
 	},
 

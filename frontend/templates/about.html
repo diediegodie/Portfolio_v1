@@ -17,44 +17,47 @@
         </header>
 
         <div class="about-modal__grid">
-            <article class="about-card about__intro">
+            <!-- Card 1: About Me (unchanged content/location) -->
+            <article class="about-card about__aboutme modal__card" role="listitem">
                 <h3 data-i18n="about.summary_title">{{ _('about.summary_title') }}</h3>
                 <p data-i18n="about.summary">{{ _('about.summary') }}</p>
             </article>
 
-            <article class="about-card about__background">
-                <h3 data-i18n="about.background_title">{{ _('about.background_title') }}</h3>
-                <p data-i18n="about.background">{{ _('about.background') }}</p>
-            </article>
-
-            <article class="about-card about__skills">
-                <h3 data-i18n="about.skills_title">{{ _('about.skills_title') }}</h3>
-                <ul>
-                    <li data-i18n="about.skill_1">{{ _('about.skill_1') }}</li>
-                    <li data-i18n="about.skill_2">{{ _('about.skill_2') }}</li>
-                    <li data-i18n="about.skill_3">{{ _('about.skill_3') }}</li>
-                    <li data-i18n="about.skill_4">{{ _('about.skill_4') }}</li>
+            <!-- Card 2: Backend / DevOps (semantic list; plain text items) -->
+            <article class="about-card about__backend modal__card" role="listitem">
+                <h3 data-i18n="about.backend_title">{{ _('about.backend_title') }}</h3>
+                <ul class="card__content about-tech-list" data-i18n="about.backend_list">
+                    <li><strong data-i18n="about.backend_group_1_title">{{ _('about.backend_group_1_title') }}</strong>:
+                        <span data-i18n="about.backend_group_1">{{ _('about.backend_group_1') }}</span></li>
+                    <li><strong data-i18n="about.backend_group_2_title">{{ _('about.backend_group_2_title') }}</strong>:
+                        <span data-i18n="about.backend_group_2">{{ _('about.backend_group_2') }}</span></li>
                 </ul>
             </article>
 
-            <article class="about-card about__philosophy">
-                <h3 data-i18n="about.philosophy_title">{{ _('about.philosophy_title') }}</h3>
-                <p data-i18n="about.philosophy">{{ _('about.philosophy') }}</p>
+            <!-- Card 3: Frontend (semantic list; centered) -->
+            <article class="about-card about__frontend modal__card" role="listitem">
+                <h3 data-i18n="about.frontend_title">{{ _('about.frontend_title') }}</h3>
+                <ul class="card__content about-tech-list" data-i18n="about.frontend_list">
+                    <li><span data-i18n="about.frontend_group_1">{{ _('about.frontend_group_1') }}</span></li>
+                    <li><span data-i18n="about.frontend_group_2">{{ _('about.frontend_group_2') }}</span></li>
+                </ul>
             </article>
 
-            <article class="about-card about__personal">
-                <h3 data-i18n="about.personal_title">{{ _('about.personal_title') }}</h3>
-                <p data-i18n="about.personal">{{ _('about.personal') }}</p>
-            </article>
-
-            <footer class="about-card modal__footer about__actions">
-                <div class="about-card__links">
-                    <button class="about-modal__btn" type="button" data-i18n="about.cta.contact">{{
-                        _('about.cta.contact') }}</button>
-                    <button class="about-modal__btn" type="button" data-i18n="about.cta.resume">{{ _('about.cta.resume')
-                        }}</button>
+            <!-- Card 4: Connect (anchors stacked, centered; no dark footer background) -->
+            <article class="about-card about__connect modal__card" role="listitem">
+                <h3 data-i18n="about.connect_title">{{ _('about.connect_title') }}</h3>
+                <div class="about-card__links modal__footer about-connect-links">
+                    <button class="about-modal__btn about-modal__btn--contact" type="button"
+                        data-i18n="about.cta.contact">{{ _('about.cta.contact') }}</button>
+                    <a class="about-modal__btn about-modal__btn--resume"
+                        href="{{ url_for('static', filename='assets/resume.pdf') }}" target="_blank" rel="noopener"
+                        data-i18n="about.cta.resume">{{ _('about.cta.resume') }}</a>
+                    <a class="about-modal__btn about-modal__btn--github" href="{{ config.GITHUB_URL }}" target="_blank"
+                        rel="noopener" data-i18n="about.cta.github">{{ _('about.cta.github') }}</a>
+                    <a class="about-modal__btn about-modal__btn--linkedin" href="{{ config.LINKEDIN_URL }}"
+                        target="_blank" rel="noopener" data-i18n="about.cta.linkedin">{{ _('about.cta.linkedin') }}</a>
                 </div>
-            </footer>
+            </article>
         </div>
     </div>
 </div>
