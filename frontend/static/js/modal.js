@@ -11,7 +11,7 @@
     if (!modal) return;
     // Support multiple modal panel class names (work-modal__panel, about-modal__panel, modal__card)
     const panel =
-      modal.querySelector('.work-modal__panel, .about-modal__panel, .modal__card') ||
+      modal.querySelector('.work-modal__panel, .about-modal__panel, .contact-modal__panel, .modal__card') ||
       modal.querySelector('[role="dialog"]');
     const closeButton = modal.querySelector(`[${closeAttr}]`);
     const overlay = modal.querySelector(`[${overlayAttr}]`);
