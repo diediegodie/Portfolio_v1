@@ -336,6 +336,28 @@
   height: var(--modal-card-fixed-height);
 }
 
+/* Transitional aliases - maps existing card classes to new .card base */
+.work-card {
+  height: var(--card-height);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.about-card {
+  height: var(--card-height);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.contact-card {
+  height: var(--card-height);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
 /* Utility: Modal close button positioning */
 .modal-close--absolute {
   position: absolute;
