@@ -20,7 +20,7 @@
       <!-- Card 1: Texts (Centered) -->
       <article class="contact-card contact__intro modal__card" role="listitem">
         <!-- Inline envelope SVG (decorative, aria-hidden) -->
-        <div class="center-text">
+        <div class="contact-card__content center-text">
           <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;">
             <path
@@ -37,19 +37,21 @@
 
       <!-- Card 2: Actions / Links (stacked anchors using contact button styling) -->
       <article class="contact-card contact__actions modal__card" role="listitem">
-        <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
-        <div class="contact-card__links stacked-links">
-          <a class="contact-modal__btn card__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{
-            _('contact.cta.email') }}</a>
-          <a class="contact-modal__btn card__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener"
-            data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
-          <a class="contact-modal__btn card__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener"
-            data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
-          <!-- Optional: Instagram if available in config -->
-          {% if config.INSTAGRAM_URL %}
-          <a class="contact-modal__btn card__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener"
-            data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
-          {% endif %}
+        <div class="contact-card__content">
+          <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
+          <div class="contact-card__links">
+            <a class="contact-modal__btn card__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{
+              _('contact.cta.email') }}</a>
+            <a class="contact-modal__btn card__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener"
+              data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
+            <a class="contact-modal__btn card__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener"
+              data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
+            <!-- Optional: Instagram if available in config -->
+            {% if config.INSTAGRAM_URL %}
+            <a class="contact-modal__btn card__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener"
+              data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
+            {% endif %}
+          </div>
         </div>
       </article>
     </div>
