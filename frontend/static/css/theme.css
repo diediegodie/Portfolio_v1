@@ -288,13 +288,40 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   --radius-md: 8px;
+  --radius-lg: 12px;
   --shadow-sm: 0 2px 6px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+  /* Canonical card tokens */
+  --card-height: var(--work-card-fixed-height);
+  --card-padding: var(--spacing-md);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-md);
   --home-btn-bg: #fff;
   --home-btn-text: #222;
   --home-btn-hover-bg: var(--purple, #bd93f9);
   --home-btn-hover-text: #fff;
 }
 
+/* Base card class with canonical tokens */
+.card {
+  height: var(--card-height);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+/* Card modifier classes */
+.card--work {
+  height: var(--work-card-fixed-height);
+}
+
+.card--about {
+  height: var(--modal-card-fixed-height);
+}
+
+.card--contact {
+  height: var(--modal-card-fixed-height);
+}
 
 /* Hero button minimalist hover effect */
 .hero__button {
