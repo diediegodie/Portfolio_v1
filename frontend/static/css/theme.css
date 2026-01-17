@@ -13,6 +13,18 @@
   left: 1rem;
   right: auto;
 }
+/* Base class for all card action buttons */
+.card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 /* Unified card button style for all card actions and links */
 
 
@@ -20,6 +32,7 @@
 .work-modal__btn,
 .about-modal__btn,
 .contact-modal__btn {
+  /* Inherits from .card__btn when both classes applied */
   display: inline-block;
   padding: var(--btn-padding-y) var(--btn-padding-x);
   border-radius: var(--radius-md);
@@ -321,6 +334,28 @@
 
 .card--contact {
   height: var(--modal-card-fixed-height);
+}
+
+/* Utility: Modal close button positioning */
+.modal-close--absolute {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+}
+
+/* Utility: Center text alignment */
+.center-text {
+  text-align: center;
+}
+
+/* Utility: Stacked links layout */
+.stacked-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
 /* Hero button minimalist hover effect */
