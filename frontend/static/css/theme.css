@@ -13,184 +13,103 @@
   left: 1rem;
   right: auto;
 }
-/* Base class for all card action buttons */
+/* Base class for all card action buttons - standardized across all modals */
 .card__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
   text-decoration: none;
+  text-transform: none;
+  line-height: 1;
+  border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: var(--accent-color);
+  color: var(--card-btn-text);
+  box-shadow: 0 2px 8px rgba(16,24,40,0.10);
+  outline: none;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
-/* Unified modal card button style for all card actions and links (GitHub and Live identical) */
+/* Unified modal card button style - all modals use the standardized .card__btn base */
 .work-modal__btn,
 .about-modal__btn,
 .contact-modal__btn {
-  /* Inherits from .card__btn when both classes applied */
-  display: inline-block;
-  padding: var(--btn-padding-y) var(--btn-padding-x);
-  border-radius: var(--radius-md);
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  background-color: var(--accent-color);
-  color: var(--button-text);
-  box-shadow: 0 2px 8px rgba(16,24,40,0.10);
-  outline: none;
-  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
-  text-transform: none;
+  /* All styles inherited from .card__btn base class */
+  /* No additional declarations needed - complete standardization */
 }
 
-/* Force explicit typography for all card action buttons so <button> and
-   <a> variants render identically across browsers and themes. */
-.work-card__links .work-modal__btn,
-.work-card__links button.work-modal__btn,
-.work-card__links a.work-modal__btn {
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  line-height: 1;
-  color: var(--button-text); /* use theme-aware button text */
-}
-.work-card__links a.work-modal__btn {
-  display: inline-block;
-}
-
-/* Hover/active state: only change weight/opacity; keep text dark */
-.work-card__links .work-modal__btn:hover,
-.work-card__links .work-modal__btn:focus-visible,
-.work-card__links a.work-modal__btn:hover,
-.work-card__links a.work-modal__btn:focus-visible {
-  opacity: 0.85;
-  font-weight: 500;
-  color: var(--button-text);
-}
-
-/* Make anchor and span variants visually match the button element exactly */
-.work-card__links a.work-modal__btn,
-.work-card__links span.work-modal__btn {
-  background-color: var(--accent-color);
-  padding: var(--btn-padding-y) var(--btn-padding-x);
-  border-radius: var(--radius-md);
-  box-shadow: 0 2px 8px rgba(16,24,40,0.10);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.work-card__links span.work-modal__btn[aria-disabled='true'] {
-  background-color: #e9e9e9;
-  color: #999;
-  cursor: not-allowed;
-}
-
-/* Strong override: ensure card action labels remain dark and visible
-   regardless of theme variables. This targets buttons within the modal
-   panel specifically and uses increased specificity to win the cascade. */
-.work-modal__panel .work-card__links .work-modal__btn,
-.work-modal__panel .work-card__links a.work-modal__btn,
-.work-modal__panel .work-card__links span.work-modal__btn {
-  color: var(--card-btn-text);
-}
-.work-modal__panel .work-card__links .work-modal__btn:hover,
-.work-modal__panel .work-card__links a.work-modal__btn:hover,
-.work-modal__panel .work-card__links span.work-modal__btn:hover {
-  color: var(--card-btn-text);
-  opacity: 0.85;
-}
-
-/* Normalize all card action elements to look and behave exactly like the
-   About <button>. This forces anchors/spans to use button-like chrome so
-   typography, padding and hover are identical across element types. */
-.work-modal__panel .work-card__links .work-modal__btn,
-.work-modal__panel .work-card__links a.work-modal__btn,
-.work-modal__panel .work-card__links span.work-modal__btn,
-.work-modal__panel .work-card__links button.work-modal__btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.5rem;
-  box-sizing: border-box !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  border: none !important;
-  background-color: var(--accent-color) !important;
-  color: var(--card-btn-text);
-  padding: var(--btn-padding-y) var(--btn-padding-x) !important;
-  border-radius: var(--radius-md) !important;
-  font-family: inherit !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.02em !important;
-  text-transform: none !important;
-  line-height: 1 !important;
-  text-decoration: none !important;
-  box-shadow: 0 2px 8px rgba(16,24,40,0.10) !important;
-}
-.work-modal__panel .work-card__links a.work-modal__btn:visited { color: var(--card-btn-text); }
-.work-modal__panel .work-card__links .work-modal__btn[aria-disabled='true'] {
-  background-color: #e9e9e9 !important;
-  color: #999 !important;
-  cursor: not-allowed !important;
-  opacity: 0.9 !important;
-}
-.work-modal__panel .work-card__links .work-modal__btn:hover,
-.work-modal__panel .work-card__links a.work-modal__btn:hover,
-.work-modal__panel .work-card__links button.work-modal__btn:hover {
-  opacity: 0.88 !important;
-  font-weight: 500 !important;
-  transform: none !important;
-}
-
-/* Ensure anchor-styled buttons inside card links inherit the same text styling
-   as real button elements so their labels look identical. This prevents the
-   generic `a { color: var(--link-color) }` rule from changing their color. */
-.work-card__links a.work-modal__btn,
-.work-card__links a.work-modal__btn:visited {
-  color: var(--button-text);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-}
-.work-card__links a.work-modal__btn:hover,
-.work-card__links a.work-modal__btn:focus-visible {
-  opacity: 0.88;
-  font-weight: 500;
-  color: var(--button-text);
-}
-
-
+/* Hover/focus state for all modal buttons - consistent across modals */
 .work-modal__btn:hover,
 .work-modal__btn:focus-visible,
 .about-modal__btn:hover,
 .about-modal__btn:focus-visible,
 .contact-modal__btn:hover,
 .contact-modal__btn:focus-visible {
-  /* Keep button text visually consistent with other card links.
-     On hover we reduce weight/opacity instead of changing to accent purple
-     (which conflicted with the button background). */
-  color: var(--button-text);
-  opacity: 0.88;
-  font-weight: 500;
-  transform: none;
+  opacity: 0.85;
+  color: var(--card-btn-text);
 }
 
-/* Disabled state for modal card buttons */
+/* Handle disabled state for buttons and spans */
 .work-modal__btn[aria-disabled='true'],
 .about-modal__btn[aria-disabled='true'],
 .contact-modal__btn[aria-disabled='true'] {
-  background-color: #666;
+  background-color: #e9e9e9;
   color: #999;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Ensure anchor elements render like buttons */
+.work-card__links a.work-modal__btn,
+.work-card__links span.work-modal__btn,
+.about-card__links a.about-modal__btn,
+.about-card__links span.about-modal__btn,
+.contact-card__links a.contact-modal__btn,
+.contact-card__links span.contact-modal__btn {
+  display: inline-flex;
+}
+
+.work-card__links a.work-modal__btn:visited,
+.about-card__links a.about-modal__btn:visited,
+.contact-card__links a.contact-modal__btn:visited {
+  color: var(--card-btn-text);
+}
+
+/* Modal panel button overrides - ensure buttons work correctly in modal context */
+.work-modal__panel .work-card__links .work-modal__btn,
+.work-modal__panel .work-card__links a.work-modal__btn,
+.work-modal__panel .work-card__links span.work-modal__btn,
+.work-modal__panel .work-card__links button.work-modal__btn,
+.about-modal__panel .about-card__links .about-modal__btn,
+.about-modal__panel .about-card__links a.about-modal__btn,
+.about-modal__panel .about-card__links button.about-modal__btn,
+.contact-modal__panel .contact-card__links .contact-modal__btn,
+.contact-modal__panel .contact-card__links a.contact-modal__btn,
+.contact-modal__panel .contact-card__links button.contact-modal__btn {
+  /* All .card__btn styles applied - no additional overrides needed */
+  /* Button inherits from base .card__btn class */
+}
+
+/* Ensure anchor-styled buttons look identical to button elements */
+.work-card__links a.work-modal__btn,
+.about-card__links a.about-modal__btn,
+.contact-card__links a.contact-modal__btn {
+  color: var(--card-btn-text);
+  text-decoration: none;
+}
+
+.work-card__links a.work-modal__btn:visited,
+.about-card__links a.about-modal__btn:visited,
+.contact-card__links a.contact-modal__btn:visited {
+  color: var(--card-btn-text);
 }
 
 /* Prevent underline on modal action links */
