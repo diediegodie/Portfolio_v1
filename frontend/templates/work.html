@@ -57,16 +57,16 @@
                     <p class="card-description" data-i18n="work.projects.{{ loop.index0 }}.description"
                         data-i18n-fallback="{{ project.description }}">{{ project.description }}</p>
                     <div class="card__actions work-card__links">
-                        <a class="work-modal__btn about-btn" href="#" data-i18n="buttons.card_about"
+                        <a class="work-modal__btn card__btn about-btn" href="#" data-i18n="buttons.card_about"
                             aria-label="About project">{{ _('buttons.card_about') }}</a>
-                        <a class="work-modal__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"
+                        <a class="work-modal__btn card__btn" href="{{ project.github_url }}" target="_blank" rel="noopener"
                             data-i18n="buttons.github">{{ _('buttons.github') }}</a>
                         {% if project.demo_url %}
-                        <a class="work-modal__btn" href="{{ project.demo_url }}" target="_blank" rel="noopener"
+                        <a class="work-modal__btn card__btn" href="{{ project.demo_url }}" target="_blank" rel="noopener"
                             data-i18n="buttons.live">{{
                             _('buttons.live') }}</a>
                         {% else %}
-                        <span class="work-modal__btn" aria-disabled="true" data-i18n="buttons.live">{{ _('buttons.live')
+                        <span class="work-modal__btn card__btn" aria-disabled="true" data-i18n="buttons.live">{{ _('buttons.live')
                             }}</span>
                         {% endif %}
                     </div>

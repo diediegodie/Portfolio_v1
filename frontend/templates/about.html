@@ -47,14 +47,14 @@
             <article class="about-card about__connect modal__card" role="listitem">
                 <h3 data-i18n="about.connect_title">{{ _('about.connect_title') }}</h3>
                 <div class="about-card__links modal__footer about-connect-links">
-                    <button class="about-modal__btn about-modal__btn--contact" type="button"
+                    <button class="about-modal__btn card__btn about-modal__btn--contact" type="button"
                         data-i18n="about.cta.contact">{{ _('about.cta.contact') }}</button>
-                    <a class="about-modal__btn about-modal__btn--resume"
+                    <a class="about-modal__btn card__btn about-modal__btn--resume"
                         href="{{ url_for('static', filename='assets/resume.pdf') }}" target="_blank" rel="noopener"
                         data-i18n="about.cta.resume">{{ _('about.cta.resume') }}</a>
-                    <a class="about-modal__btn about-modal__btn--github" href="{{ config.GITHUB_URL }}" target="_blank"
+                    <a class="about-modal__btn card__btn about-modal__btn--github" href="{{ config.GITHUB_URL }}" target="_blank"
                         rel="noopener" data-i18n="about.cta.github">{{ _('about.cta.github') }}</a>
-                    <a class="about-modal__btn about-modal__btn--linkedin" href="{{ config.LINKEDIN_URL }}"
+                    <a class="about-modal__btn card__btn about-modal__btn--linkedin" href="{{ config.LINKEDIN_URL }}"
                         target="_blank" rel="noopener" data-i18n="about.cta.linkedin">{{ _('about.cta.linkedin') }}</a>
                 </div>
             </article>

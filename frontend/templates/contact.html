@@ -1,50 +1,57 @@
 <div class="contact-modal" id="contact-modal" hidden aria-hidden="true">
-    <div class="modal__overlay contact-modal__overlay" data-contact-overlay></div>
-    <div class="contact-modal__panel" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title"
-        tabindex="-1">
-        <header class="contact-modal__header">
-            <div>
-                <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
-                <h2 id="contact-dialog-title" data-i18n="contact.title">{{ _('contact.title') }}</h2>
-            </div>
-            <button class="modal-close lightbox-close modal-close--absolute" type="button" data-contact-close data-i18n-attr="aria-label:modal.close" aria-label="Close">
-                <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
-                    focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <line x1="8" y1="8" x2="24" y2="24" />
-                    <line x1="24" y1="8" x2="8" y2="24" />
-                </svg>
-            </button>
-        </header>
-        <div class="contact-modal__grid">
-          <!-- Card 1: Texts (Centered) -->
-          <article class="contact-card contact__intro modal__card" role="listitem">
-            <!-- Inline envelope SVG (decorative, aria-hidden) -->
-            <div class="center-text">
-              <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;">
-                <path d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5h-13A2.5 2.5 0 0 0 3 7.5z"></path>
-                <polyline points="3.5 7.5 12 13 20.5 7.5"></polyline>
-              </svg>
+  <div class="modal__overlay contact-modal__overlay" data-contact-overlay></div>
+  <div class="contact-modal__panel" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title"
+    tabindex="-1">
+    <header class="contact-modal__header">
+      <div>
+        <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
+        <h2 id="contact-dialog-title" data-i18n="contact.title">{{ _('contact.title') }}</h2>
+      </div>
+      <button class="modal-close lightbox-close modal-close--absolute" type="button" data-contact-close
+        data-i18n-attr="aria-label:modal.close" aria-label="Close">
+        <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="8" x2="24" y2="24" />
+          <line x1="24" y1="8" x2="8" y2="24" />
+        </svg>
+      </button>
+    </header>
+    <div class="contact-modal__grid">
+      <!-- Card 1: Texts (Centered) -->
+      <article class="contact-card contact__intro modal__card" role="listitem">
+        <!-- Inline envelope SVG (decorative, aria-hidden) -->
+        <div class="center-text">
+          <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;">
+            <path
+              d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5h-13A2.5 2.5 0 0 0 3 7.5z">
+            </path>
+            <polyline points="3.5 7.5 12 13 20.5 7.5"></polyline>
+          </svg>
 
-              <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
-              <p data-i18n="contact.intro_short">{{ _('contact.intro_short') }}</p>
-              <p data-i18n="contact.availability">{{ _('contact.availability') }}</p>
-            </div>
-          </article>
-
-          <!-- Card 2: Actions / Links (stacked anchors using work button styling) -->
-          <article class="contact-card contact__actions modal__card" role="listitem">
-            <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
-            <div class="contact-card__links stacked-links">
-              <a class="work-modal__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{ _('contact.cta.email') }}</a>
-              <a class="work-modal__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
-              <a class="work-modal__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
-              <!-- Optional: Instagram if available in config -->
-              {% if config.INSTAGRAM_URL %}
-              <a class="work-modal__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener" data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
-              {% endif %}
-            </div>
-          </article>
+          <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
+          <p data-i18n="contact.intro_short">{{ _('contact.intro_short') }}</p>
+          <p data-i18n="contact.availability">{{ _('contact.availability') }}</p>
         </div>
+      </article>
+
+      <!-- Card 2: Actions / Links (stacked anchors using contact button styling) -->
+      <article class="contact-card contact__actions modal__card" role="listitem">
+        <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
+        <div class="contact-card__links stacked-links">
+          <a class="contact-modal__btn card__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{
+            _('contact.cta.email') }}</a>
+          <a class="contact-modal__btn card__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener"
+            data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
+          <a class="contact-modal__btn card__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener"
+            data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
+          <!-- Optional: Instagram if available in config -->
+          {% if config.INSTAGRAM_URL %}
+          <a class="contact-modal__btn card__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener"
+            data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
+          {% endif %}
+        </div>
+      </article>
     </div>
+  </div>
 </div>
