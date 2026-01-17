@@ -1317,10 +1317,15 @@ html[data-theme='dark'] .project-readme__content code {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.95);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 2000;
+}
+
+/* Show lightbox when display is set to flex via JavaScript */
+.lightbox[style*="display:flex"] {
+  display: flex !important;
 }
 
 /* Lightbox close button */
