@@ -17,19 +17,18 @@ window.initModal && window.initModal({
     function createLightbox() {
       if (lightbox) return lightbox;
       lightbox = document.createElement('div');
-      lightbox.className = 'image-lightbox';
-      lightbox.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:10000;';
+      lightbox.className = 'lightbox';
       lightbox.innerHTML = `
-        <button class="modal-close lightbox-close" type="button" aria-label="Close" style="position:absolute;top:16px;right:16px;background:transparent;border:none;">
+        <button class="modal-close lightbox-close lightbox__close" type="button" aria-label="Close">
           <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round">
             <line x1="8" y1="8" x2="24" y2="24" />
             <line x1="24" y1="8" x2="8" y2="24" />
           </svg>
         </button>
-        <button class="lightbox-prev" aria-label="Previous" style="position:absolute;left:8px;background:transparent;border:none;color:currentColor;font-size:48px;">‹</button>
-        <img class="lightbox-img" src="" alt="" style="max-width:95%;max-height:90%;box-shadow:0 10px 30px rgba(0,0,0,0.5);" />
-        <button class="lightbox-next" aria-label="Next" style="position:absolute;right:8px;background:transparent;border:none;color:currentColor;font-size:48px;">›</button>
+        <button class="lightbox-prev lightbox__nav lightbox__nav--prev image-prev" aria-label="Previous">‹</button>
+        <img class="lightbox-img lightbox__image" src="" alt="" />
+        <button class="lightbox-next lightbox__nav lightbox__nav--next image-next" aria-label="Next">›</button>
       `;
       document.body.appendChild(lightbox);
 
@@ -201,7 +200,7 @@ window.initModal && window.initModal({
       // match lightbox inline layout so the close button sits on the dark backdrop
       panel.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:10000;';
       panel.innerHTML = `
-        <button class="modal-close lightbox-close" type="button" aria-label="Close" style="position:absolute;top:16px;right:16px;background:transparent;border:none;">
+        <button class="modal-close lightbox-close readme-panel__close" type="button" aria-label="Close">
           <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="8" y1="8" x2="24" y2="24" />
             <line x1="24" y1="8" x2="8" y2="24" />
