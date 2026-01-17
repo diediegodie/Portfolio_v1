@@ -86,7 +86,8 @@
 }
 
 /* Prevent underline on modal action links */
-.work-modal__btn, .work-modal__btn:hover, .work-card__links a, .work-card__links a:hover {
+.work-modal__btn,
+.work-card__links a.work-modal__btn {
   text-decoration: none;
 }
 
