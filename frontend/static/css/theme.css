@@ -77,39 +77,12 @@
   display: inline-flex;
 }
 
-.work-card__links a.work-modal__btn:visited,
-.about-card__links a.about-modal__btn:visited,
-.contact-card__links a.contact-modal__btn:visited {
-  color: var(--card-btn-text);
-}
-
-/* Modal panel button overrides - ensure buttons work correctly in modal context */
-.work-modal__panel .work-card__links .work-modal__btn,
-.work-modal__panel .work-card__links a.work-modal__btn,
-.work-modal__panel .work-card__links span.work-modal__btn,
-.work-modal__panel .work-card__links button.work-modal__btn,
-.about-modal__panel .about-card__links .about-modal__btn,
-.about-modal__panel .about-card__links a.about-modal__btn,
-.about-modal__panel .about-card__links button.about-modal__btn,
-.contact-modal__panel .contact-card__links .contact-modal__btn,
-.contact-modal__panel .contact-card__links a.contact-modal__btn,
-.contact-modal__panel .contact-card__links button.contact-modal__btn {
-  /* All .card__btn styles applied - no additional overrides needed */
-  /* Button inherits from base .card__btn class */
-}
-
 /* Ensure anchor-styled buttons look identical to button elements */
 .work-card__links a.work-modal__btn,
 .about-card__links a.about-modal__btn,
 .contact-card__links a.contact-modal__btn {
   color: var(--card-btn-text);
   text-decoration: none;
-}
-
-.work-card__links a.work-modal__btn:visited,
-.about-card__links a.about-modal__btn:visited,
-.contact-card__links a.contact-modal__btn:visited {
-  color: var(--card-btn-text);
 }
 
 /* Prevent underline on modal action links */
@@ -127,14 +100,6 @@
   background: none;
   border: none;
   pointer-events: auto;
-}
-/* Shared text style for all card buttons */
-.btn-card-text {
-  font-family: var(--btn-font, inherit);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: none;
 }
 #theme-toggle {
   padding: 0.5rem 1rem;
