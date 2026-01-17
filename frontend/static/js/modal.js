@@ -9,9 +9,9 @@
   function initModal({ modalId, triggerAttr, overlayAttr, closeAttr }) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
-    // Support multiple modal panel class names (work-modal__panel, about-modal__panel, modal__card)
+    // Support multiple modal panel class names (work-modal__panel, about-modal__panel, modal__card, card)
     const panel =
-      modal.querySelector('.work-modal__panel, .about-modal__panel, .contact-modal__panel, .modal__card') ||
+      modal.querySelector('.work-modal__panel, .about-modal__panel, .contact-modal__panel, .modal__card, .card') ||
       modal.querySelector('[role="dialog"]');
     const closeButton = modal.querySelector(`[${closeAttr}]`);
     const overlay = modal.querySelector(`[${overlayAttr}]`);

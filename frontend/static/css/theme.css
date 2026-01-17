@@ -25,9 +25,6 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Unified card button style for all card actions and links */
-
-
 /* Unified modal card button style for all card actions and links (GitHub and Live identical) */
 .work-modal__btn,
 .about-modal__btn,
@@ -315,6 +312,23 @@
   --home-btn-hover-bg: var(--purple, #bd93f9);
   --home-btn-hover-text: #fff;
 }
+
+/*
+ * Card System
+ * -----------
+ * Base class: .card
+ * Modifiers: .card--work, .card--about, .card--contact
+ * 
+ * Tokens:
+ * --card-height, --card-padding, --card-radius, --card-shadow
+ * --card-btn-text (theme-aware: #111 light, #fff dark)
+ *
+ * Utility classes:
+ * .modal-close--absolute, .center-text, .stacked-links, .card__btn
+ *
+ * Aliases (for compatibility):
+ * .work-card, .about-card, .contact-card
+ */
 
 /* Base card class with canonical tokens */
 .card {
