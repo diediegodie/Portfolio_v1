@@ -6,7 +6,7 @@ window.initModal && window.initModal({
   closeAttr: 'data-about-close'
 });
 
-// About modal: Stack gallery carousel initialization
+// About modal: Stack gallery carousel initialization (center-focus infinite scroll)
 (() => {
   const modal = document.getElementById('about-modal');
   if (!modal) return;
@@ -33,8 +33,9 @@ window.initModal && window.initModal({
     if (!items.length) return;
 
     let currentIndex = 0;
+    const itemWidth = 180; // Item container width in pixels
 
-    // Render stack items
+    // Render all stack items
     function render() {
       track.innerHTML = items.map((item) => `
         <div class="stack-item">
@@ -51,28 +52,47 @@ window.initModal && window.initModal({
     }
 
     function update() {
-      const offset = -currentIndex * 100;
-      track.style.transform = `translateX(${offset}%)`;
-      prevBtn.disabled = currentIndex === 0;
-      nextBtn.disabled = currentIndex === items.length - 1;
+      const itemElements = Array.from(track.querySelectorAll('.stack-item'));
+      const offset = -currentIndex * itemWidth;
+      track.style.transform = `translateX(${offset}px)`;
+
+      // Update active states: center, left, right
+      itemElements.forEach((el, idx) => {
+        el.classList.remove('stack-item--center', 'stack-item--left', 'stack-item--right');
+        
+        if (idx === currentIndex) {
+          el.classList.add('stack-item--center');
+        } else if (idx === currentIndex - 1 || (currentIndex === 0 && idx === items.length - 1)) {
+          el.classList.add('stack-item--left');
+        } else if (idx === currentIndex + 1 || (currentIndex === items.length - 1 && idx === 0)) {
+          el.classList.add('stack-item--right');
+        }
+      });
     }
 
     function prev() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        update();
-      }
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      update();
     }
 
     function next() {
-      if (currentIndex < items.length - 1) {
-        currentIndex++;
-        update();
-      }
+      currentIndex = (currentIndex + 1) % items.length;
+      update();
     }
 
     prevBtn.addEventListener('click', prev);
     nextBtn.addEventListener('click', next);
+
+    // Keyboard navigation
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        next();
+      }
+    });
 
     // Initial render
     render();
