@@ -33,13 +33,14 @@
       lastFocusedElement = document.activeElement;
       panel.classList.remove('close');
       modal.removeAttribute('hidden');
+      modal.removeAttribute('inert');
       void panel.offsetWidth;
       panel.classList.add('open');
       modal.dataset.open = 'true';
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
-      if (mainContent) mainContent.setAttribute('aria-hidden', 'true');
-      if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'true');
+      if (mainContent) { mainContent.setAttribute('inert', ''); mainContent.setAttribute('aria-hidden', 'true'); }
+      if (themeSwitch) { themeSwitch.setAttribute('inert', ''); themeSwitch.setAttribute('aria-hidden', 'true'); }
       if (headerEl) { headerEl.setAttribute('inert', ''); headerEl.setAttribute('aria-hidden', 'true'); }
       if (heroEl) { heroEl.setAttribute('inert', ''); heroEl.setAttribute('aria-hidden', 'true'); }
       triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'true'));
@@ -48,25 +49,25 @@
 
     function closeModal() {
       if (modal.dataset.open !== 'true') return;
+      // Remove focus from any focused element inside the modal before hiding
+      if (document.activeElement && modal.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
       panel.classList.remove('open');
       panel.classList.add('close');
       setTimeout(() => {
         modal.setAttribute('hidden', '');
+        modal.setAttribute('inert', '');
         delete modal.dataset.open;
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
-        if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
-        if (themeSwitch) themeSwitch.setAttribute('aria-hidden', 'false');
+        if (mainContent) { mainContent.removeAttribute('inert'); mainContent.setAttribute('aria-hidden', 'false'); }
+        if (themeSwitch) { themeSwitch.removeAttribute('inert'); themeSwitch.setAttribute('aria-hidden', 'false'); }
         if (headerEl) { headerEl.removeAttribute('inert'); headerEl.setAttribute('aria-hidden', 'false'); }
         if (heroEl) { heroEl.removeAttribute('inert'); heroEl.setAttribute('aria-hidden', 'false'); }
         triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
         if (lastFocusedElement instanceof HTMLElement) {
-          if (document.activeElement === lastFocusedElement) {
-            lastFocusedElement.blur();
-          }
-        }
-        if (typeof document.body.focus === 'function') {
-          document.body.focus();
+          lastFocusedElement.focus();
         }
         panel.classList.remove('close');
       }, 300);
