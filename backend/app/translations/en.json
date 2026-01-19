@@ -1,119 +1,116 @@
 {
-	"home": {
-		"title": "Diego Rodriguez - Fullstack Developer",
-		"name": "Diego Rodriguez",
-		"role": "Fullstack Developer",
-		"location": "Based in Brazil"
-	},
-
-	"buttons": {
-		"work": "WORK",
-		"about": "ABOUT",
-		"card_about": "About",
-		"details": "Details",
-		"contact": "CONTACT",
-		"github": "GitHub",
-		"live": "Live",
-		"prev": "Previous",
-		"next": "Next"
-	},
-
-	"modal": {
-		"header": "Portfolio",
-		"close": "Close"
-	},
-
-	"work": {
-		"title": "Work",
-		"no_data": "No project data",
-		"project_aria": "Project illustration for {0}",
-		"projects": [
-			{
-				"title": "Tattoo Studio Management System",
-				"description": "Comprehensive management platform for tattoo studios: client management (JotForm sync), session scheduling with Google Calendar, inventory control, and automated monthly financial statements. Built with Flask, SQLAlchemy, PostgreSQL and Docker; includes Google OAuth and background jobs for automation."
-			},
-			{
-				"title": "Task API",
-				"description": "REST API for task management with background workers."
-			},
-			{
-				"title": "Portfolio Backend",
-				"description": "The backend serving this portfolio and content translations."
-			},
-			{
-				"title": "Portfolio Frontend",
-				"description": "Frontend for the portfolio with responsive modal and card UI."
-			}
-		]
-	},
-
-	"about": {
-		"title": "About",
-		"summary_title": "Professional Summary",
-		"summary": "I’m a Fullstack developer in career transition, fully committed to building practical, real‑world applications through consistent, focused, and self‑directed learning. My current work involves designing and developing Fullstack systems using technologies like Python, Flask, PostgreSQL, Docker, and RESTful APIs. I’ve built a strong technical foundation in computer networks, web protocols, Linux, version control (Git & GitHub), and software architecture. All my progress is backed by hands‑on projects available on my GitHub. I also leverage AI tools to accelerate learning, improve code quality, and experiment with creative problem‑solving techniques. Currently focused on deepening my backend expertise and contributing to meaningful projects; I’m open to opportunities where I can grow, collaborate, and turn knowledge into impact.",
-		"background_title": "Background",
-		"background": "Self‑taught Fullstack Developer (May 2025 – Present) based in São Paulo, Brazil. Engaged in a structured, full‑time study plan combining theory with hands‑on projects. Focus areas: Python, Flask, PostgreSQL, Docker & Kubernetes, CI/CD, testing, networking, Linux, Git, HTML5/CSS3, and Flet. Projects and code are version‑controlled and published on GitHub.",
-		"skills_title": "Skills & Expertise",
-		"skills": [
-			"Python, Flask",
-			"PostgreSQL, SQL",
-			"Docker, CI/CD, Testing",
-			"Git, Linux, REST APIs, System Design"
-		],
-		"skill_1": "Python, Flask",
-		"skill_2": "PostgreSQL, SQL",
-		"skill_3": "Docker, CI/CD, Testing",
-		"skill_4": "Git, Linux, REST APIs, System Design",
-		"philosophy_title": "Philosophy",
-		"philosophy": "Practical, learning‑by‑doing approach; pragmatic engineering with iterative improvement; leverage AI tools to accelerate learning and improve code quality.",
-		"personal_title": "Personal Note",
-		"personal": "Former freelance tattoo artist (14+ years), bringing autonomy, adaptability, client‑focused communication, and strong problem‑solving skills to software development.",
-		"backend_title": "Backend / DevOps",
-		"backend_group_1_title": "Backend",
-		"backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
-		"backend_group_2_title": "DevOps",
-		"backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
-		"frontend_title": "Frontend",
-		"frontend_group_1": "HTML5, CSS3, Flet, responsive design",
-		"frontend_group_2": "Modern frontend patterns & accessibility",
-		"connect_title": "Connect",
-		"cta": {
-			"contact": "Contact",
-			"resume": "Resume",
-			"github": "GitHub",
-			"linkedin": "LinkedIn"
-		}
-	},
-
-	"contact": {
-		"title": "Contact",
-		"intro_title": "Get in Touch",
-		"intro": "I'm always interested in hearing about new opportunities and connecting with fellow developers.",
-		"email_title": "Email",
-		"email": "contact@example.com",
-		"social_title": "Follow",
-		"social": {
-			"github": "GitHub",
-			"linkedin": "LinkedIn"
-		},
-		"social_github": "GitHub",
-		"social_linkedin": "LinkedIn",
-		"availability_title": "Availability",
-		"availability": "Currently open for freelance projects and full-time opportunities.",
-		"cta": {
-			"email": "Send Email",
-			"connect": "Connect"
-		}
-	},
-
-	"toggle": {
-		"theme": "Toggle dark mode",
-		"lang": "Toggle language"
-	},
-
-	"lang": {
-		"en": "EN-US",
-		"pt": "PT-BR"
-	}
+  "home": {
+    "title": "Diego Rodriguez - Fullstack Developer",
+    "name": "Diego Rodriguez",
+    "role": "Fullstack Developer",
+    "location": "Based in Brazil"
+  },
+  "buttons": {
+    "work": "WORK",
+    "about": "ABOUT",
+    "card_about": "About",
+    "details": "Details",
+    "contact": "CONTACT",
+    "github": "GitHub",
+    "live": "Live",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "modal": {
+    "header": "Portfolio",
+    "close": "Close"
+  },
+  "work": {
+    "title": "Work",
+    "no_data": "No project data",
+    "project_aria": "Project illustration for {0}",
+    "projects": [
+      {
+        "title": "Tattoo Studio Management System",
+        "description": "Comprehensive management platform for tattoo studios: client management (JotForm sync), session scheduling with Google Calendar, inventory control, and automated monthly financial statements. Built with Flask, SQLAlchemy, PostgreSQL and Docker; includes Google OAuth and background jobs for automation."
+      },
+      {
+        "title": "Task API",
+        "description": "REST API for task management with background workers."
+      },
+      {
+        "title": "Portfolio Backend",
+        "description": "The backend serving this portfolio and content translations."
+      },
+      {
+        "title": "Portfolio Frontend",
+        "description": "Frontend for the portfolio with responsive modal and card UI."
+      }
+    ]
+  },
+  "about": {
+    "title": "About",
+    "summary_title": "Professional Summary",
+    "summary": "I’m a Fullstack developer in career transition, fully committed to building practical, real‑world applications through consistent, focused, and self‑directed learning. My current work involves designing and developing Fullstack systems using technologies like Python, Flask, PostgreSQL, Docker, and RESTful APIs. I’ve built a strong technical foundation in computer networks, web protocols, Linux, version control (Git & GitHub), and software architecture. All my progress is backed by hands‑on projects available on my GitHub. I also leverage AI tools to accelerate learning, improve code quality, and experiment with creative problem‑solving techniques. Currently focused on deepening my backend expertise and contributing to meaningful projects; I’m open to opportunities where I can grow, collaborate, and turn knowledge into impact.",
+    "background_title": "Background",
+    "background": "Self‑taught Fullstack Developer (May 2025 – Present) based in São Paulo, Brazil. Engaged in a structured, full‑time study plan combining theory with hands‑on projects. Focus areas: Python, Flask, PostgreSQL, Docker & Kubernetes, CI/CD, testing, networking, Linux, Git, HTML5/CSS3, and Flet. Projects and code are version‑controlled and published on GitHub.",
+    "skills_title": "Skills & Expertise",
+    "skills": [
+      "Python, Flask",
+      "PostgreSQL, SQL",
+      "Docker, CI/CD, Testing",
+      "Git, Linux, REST APIs, System Design"
+    ],
+    "skill_1": "Python, Flask",
+    "skill_2": "PostgreSQL, SQL",
+    "skill_3": "Docker, CI/CD, Testing",
+    "skill_4": "Git, Linux, REST APIs, System Design",
+    "philosophy_title": "Philosophy",
+    "philosophy": "Practical, learning‑by‑doing approach; pragmatic engineering with iterative improvement; leverage AI tools to accelerate learning and improve code quality.",
+    "personal_title": "Personal Note",
+    "personal": "Former freelance tattoo artist (14+ years), bringing autonomy, adaptability, client‑focused communication, and strong problem‑solving skills to software development.",
+    "backend_title": "Backend / DevOps",
+    "backend_group_1_title": "Backend",
+    "backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
+    "backend_group_2_title": "DevOps",
+    "backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
+    "frontend_title": "Frontend",
+    "frontend_group_1": "HTML5, CSS3, Flet, responsive design",
+    "frontend_group_2": "Modern frontend patterns & accessibility",
+    "connect_title": "Connect",
+    "cta": {
+      "contact": "Contact",
+      "resume": "Resume",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "intro_title": "Get in Touch",
+    "intro": "I'm always interested in hearing about new opportunities and connecting with fellow developers.",
+    "email_title": "Email",
+    "email": "contact@example.com",
+    "social_title": "Follow",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
+    "social_github": "GitHub",
+    "social_linkedin": "LinkedIn",
+    "availability_title": "Availability",
+    "availability": "Currently open for freelance projects and full-time opportunities.",
+    "cta": {
+      "email": "Send Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "connect": "Connect"
+    },
+    "intro_short": "I'm always interested in hearing about new opportunities and connecting with fellow developers.",
+    "actions_title": "Actions"
+  },
+  "toggle": {
+    "theme": "Toggle dark mode",
+    "lang": "Toggle language"
+  },
+  "lang": {
+    "en": "EN-US",
+    "pt": "PT-BR"
+  }
 }
-

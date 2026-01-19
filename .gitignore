@@ -108,7 +108,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build output
-frontend/static/css/styles.css
 
 # Environment
 .env

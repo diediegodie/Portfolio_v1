@@ -1,118 +1,116 @@
 {
-	"home": {
-		"title": "Diego Rodriguez - Desenvolvedor Fullstack",
-		"name": "Diego Rodriguez",
-		"role": "Desenvolvedor Fullstack",
-		"location": "residente no Brasil"
-	},
-
-	"buttons": {
-		"work": "PROJETOS",
-		"about": "SOBRE",
-		"card_about": "Sobre",
-		"details": "Detalhes",
-		"contact": "CONTATO",
-		"github": "GitHub",
-		"live": "Demo",
-		"prev": "Anterior",
-		"next": "Próximo"
-	},
-
-	"modal": {
-		"header": "Portfólio",
-		"close": "Fechar"
-	},
-
-	"work": {
-		"title": "Projetos",
-		"no_data": "Sem dados do projeto",
-		"project_aria": "Ilustração do projeto para {0}",
-		"projects": [
-			{
-				"title": "Sistema de Gestão para Estúdios de Tatuagem",
-				"description": "Plataforma de gestão completa para estúdios de tatuagem: gerenciamento de clientes (sincronização com JotForm), agendamento de sessões com Google Calendar, controle de estoque e geração automática de extratos financeiros mensais. Desenvolvido com Flask, SQLAlchemy, PostgreSQL e Docker; inclui autenticação Google OAuth e jobs agendados."
-			},
-			{
-				"title": "API de Tarefas",
-				"description": "API REST para gerenciamento de tarefas com workers em background."
-			},
-			{
-				"title": "Backend do Portfólio",
-				"description": "O backend que serve este portfólio e as traduções de conteúdo."
-			},
-			{
-				"title": "Frontend do Portfólio",
-				"description": "Frontend do portfólio com modal responsivo e UI baseada em cards."
-			}
-		]
-	},
-
-	"about": {
-		"title": "Sobre",
-		"summary_title": "Resumo Profissional",
-		"summary": "Sou um desenvolvedor Fullstack em transição de carreira, totalmente comprometido em construir aplicações práticas e reais por meio de aprendizado consistente, focado e autodirigido. Atualmente trabalho no design e desenvolvimento de sistemas Fullstack usando tecnologias como Python, Flask, PostgreSQL, Docker e APIs REST. Construí uma base técnica sólida em redes de computadores, protocolos web, Linux, controle de versão (Git & GitHub) e arquitetura de software. Todo o meu progresso é sustentado por projetos práticos disponíveis no meu GitHub. Também utilizo ferramentas de IA para acelerar o aprendizado, melhorar a qualidade do código e experimentar técnicas criativas de resolução de problemas. Atualmente estou focado em aprofundar minha especialização em backend e contribuir para projetos significativos; estou aberto a oportunidades onde posso crescer, colaborar e transformar conhecimento em impacto.",
-		"background_title": "Experiência",
-		"background": "Desenvolvedor Fullstack autodidata (maio de 2025 – presente) localizado em São Paulo, Brasil. Envolvido em um plano de estudo estruturado em tempo integral que combina teoria com projetos práticos. Áreas de foco: Python, Flask, PostgreSQL, Docker & Kubernetes, CI/CD, testes, redes, Linux, Git, HTML5/CSS3 e Flet. Projetos e código estão versionados e publicados no GitHub.",
-		"skills_title": "Habilidades & Especialidades",
-		"skills": [
-			"Python, Flask",
-			"PostgreSQL, SQL",
-			"Docker, CI/CD, Testes",
-			"Git, Linux, APIs REST, Design de Sistemas"
-		],
-		"skill_1": "Python, Flask",
-		"skill_2": "PostgreSQL, SQL",
-		"skill_3": "Docker, CI/CD, Testes",
-		"skill_4": "Git, Linux, APIs REST, Design de Sistemas",
-		"philosophy_title": "Filosofia",
-		"philosophy": "Abordagem prática de aprender fazendo; engenharia pragmática com melhoria iterativa; aproveito ferramentas de IA para acelerar o aprendizado e melhorar a qualidade do código.",
-		"personal_title": "Nota Pessoal",
-		"personal": "Ex-tatuador freelancer (14+ anos), trazendo autonomia, adaptabilidade, comunicação orientada ao cliente e fortes habilidades de resolução de problemas para o desenvolvimento de software.",
-		"backend_title": "Backend / DevOps",
-		"backend_group_1_title": "Backend",
-		"backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
-		"backend_group_2_title": "DevOps",
-		"backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
-		"frontend_title": "Frontend",
-		"frontend_group_1": "HTML5, CSS3, Flet, design responsivo",
-		"frontend_group_2": "Padrões modernos de frontend e acessibilidade",
-		"connect_title": "Conectar",
-		"cta": {
-			"contact": "Contato",
-			"resume": "Currículo",
-			"github": "GitHub",
-			"linkedin": "LinkedIn"
-		}
-	},
-
-	"contact": {
-		"title": "Contato",
-		"intro_title": "Entre em Contato",
-		"intro": "Sempre estou interessado em ouvir falar sobre novas oportunidades e conectar com outros desenvolvedores.",
-		"email_title": "Email",
-		"email": "contato@example.com",
-		"social_title": "Siga-me",
-		"social": {
-			"github": "GitHub",
-			"linkedin": "LinkedIn"
-		},
-		"social_github": "GitHub",
-		"social_linkedin": "LinkedIn",
-		"availability_title": "Disponibilidade",
-		"availability": "Aberto para projetos freelance e oportunidades de tempo integral.",
-		"cta": {
-			"email": "Enviar Email",
-			"connect": "Conectar"
-		}
-	},
-
-	"toggle": {
-		"theme": "Alternar tema",
-		"lang": "Alternar idioma"
-	},
-
-	"lang": {
-		"en": "EN-US",
-		"pt": "PT-BR"
-	}
+  "home": {
+    "title": "Diego Rodriguez - Desenvolvedor Fullstack",
+    "name": "Diego Rodriguez",
+    "role": "Desenvolvedor Fullstack",
+    "location": "residente no Brasil"
+  },
+  "buttons": {
+    "work": "PROJETOS",
+    "about": "SOBRE",
+    "card_about": "Sobre",
+    "details": "Detalhes",
+    "contact": "CONTATO",
+    "github": "GitHub",
+    "live": "Demo",
+    "prev": "Anterior",
+    "next": "Próximo"
+  },
+  "modal": {
+    "header": "Portfólio",
+    "close": "Fechar"
+  },
+  "work": {
+    "title": "Projetos",
+    "no_data": "Sem dados do projeto",
+    "project_aria": "Ilustração do projeto para {0}",
+    "projects": [
+      {
+        "title": "Sistema de Gestão para Estúdios de Tatuagem",
+        "description": "Plataforma de gestão completa para estúdios de tatuagem: gerenciamento de clientes (sincronização com JotForm), agendamento de sessões com Google Calendar, controle de estoque e geração automática de extratos financeiros mensais. Desenvolvido com Flask, SQLAlchemy, PostgreSQL e Docker; inclui autenticação Google OAuth e jobs agendados."
+      },
+      {
+        "title": "API de Tarefas",
+        "description": "API REST para gerenciamento de tarefas com workers em background."
+      },
+      {
+        "title": "Backend do Portfólio",
+        "description": "O backend que serve este portfólio e as traduções de conteúdo."
+      },
+      {
+        "title": "Frontend do Portfólio",
+        "description": "Frontend do portfólio com modal responsivo e UI baseada em cards."
+      }
+    ]
+  },
+  "about": {
+    "title": "Sobre",
+    "summary_title": "Resumo Profissional",
+    "summary": "Sou um desenvolvedor Fullstack em transição de carreira, totalmente comprometido em construir aplicações práticas e reais por meio de aprendizado consistente, focado e autodirigido. Atualmente trabalho no design e desenvolvimento de sistemas Fullstack usando tecnologias como Python, Flask, PostgreSQL, Docker e APIs REST. Construí uma base técnica sólida em redes de computadores, protocolos web, Linux, controle de versão (Git & GitHub) e arquitetura de software. Todo o meu progresso é sustentado por projetos práticos disponíveis no meu GitHub. Também utilizo ferramentas de IA para acelerar o aprendizado, melhorar a qualidade do código e experimentar técnicas criativas de resolução de problemas. Atualmente estou focado em aprofundar minha especialização em backend e contribuir para projetos significativos; estou aberto a oportunidades onde posso crescer, colaborar e transformar conhecimento em impacto.",
+    "background_title": "Experiência",
+    "background": "Desenvolvedor Fullstack autodidata (maio de 2025 – presente) localizado em São Paulo, Brasil. Envolvido em um plano de estudo estruturado em tempo integral que combina teoria com projetos práticos. Áreas de foco: Python, Flask, PostgreSQL, Docker & Kubernetes, CI/CD, testes, redes, Linux, Git, HTML5/CSS3 e Flet. Projetos e código estão versionados e publicados no GitHub.",
+    "skills_title": "Habilidades & Especialidades",
+    "skills": [
+      "Python, Flask",
+      "PostgreSQL, SQL",
+      "Docker, CI/CD, Testes",
+      "Git, Linux, APIs REST, Design de Sistemas"
+    ],
+    "skill_1": "Python, Flask",
+    "skill_2": "PostgreSQL, SQL",
+    "skill_3": "Docker, CI/CD, Testes",
+    "skill_4": "Git, Linux, APIs REST, Design de Sistemas",
+    "philosophy_title": "Filosofia",
+    "philosophy": "Abordagem prática de aprender fazendo; engenharia pragmática com melhoria iterativa; aproveito ferramentas de IA para acelerar o aprendizado e melhorar a qualidade do código.",
+    "personal_title": "Nota Pessoal",
+    "personal": "Ex-tatuador freelancer (14+ anos), trazendo autonomia, adaptabilidade, comunicação orientada ao cliente e fortes habilidades de resolução de problemas para o desenvolvimento de software.",
+    "backend_title": "Backend / DevOps",
+    "backend_group_1_title": "Backend",
+    "backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
+    "backend_group_2_title": "DevOps",
+    "backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
+    "frontend_title": "Frontend",
+    "frontend_group_1": "HTML5, CSS3, Flet, design responsivo",
+    "frontend_group_2": "Padrões modernos de frontend e acessibilidade",
+    "connect_title": "Conectar",
+    "cta": {
+      "contact": "Contato",
+      "resume": "Currículo",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "contact": {
+    "title": "Contato",
+    "intro_title": "Entre em Contato",
+    "intro": "Sempre estou interessado em ouvir falar sobre novas oportunidades e conectar com outros desenvolvedores.",
+    "email_title": "Email",
+    "email": "contato@example.com",
+    "social_title": "Siga-me",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
+    "social_github": "GitHub",
+    "social_linkedin": "LinkedIn",
+    "availability_title": "Disponibilidade",
+    "availability": "Aberto para projetos freelance e oportunidades de tempo integral.",
+    "cta": {
+      "email": "Enviar Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "connect": "Conectar"
+    },
+    "intro_short": "Sempre estou interessado em ouvir falar sobre novas oportunidades e conectar com outros desenvolvedores.",
+    "actions_title": "Ações"
+  },
+  "toggle": {
+    "theme": "Alternar tema",
+    "lang": "Alternar idioma"
+  },
+  "lang": {
+    "en": "EN-US",
+    "pt": "PT-BR"
+  }
 }

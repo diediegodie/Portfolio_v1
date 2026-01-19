@@ -1,15 +1,11 @@
 // about.js: initialize modal using shared modal.js
-window.initModal && window.initModal({
-  modalId: 'about-modal',
-  triggerAttr: 'data-about-trigger',
-  overlayAttr: 'data-about-overlay',
-  closeAttr: 'data-about-close'
-});
-
-// About modal: Stack gallery carousel initialization (center-focus infinite scroll)
-(() => {
+// Store carousel initialization function to be called when modal opens
+window.initAboutCarousel = function() {
   const modal = document.getElementById('about-modal');
-  if (!modal) return;
+  if (!modal || modal.dataset.carouselInitialized === 'true') return;
+  
+  // Mark as initialized to prevent duplicate initialization
+  modal.dataset.carouselInitialized = 'true';
 
   const galleries = Array.from(modal.querySelectorAll('.about-card .stack-gallery'));
   if (!galleries.length) return;
@@ -21,6 +17,10 @@ window.initModal && window.initModal({
     const nextBtn = gallery.querySelector('.stack-nav--next');
     
     if (!viewport || !track || !prevBtn || !nextBtn) return;
+    
+    // Skip if already initialized
+    if (gallery.dataset.initialized === 'true') return;
+    gallery.dataset.initialized = 'true';
 
     // Parse stack items from data attribute
     let items = [];
@@ -44,7 +44,7 @@ window.initModal && window.initModal({
         <div class="stack-item">
           <div class="stack-item__icon">
             <svg viewBox="${item.viewBox}" aria-hidden="true" focusable="false">
-              <use href="${new URL('/static/icons/stack-sprite.svg', window.location).pathname}#${item.icon}"></use>
+              <use href="/static/icons/stack-sprite.svg#${item.icon}"></use>
             </svg>
           </div>
           <div class="stack-item__label">${item.label}</div>
@@ -100,7 +100,7 @@ window.initModal && window.initModal({
 
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (!modal.style.display || modal.style.display === 'none') return;
+      if (!modal || !modal.dataset.open || modal.dataset.open !== 'true') return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prev();
@@ -113,4 +113,34 @@ window.initModal && window.initModal({
     // Initial render
     render();
   });
-})();
+};
+
+// Hook into modal initialization
+window.initModal && window.initModal({
+  modalId: 'about-modal',
+  triggerAttr: 'data-about-trigger',
+  overlayAttr: 'data-about-overlay',
+  closeAttr: 'data-about-close'
+});
+
+// Initialize carousel after modal opens (use MutationObserver to detect when modal becomes visible)
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('about-modal');
+  if (!modal) return;
+  
+  // Listen for when the modal opens (data-open attribute)
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-open') {
+        if (modal.dataset.open === 'true') {
+          // Modal just opened, initialize carousel
+          window.setTimeout(() => {
+            window.initAboutCarousel && window.initAboutCarousel();
+          }, 50);
+        }
+      }
+    });
+  });
+  
+  observer.observe(modal, { attributes: true });
+});
