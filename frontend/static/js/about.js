@@ -15,11 +15,12 @@ window.initModal && window.initModal({
   if (!galleries.length) return;
 
   galleries.forEach((gallery) => {
+    const viewport = gallery.querySelector('.stack-gallery__viewport');
     const track = gallery.querySelector('.stack-gallery__track');
     const prevBtn = gallery.querySelector('.stack-nav--prev');
     const nextBtn = gallery.querySelector('.stack-nav--next');
     
-    if (!track || !prevBtn || !nextBtn) return;
+    if (!viewport || !track || !prevBtn || !nextBtn) return;
 
     // Parse stack items from data attribute
     let items = [];
@@ -33,7 +34,9 @@ window.initModal && window.initModal({
     if (!items.length) return;
 
     let currentIndex = 0;
-    const itemWidth = 180; // Item container width in pixels
+    const ITEM_WIDTH = 180;
+    const GAP = 16;
+    const ITEM_STEP = ITEM_WIDTH + GAP; // 196px
 
     // Render all stack items
     function render() {
@@ -48,12 +51,24 @@ window.initModal && window.initModal({
         </div>
       `).join('');
 
+      // Force reflow to apply render
+      viewport.offsetWidth;
       update();
     }
 
     function update() {
       const itemElements = Array.from(track.querySelectorAll('.stack-item'));
-      const offset = -currentIndex * itemWidth;
+      
+      // Get viewport width for centering calculation
+      const viewportWidth = viewport.offsetWidth;
+      
+      // Calculate offset to center the item at currentIndex in the viewport
+      // Formula: position of item[currentIndex] center minus viewport center
+      const itemPositionInTrack = currentIndex * ITEM_STEP;
+      const itemCenterInTrack = itemPositionInTrack + (ITEM_WIDTH / 2);
+      const viewportCenter = viewportWidth / 2;
+      const offset = viewportCenter - itemCenterInTrack;
+      
       track.style.transform = `translateX(${offset}px)`;
 
       // Update active states: center, left, right
@@ -62,9 +77,9 @@ window.initModal && window.initModal({
         
         if (idx === currentIndex) {
           el.classList.add('stack-item--center');
-        } else if (idx === currentIndex - 1 || (currentIndex === 0 && idx === items.length - 1)) {
+        } else if (idx === (currentIndex - 1 + items.length) % items.length) {
           el.classList.add('stack-item--left');
-        } else if (idx === currentIndex + 1 || (currentIndex === items.length - 1 && idx === 0)) {
+        } else if (idx === (currentIndex + 1) % items.length) {
           el.classList.add('stack-item--right');
         }
       });
@@ -84,7 +99,8 @@ window.initModal && window.initModal({
     nextBtn.addEventListener('click', next);
 
     // Keyboard navigation
-    track.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e) => {
+      if (!modal.style.display || modal.style.display === 'none') return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prev();
