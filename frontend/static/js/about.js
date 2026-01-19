@@ -6,70 +6,75 @@ window.initModal && window.initModal({
   closeAttr: 'data-about-close'
 });
 
-// About modal: stack marquee initialization and duration calculation
+// About modal: Stack gallery carousel initialization
 (() => {
   const modal = document.getElementById('about-modal');
   if (!modal) return;
 
-  const marquees = Array.from(modal.querySelectorAll('.about-card .stack-marquee'));
-  if (!marquees.length) return;
+  const galleries = Array.from(modal.querySelectorAll('.about-card .stack-gallery'));
+  if (!galleries.length) return;
 
-  const prefersReducedMotion =
-    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  galleries.forEach((gallery) => {
+    const track = gallery.querySelector('.stack-gallery__track');
+    const prevBtn = gallery.querySelector('.stack-nav--prev');
+    const nextBtn = gallery.querySelector('.stack-nav--next');
+    
+    if (!track || !prevBtn || !nextBtn) return;
 
-  // Initialize marquee tracks: clone children for seamless loop
-  marquees.forEach((marquee) => {
-    const track = marquee.querySelector('.stack-marquee__track');
-    if (!track) return;
-
-    // Only duplicate once
-    if (!track.dataset.duplicated) {
-      const originalChildren = Array.from(track.children);
-      originalChildren.forEach((child) => {
-        const clone = child.cloneNode(true);
-        track.appendChild(clone);
-      });
-      track.dataset.duplicated = 'true';
+    // Parse stack items from data attribute
+    let items = [];
+    try {
+      items = JSON.parse(track.getAttribute('data-stack-items') || '[]');
+    } catch (e) {
+      console.error('Failed to parse stack items:', e);
+      return;
     }
+
+    if (!items.length) return;
+
+    let currentIndex = 0;
+
+    // Render stack items
+    function render() {
+      track.innerHTML = items.map((item) => `
+        <div class="stack-item">
+          <div class="stack-item__icon">
+            <svg viewBox="${item.viewBox}" aria-hidden="true" focusable="false">
+              <use href="${new URL('/static/icons/stack-sprite.svg', window.location).pathname}#${item.icon}"></use>
+            </svg>
+          </div>
+          <div class="stack-item__label">${item.label}</div>
+        </div>
+      `).join('');
+
+      update();
+    }
+
+    function update() {
+      const offset = -currentIndex * 100;
+      track.style.transform = `translateX(${offset}%)`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === items.length - 1;
+    }
+
+    function prev() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        update();
+      }
+    }
+
+    function next() {
+      if (currentIndex < items.length - 1) {
+        currentIndex++;
+        update();
+      }
+    }
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+
+    // Initial render
+    render();
   });
-
-  // Skip animation setup if user prefers reduced motion
-  if (prefersReducedMotion) return;
-
-  const getSpeedPxPerSec = (marquee) => {
-    const raw = getComputedStyle(marquee).getPropertyValue('--stack-speed').trim();
-    const value = Number(raw);
-    return Number.isFinite(value) && value > 0 ? value : 90;
-  };
-
-  const updateMarqueeDuration = (marquee) => {
-    const track = marquee.querySelector('.stack-marquee__track');
-    if (!track) return;
-
-    const fullWidth = track.scrollWidth;
-    const halfWidth = fullWidth / 2;
-    if (!Number.isFinite(halfWidth) || halfWidth <= 0) return;
-
-    const speed = getSpeedPxPerSec(marquee);
-    const durationSeconds = Math.max(6, halfWidth / speed);
-    track.style.setProperty('--stack-marquee-duration', `${durationSeconds}s`);
-  };
-
-  let rafId = 0;
-  const scheduleUpdate = () => {
-    if (modal.hasAttribute('hidden')) return;
-    window.cancelAnimationFrame(rafId);
-    rafId = window.requestAnimationFrame(() => {
-      marquees.forEach(updateMarqueeDuration);
-    });
-  };
-
-  // Run when the modal is opened (trigger click) and on viewport changes.
-  document.querySelectorAll('[data-about-trigger]').forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      // Defer twice to allow modal open + layout.
-      window.requestAnimationFrame(() => window.requestAnimationFrame(scheduleUpdate));
-    });
-  });
-  window.addEventListener('resize', scheduleUpdate, { passive: true });
 })();

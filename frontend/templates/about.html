@@ -23,94 +23,46 @@
                 <p data-i18n="about.summary">{{ _('about.summary') }}</p>
             </article>
 
-            <!-- Card 2: Backend / DevOps (semantic list; plain text items) -->
+            <!-- Card 2: Backend / DevOps stack carousel -->
             <article class="about-card about__backend modal__card" role="listitem">
                 <h3 data-i18n="about.backend_title">{{ _('about.backend_title') }}</h3>
-                <div class="stack-marquee" aria-label="Backend stack technologies">
-                    <div class="stack-marquee__track">
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#python') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#flask') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#postgres') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#rest-api') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#docker') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 50 50" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#ci-cd') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#git') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#github') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#linux') }}"></use>
-                            </svg>
+                <div class="stack-gallery">
+                    <div class="stack-gallery__viewport">
+                        <div class="stack-gallery__track" data-stack-items='[
+                            {"icon": "python", "label": "Python", "viewBox": "0 0 32 32"},
+                            {"icon": "flask", "label": "Flask", "viewBox": "0 0 512 512"},
+                            {"icon": "postgres", "label": "PostgreSQL", "viewBox": "0 0 32 32"},
+                            {"icon": "rest-api", "label": "REST API", "viewBox": "0 0 32 32"},
+                            {"icon": "docker", "label": "Docker", "viewBox": "0 0 32 32"},
+                            {"icon": "ci-cd", "label": "CI/CD", "viewBox": "0 0 50 50"},
+                            {"icon": "git", "label": "Git", "viewBox": "0 0 32 32"},
+                            {"icon": "github", "label": "GitHub", "viewBox": "0 0 48 48"},
+                            {"icon": "linux", "label": "Linux", "viewBox": "0 0 32 32"}
+                        ]'>
+                            <!-- Populated by JavaScript -->
                         </div>
                     </div>
+                    <button class="stack-nav stack-nav--prev" type="button" aria-label="Previous stack"><span class="icon">‹</span></button>
+                    <button class="stack-nav stack-nav--next" type="button" aria-label="Next stack"><span class="icon">›</span></button>
                 </div>
-                <ul class="card__content about-tech-list" data-i18n="about.backend_list">
-                    <li><strong data-i18n="about.backend_group_1_title">{{ _('about.backend_group_1_title') }}</strong>:
-                        <span data-i18n="about.backend_group_1">{{ _('about.backend_group_1') }}</span>
-                    </li>
-                    <li><strong data-i18n="about.backend_group_2_title">{{ _('about.backend_group_2_title') }}</strong>:
-                        <span data-i18n="about.backend_group_2">{{ _('about.backend_group_2') }}</span>
-                    </li>
-                </ul>
             </article>
 
-            <!-- Card 3: Frontend (semantic list; centered) -->
+            <!-- Card 3: Frontend stack carousel -->
             <article class="about-card about__frontend modal__card" role="listitem">
                 <h3 data-i18n="about.frontend_title">{{ _('about.frontend_title') }}</h3>
-                <div class="stack-marquee" aria-label="Frontend stack technologies">
-                    <div class="stack-marquee__track">
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#html') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#css') }}"></use>
-                            </svg>
-                        </div>
-                        <div class="stack-icon">
-                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#javascript') }}"></use>
-                            </svg>
+                <div class="stack-gallery">
+                    <div class="stack-gallery__viewport">
+                        <div class="stack-gallery__track" data-stack-items='[
+                            {"icon": "html", "label": "HTML5", "viewBox": "0 0 32 32"},
+                            {"icon": "css", "label": "CSS3", "viewBox": "0 0 32 32"},
+                            {"icon": "javascript", "label": "JavaScript", "viewBox": "0 0 512 512"}
+                        ]'>
+                            <!-- Populated by JavaScript -->
                         </div>
                     </div>
+                    <button class="stack-nav stack-nav--prev" type="button" aria-label="Previous stack"><span class="icon">‹</span></button>
+                    <button class="stack-nav stack-nav--next" type="button" aria-label="Next stack"><span class="icon">›</span></button>
                 </div>
-                <ul class="card__content about-tech-list" data-i18n="about.frontend_list">
-                    <li><span data-i18n="about.frontend_group_1">{{ _('about.frontend_group_1') }}</span></li>
-                    <li><span data-i18n="about.frontend_group_2">{{ _('about.frontend_group_2') }}</span></li>
-                </ul>
             </article>
 
             <!-- Card 4: Connect (anchors stacked, centered; no dark footer background) -->
