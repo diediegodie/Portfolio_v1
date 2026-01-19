@@ -6,7 +6,7 @@ window.initModal && window.initModal({
   closeAttr: 'data-about-close'
 });
 
-// About modal: stack marquee duration (only runs if marquees exist)
+// About modal: stack marquee initialization and duration calculation
 (() => {
   const modal = document.getElementById('about-modal');
   if (!modal) return;
@@ -16,6 +16,24 @@ window.initModal && window.initModal({
 
   const prefersReducedMotion =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Initialize marquee tracks: clone children for seamless loop
+  marquees.forEach((marquee) => {
+    const track = marquee.querySelector('.stack-marquee__track');
+    if (!track) return;
+
+    // Only duplicate once
+    if (!track.dataset.duplicated) {
+      const originalChildren = Array.from(track.children);
+      originalChildren.forEach((child) => {
+        const clone = child.cloneNode(true);
+        track.appendChild(clone);
+      });
+      track.dataset.duplicated = 'true';
+    }
+  });
+
+  // Skip animation setup if user prefers reduced motion
   if (prefersReducedMotion) return;
 
   const getSpeedPxPerSec = (marquee) => {

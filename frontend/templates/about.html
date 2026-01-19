@@ -26,6 +26,55 @@
             <!-- Card 2: Backend / DevOps (semantic list; plain text items) -->
             <article class="about-card about__backend modal__card" role="listitem">
                 <h3 data-i18n="about.backend_title">{{ _('about.backend_title') }}</h3>
+                <div class="stack-marquee" aria-label="Backend stack technologies">
+                    <div class="stack-marquee__track">
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#python') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#flask') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#postgres') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#rest-api') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#docker') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 50 50" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#ci-cd') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#git') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#github') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#linux') }}"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 <ul class="card__content about-tech-list" data-i18n="about.backend_list">
                     <li><strong data-i18n="about.backend_group_1_title">{{ _('about.backend_group_1_title') }}</strong>:
                         <span data-i18n="about.backend_group_1">{{ _('about.backend_group_1') }}</span>
@@ -39,6 +88,25 @@
             <!-- Card 3: Frontend (semantic list; centered) -->
             <article class="about-card about__frontend modal__card" role="listitem">
                 <h3 data-i18n="about.frontend_title">{{ _('about.frontend_title') }}</h3>
+                <div class="stack-marquee" aria-label="Frontend stack technologies">
+                    <div class="stack-marquee__track">
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#html') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#css') }}"></use>
+                            </svg>
+                        </div>
+                        <div class="stack-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                                <use href="{{ url_for('static', filename='icons/stack-sprite.svg#javascript') }}"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 <ul class="card__content about-tech-list" data-i18n="about.frontend_list">
                     <li><span data-i18n="about.frontend_group_1">{{ _('about.frontend_group_1') }}</span></li>
                     <li><span data-i18n="about.frontend_group_2">{{ _('about.frontend_group_2') }}</span></li>
