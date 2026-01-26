@@ -1223,7 +1223,7 @@ html[data-theme='dark'] .project-readme__content code {
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 3000;
 }
 
 /* Show lightbox when display is set to flex via JavaScript */
