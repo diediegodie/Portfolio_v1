@@ -63,7 +63,9 @@ class TechCarousel {
     this.generateIcons();
 
     // Listen for transform transition ends to detect when we crossed into clones
-    this.track.addEventListener('transitionend', this.handleTransitionEnd.bind(this));
+    // store bound handler so it can be removed on destroy
+    this._boundHandleTransitionEnd = this.handleTransitionEnd.bind(this);
+    this.track.addEventListener('transitionend', this._boundHandleTransitionEnd);
 
     // Set up event listeners
     this.attachEventListeners();
@@ -245,6 +247,8 @@ class TechCarousel {
     const onEnter = (e) => {
       const item = e.target.closest('.tech-icon-item');
       if (!item) return;
+      // Show tooltip only for the centered item
+      if (!item.classList.contains('center')) return;
       activeItem = item;
       const img = item.querySelector('img');
       const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
@@ -268,6 +272,8 @@ class TechCarousel {
     const onFocus = (e) => {
       const item = e.target.closest('.tech-icon-item');
       if (!item) return;
+      // Only show label if this item is the visible center
+      if (!item.classList.contains('center')) return;
       const img = item.querySelector('img');
       const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
       this.showTooltip(label);
@@ -280,6 +286,8 @@ class TechCarousel {
       if (e.pointerType !== 'touch') return;
       const item = e.target.closest('.tech-icon-item');
       if (!item) return;
+      // Only show touch tooltip for centered item
+      if (!item.classList.contains('center')) return;
       const img = item.querySelector('img');
       const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
       this.showTooltip(label);
@@ -304,44 +312,43 @@ class TechCarousel {
   }
 
   attachEventListeners() {
+    // store handlers container for later removal
+    this._handlers = this._handlers || {};
+
     // Navigation arrows
     if (this.navLeft) {
-      this.navLeft.addEventListener('click', () => {
-        this.prev();
-        this.resetAutoScroll();
-      });
+      this._handlers.navLeftClick = () => { this.prev(); this.resetAutoScroll(); };
+      this.navLeft.addEventListener('click', this._handlers.navLeftClick);
     }
 
     if (this.navRight) {
-      this.navRight.addEventListener('click', () => {
-        this.next();
-        this.resetAutoScroll();
-      });
+      this._handlers.navRightClick = () => { this.next(); this.resetAutoScroll(); };
+      this.navRight.addEventListener('click', this._handlers.navRightClick);
     }
 
     // Progress dots (optional - may not exist if hidden)
     if (this.dotsContainer) {
       const dots = this.dotsContainer.querySelectorAll('.carousel-dot');
+      this._handlers.dotClicks = [];
       dots.forEach(dot => {
-        dot.addEventListener('click', () => {
+        const handler = () => {
           const index = parseInt(dot.getAttribute('data-index'), 10);
           this.goToIndex(index);
           this.resetAutoScroll();
-        });
+        };
+        dot.addEventListener('click', handler);
+        this._handlers.dotClicks.push({ dot, handler });
       });
     }
 
-    // Pause on hover
-    if (this.carousel) {
-      this.carousel.addEventListener('mouseenter', () => this.pauseAutoScroll());
-      this.carousel.addEventListener('mouseleave', () => this.resumeAutoScroll());
-    }
+    // Pause-on-hover removed so carousel always auto-scrolls
+    // (Intentionally do not register mouseenter/mouseleave handlers.)
 
-    // Handle window resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
+    // Handle window resize (store bound handler)
+    this._handlers.resizeTimeout = null;
+    this._handlers.onResize = () => {
+      clearTimeout(this._handlers.resizeTimeout);
+      this._handlers.resizeTimeout = setTimeout(() => {
         this.updateDimensions();
         // reposition without animation during resize
         this.track.style.transition = 'none';
@@ -349,7 +356,8 @@ class TechCarousel {
         void this.track.offsetWidth;
         requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
       }, 300);
-    });
+    };
+    window.addEventListener('resize', this._handlers.onResize);
   }
 
   updateDimensions() {
@@ -496,7 +504,33 @@ class TechCarousel {
   }
 
   destroy() {
+    // stop auto scroll and clear interval
     this.stopAutoScroll();
+
+    // Remove transitionend listener
+    try {
+      if (this._boundHandleTransitionEnd && this.track) {
+        this.track.removeEventListener('transitionend', this._boundHandleTransitionEnd);
+        this._boundHandleTransitionEnd = null;
+      }
+    } catch (e) { /* non-fatal */ }
+
+    // Remove nav/dot listeners and carousel mouse listeners, window resize
+    try {
+      if (this._handlers) {
+        if (this.navLeft && this._handlers.navLeftClick) this.navLeft.removeEventListener('click', this._handlers.navLeftClick);
+        if (this.navRight && this._handlers.navRightClick) this.navRight.removeEventListener('click', this._handlers.navRightClick);
+        if (this._handlers.dotClicks && Array.isArray(this._handlers.dotClicks)) {
+          this._handlers.dotClicks.forEach(({ dot, handler }) => { dot.removeEventListener('click', handler); });
+        }
+        if (this.carousel && this._handlers.mouseEnter) this.carousel.removeEventListener('mouseenter', this._handlers.mouseEnter);
+        if (this.carousel && this._handlers.mouseLeave) this.carousel.removeEventListener('mouseleave', this._handlers.mouseLeave);
+        if (this._handlers.onResize) window.removeEventListener('resize', this._handlers.onResize);
+        if (this._handlers.resizeTimeout) clearTimeout(this._handlers.resizeTimeout);
+        this._handlers = null;
+      }
+    } catch (e) { /* non-fatal */ }
+
     // Clean up tooltip listeners and element
     if (this._tooltipHandlers && this.track) {
       const { onEnter, onLeave, onFocus, onBlur, onPointerDown } = this._tooltipHandlers;
@@ -511,6 +545,11 @@ class TechCarousel {
       this.tooltip.parentNode.removeChild(this.tooltip);
       this.tooltip = null;
     }
+
+    // Reset state flags so a new instance starts cleanly
+    this.isTransitioning = false;
+    this.totalCount = null;
+    this.currentIndex = 0;
   }
 }
 
