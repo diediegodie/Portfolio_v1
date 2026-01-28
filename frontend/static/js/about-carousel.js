@@ -25,7 +25,7 @@ class TechCarousel {
 
     // Dimensions (calculated dynamically)
     this.iconWidth = 100; // Base size, matches CSS
-    this.gap = 44; // Matches CSS gap
+    this.gap = 88; // Matches CSS gap (doubled)
     // Transition / state
     this.isTransitioning = false;
     this.trackTransition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
@@ -223,10 +223,10 @@ class TechCarousel {
       const rect = tt.getBoundingClientRect();
       const half = rect.width / 2 || 48;
       let left = clamp(clientX, half + 12, window.innerWidth - half - 12);
-      // increase vertical gap between cursor and tooltip
-      let top = clientY - 20;
+      // increase vertical gap between cursor and tooltip (doubled)
+      let top = clientY - 40;
       if (top - rect.height < 12) {
-        top = clientY + 20;
+        top = clientY + 40;
         tt.classList.add("below");
       }
       tt.style.left = `${left}px`;
@@ -235,13 +235,13 @@ class TechCarousel {
       const elRect = element.getBoundingClientRect();
       let left = elRect.left + elRect.width / 2;
       // anchor a bit further above element
-      let top = elRect.top - 14;
+      let top = elRect.top - 28;
       left = clamp(left, 12, window.innerWidth - 12);
       tt.style.left = `${left}px`;
       tt.style.top = `${top}px`;
       const rect = tt.getBoundingClientRect();
       if (rect.top < 12) {
-        tt.style.top = `${elRect.bottom + 14}px`;
+        tt.style.top = `${elRect.bottom + 28}px`;
         tt.classList.add("below");
       }
     }

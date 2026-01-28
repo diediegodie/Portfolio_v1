@@ -27,16 +27,16 @@ window.initModal &&
             <line x1="24" y1="8" x2="8" y2="24" />
           </svg>
         </button>
-        <button class="lightbox-prev lightbox__nav lightbox__nav--prev image-prev" aria-label="Previous">‹</button>
+        <button class="image-nav image-prev lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous"><span class="icon">‹</span></button>
         <img class="lightbox-img lightbox__image" src="" alt="" />
-        <button class="lightbox-next lightbox__nav lightbox__nav--next image-next" aria-label="Next">›</button>
+        <button class="image-nav image-next lightbox__nav lightbox__nav--next" type="button" aria-label="Next"><span class="icon">›</span></button>
       `;
       document.body.appendChild(lightbox);
 
       const imgEl = lightbox.querySelector(".lightbox-img");
       const btnClose = lightbox.querySelector(".lightbox-close");
-      const btnPrev = lightbox.querySelector(".lightbox-prev");
-      const btnNext = lightbox.querySelector(".lightbox-next");
+      const btnPrev = lightbox.querySelector(".image-prev");
+      const btnNext = lightbox.querySelector(".image-next");
 
       let currentImages = [];
       let currentIndex = 0;
@@ -56,18 +56,20 @@ window.initModal &&
         document.body.style.overflow = "";
       }
 
-      btnClose.addEventListener("click", hide);
+      if (btnClose) btnClose.addEventListener("click", hide);
       lightbox.addEventListener("click", (e) => {
         if (e.target === lightbox) hide();
       });
-      btnPrev.addEventListener("click", (e) => {
-        e.stopPropagation();
-        show(currentIndex - 1);
-      });
-      btnNext.addEventListener("click", (e) => {
-        e.stopPropagation();
-        show(currentIndex + 1);
-      });
+      if (btnPrev)
+        btnPrev.addEventListener("click", (e) => {
+          e.stopPropagation();
+          show(currentIndex - 1);
+        });
+      if (btnNext)
+        btnNext.addEventListener("click", (e) => {
+          e.stopPropagation();
+          show(currentIndex + 1);
+        });
 
       document.addEventListener("keydown", (e) => {
         if (!lightbox || lightbox.style.display === "none") return;
