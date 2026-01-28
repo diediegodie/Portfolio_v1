@@ -50,6 +50,11 @@
       if (heroEl) { heroEl.setAttribute('inert', ''); heroEl.setAttribute('aria-hidden', 'true'); }
       triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'true'));
       if (panel) panel.focus();
+
+      // Re-create carousels when the About modal opens (idempotent)
+      if (modalId === 'about-modal' && window.ensureAboutCarousels) {
+        try { window.ensureAboutCarousels(); } catch (e) { /* non-fatal */ }
+      }
     }
 
     function closeModal() {
@@ -74,6 +79,12 @@
         if (lastFocusedElement instanceof HTMLElement) {
           lastFocusedElement.focus();
         }
+
+        // Destroy carousels after the About modal fully closes to cleanup timers/listeners
+        if (modalId === 'about-modal' && window.destroyAboutCarousels) {
+          try { window.destroyAboutCarousels(); } catch (e) { /* non-fatal */ }
+        }
+
         panel.classList.remove('close');
       }, 300);
     }

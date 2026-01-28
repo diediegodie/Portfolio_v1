@@ -533,20 +533,46 @@ const FRONTEND_ICONS = [
   { id: 'javascript', src: '/static/icons/about-icons/javascript.svg', alt: 'JavaScript' }
 ];
 
-// Initialize carousels when DOM is ready
+/* Module-level instance holders so carousels can be recreated/destroyed */
+let __aboutBackendCarousel = null;
+let __aboutFrontendCarousel = null;
+
+/* Ensure carousels exist (idempotent) */
+window.ensureAboutCarousels = function ensureAboutCarousels() {
+  try {
+    const backendRoot = document.querySelector('.about__backend [data-carousel="backend"]');
+    if (backendRoot && !__aboutBackendCarousel) {
+      __aboutBackendCarousel = new TechCarousel('.about__backend', BACKEND_ICONS, {
+        autoScrollInterval: 3000
+      });
+    }
+    const frontendRoot = document.querySelector('.about__frontend [data-carousel="frontend"]');
+    if (frontendRoot && !__aboutFrontendCarousel) {
+      __aboutFrontendCarousel = new TechCarousel('.about__frontend', FRONTEND_ICONS, { autoScrollInterval: 3000 });
+    }
+  } catch (e) {
+    console.debug('ensureAboutCarousels error', e);
+  }
+};
+
+/* Destroy any existing carousels and clean up */
+window.destroyAboutCarousels = function destroyAboutCarousels() {
+  try {
+    if (__aboutBackendCarousel) {
+      __aboutBackendCarousel.destroy();
+      __aboutBackendCarousel = null;
+    }
+    if (__aboutFrontendCarousel) {
+      __aboutFrontendCarousel.destroy();
+      __aboutFrontendCarousel = null;
+    }
+  } catch (e) {
+    console.debug('destroyAboutCarousels error', e);
+  }
+};
+
+/* Keep DOMContentLoaded bootstrap but delegate to ensureAboutCarousels (idempotent) */
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize backend carousel only (frontend still uses old list structure)
-  const backendCarousel = document.querySelector('.about__backend [data-carousel="backend"]');
-
-  if (backendCarousel) {
-    new TechCarousel('.about__backend', BACKEND_ICONS, {
-      autoScrollInterval: 3000
-    });
-  }
-
-  // Frontend carousel will be initialized in Phase 4
-  const frontendCarousel = document.querySelector('.about__frontend [data-carousel="frontend"]');
-  if (frontendCarousel) {
-    new TechCarousel('.about__frontend', FRONTEND_ICONS, { autoScrollInterval: 3000 });
-  }
+  // Create carousels if present in DOM
+  window.ensureAboutCarousels && window.ensureAboutCarousels();
 });
