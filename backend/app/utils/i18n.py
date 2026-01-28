@@ -56,7 +56,7 @@ def _(key):
     def resolve(dct, dotted_key):
         if not dotted_key:
             return None
-        parts = dotted_key.split('.')
+        parts = dotted_key.split(".")
         cur = dct
         for p in parts:
             # dict access

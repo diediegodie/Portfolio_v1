@@ -2,127 +2,127 @@
    - Box sizing
    - Global font family */
 * {
-	box-sizing: border-box;
-	font-family: "Poiret One", sans-serif;
+  box-sizing: border-box;
+  font-family: "Poiret One", sans-serif;
 }
 
 html {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	font-family: "Poiret One", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: "Poiret One", sans-serif;
 }
 
 /* Layout: Split Hero Container
 	- Two panes with shared center alignment */
 header {
-	position: relative;
-	height: 3rem;
-	width: 100%;
+  position: relative;
+  height: 3rem;
+  width: 100%;
 }
 
 #home-main {
-	height: calc(100dvh - 3rem);
-	min-height: calc(100dvh - 3rem);
-	max-height: calc(100dvh - 3rem);
-	width: 100%;
-	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  height: calc(100dvh - 3rem);
+  min-height: calc(100dvh - 3rem);
+  max-height: calc(100dvh - 3rem);
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .hero {
-	display: flex;
-	height: 100%;
-	min-height: 100%;
-	max-height: 100%;
-	width: 100%;
-	max-width: 100%;
-	position: relative;
-	justify-content: center;
-	align-items: center;
-	column-gap: 3rem;
-	padding: 0 1.25rem;
+  display: flex;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  column-gap: 3rem;
+  padding: 0 1.25rem;
 }
 
 .hero__info,
 .hero__actions {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-   /* Left Pane (Info)
+/* Left Pane (Info)
    - Aligns text to the central axis (right-aligned) */
 .hero__info {
-	flex: 1;
-	align-items: flex-end;
-	text-align: right;
-	gap: 0.25rem;
+  flex: 1;
+  align-items: flex-end;
+  text-align: right;
+  gap: 0.25rem;
 }
 
 /* Left Pane Typography */
 .hero__info h3 {
-	margin: 0;
-	letter-spacing: 0.08em;
-	line-height: 1.4;
-	text-transform: uppercase;
-	font-size: clamp(1rem, 2vw, 1.1rem);
-	font-weight: 900;
+  margin: 0;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  font-weight: 900;
 }
 
-   /* Right Pane (Actions)
+/* Right Pane (Actions)
    - Aligns actions to the central axis (left-aligned) */
 .hero__actions {
-	flex: 2;
-	align-items: flex-start;
-	gap: 0.35rem;
+  flex: 2;
+  align-items: flex-start;
+  gap: 0.35rem;
 }
 
 /* Right Pane Typography & Interaction */
 .hero__button {
-	padding: 0;
-	margin: 0;
-	border: none;
-	background-color: transparent;
-	display: inline-block;
-	color: var(--text-color);
-	font-size: clamp(3rem, 12vw, 10rem);
-	letter-spacing: 0.02em;
-	text-transform: uppercase;
-	line-height: 0.9;
-	cursor: pointer;
-	transition: color 0.4s ease, transform 0.3s ease;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  display: inline-block;
+  color: var(--text-color);
+  font-size: clamp(3rem, 12vw, 10rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  cursor: pointer;
+  transition: color 0.4s ease, transform 0.3s ease;
 }
 
 /* Interactive States */
 .hero__button:hover,
 .hero__button:focus-visible {
-	color: var(--accent-color);
-	outline: none;
-	transform: scale(1.05);
+  color: var(--accent-color);
+  outline: none;
+  transform: scale(1.05);
 }
 
 #home-main img,
 #home-main video {
-	max-height: 100%;
-	object-fit: contain;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* Invisible Divider (kept for layout reference) */
 .split-pane-divider {
-	display: none;
+  display: none;
 }
 
 .header-layout {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 /* Card styles have been consolidated in theme.css */
@@ -232,7 +232,7 @@ header {
 .contact-card {
   color: var(--text-color, #222);
   background: var(--card-bg, #fff);
-  border: 1px solid rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 /* Remove any absolute positioning or negative margins for cards */
@@ -259,77 +259,78 @@ header {
    - Stack panes vertically
    - Center align text/actions*/
 @media (max-width: 768px) {
-	:root {
-		font-size: 90%;
-	}
-	.hero {
-		flex-direction: column;
-		align-items: center;
-		row-gap: 0.1rem; /* panes almost touching */
-		column-gap: 1rem;
-		padding: 0rem;
-	}
-	.hero__info {
-		align-items: center;
-		text-align: center;
-		margin-bottom: -10rem; /* reduced space below info */
-	}
-	.hero__actions {
-		align-items: center;
-		gap: 0.4rem;
-		margin-top: -10rem; /* reduced space above actions */
-	}
-	.hero__button {
-		line-height: 1;
-		min-width: auto;
-		flex-shrink: 0; /* prevent text wrap/distortion */
-	}
-	/* Horizontal divider visible only when stacked */
-	.split-pane-divider,
-	.pane-divider {
-		display: block;
-		width: 100%;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		margin: 0;
-	}
+  :root {
+    font-size: 90%;
+  }
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.1rem; /* panes almost touching */
+    column-gap: 1rem;
+    padding: 0rem;
+  }
+  .hero__info {
+    align-items: center;
+    text-align: center;
+    margin-bottom: -10rem; /* reduced space below info */
+  }
+  .hero__actions {
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: -10rem; /* reduced space above actions */
+  }
+  .hero__button {
+    line-height: 1;
+    min-width: auto;
+    flex-shrink: 0; /* prevent text wrap/distortion */
+  }
+  /* Horizontal divider visible only when stacked */
+  .split-pane-divider,
+  .pane-divider {
+    display: block;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0;
+  }
 }
 
 /* Responsiveness: Mobile
    - Tighten spacing
    - Slight letter spacing adjustment */
 @media (max-width: 480px) {
-	:root {
-		font-size: 80%;
-	}
-	.hero {
-		padding: 0rem;
-		row-gap: 0.05rem; /* panes glued together */
-	}
-	.hero__info {
-		margin-bottom: 0.18rem; /* even tighter below info */
-	}
-	.hero__actions {
-		gap: 0.3rem;
-		margin-top: -10rem; /* even tighter above actions */
-	}
-	.hero__button {
-		letter-spacing: 0.015em;
-		line-height: 1.02;
-		min-width: auto;
-		flex-shrink: 0; /* prevent text wrap/distortion */
-	}
-	.split-pane-divider,
-	.pane-divider {
-		margin: 0;
-		/* Hide decorative divider on small screens to avoid stray line */
-		display: none;
-		border-top: none;
-	}
+  :root {
+    font-size: 80%;
+  }
+  .hero {
+    padding: 0rem;
+    row-gap: 0.05rem; /* panes glued together */
+  }
+  .hero__info {
+    margin-bottom: 0.18rem; /* even tighter below info */
+  }
+  .hero__actions {
+    gap: 0.3rem;
+    margin-top: -10rem; /* even tighter above actions */
+  }
+  .hero__button {
+    letter-spacing: 0.015em;
+    line-height: 1.02;
+    min-width: auto;
+    flex-shrink: 0; /* prevent text wrap/distortion */
+  }
+  .split-pane-divider,
+  .pane-divider {
+    margin: 0;
+    /* Hide decorative divider on small screens to avoid stray line */
+    display: none;
+    border-top: none;
+  }
 }
 
 /* Mobile safety: prevent horizontal overflow and remove stray borders/shadows */
 @media (max-width: 768px) {
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
   }
   /* Defensive: ensure header does not render a bottom border/shadow on small screens */
@@ -337,79 +338,81 @@ header {
     border-bottom: none !important;
     box-shadow: none !important;
   }
-	/* Hide any horizontal decorative dividers when stacked on small/tablet screens */
-	.split-pane-divider,
-	.pane-divider {
-		display: none !important;
-		border-top: none !important;
-	}
-	/* Defensive: ensure split panes do not show borders/shadows on narrow viewports */
-	.split-pane, .main-pane, .pane-content {
-		border: none !important;
-		box-shadow: none !important;
-	}
+  /* Hide any horizontal decorative dividers when stacked on small/tablet screens */
+  .split-pane-divider,
+  .pane-divider {
+    display: none !important;
+    border-top: none !important;
+  }
+  /* Defensive: ensure split panes do not show borders/shadows on narrow viewports */
+  .split-pane,
+  .main-pane,
+  .pane-content {
+    border: none !important;
+    box-shadow: none !important;
+  }
 
-/* Readme details inside cards */
-.card__meta {
-	margin-top: 0.5rem;
-}
-.readme-toggle {
-	background: transparent;
-	border: none;
-	color: var(--accent-color, #0077cc);
-	cursor: pointer;
-	font-weight: 600;
-	padding: 0;
-}
-.card-readme {
-	margin-top: 0.5rem;
-	max-height: 260px;
-	overflow: auto;
-	border-top: 1px solid rgba(0,0,0,0.06);
-	padding-top: 0.5rem;
-	font-size: 0.95rem;
-	line-height: 1.45;
-}
+  /* Readme details inside cards */
+  .card__meta {
+    margin-top: 0.5rem;
+  }
+  .readme-toggle {
+    background: transparent;
+    border: none;
+    color: var(--accent-color, #0077cc);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+  }
+  .card-readme {
+    margin-top: 0.5rem;
+    max-height: 260px;
+    overflow: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
 
-/* Floating README panel (About) */
-.project-readme-float {
-	position: fixed;
-	inset: 0;
-	display: none;
-	align-items: center;
-	justify-content: center;
-	z-index: 12000;
-}
-.project-readme-float .project-readme__backdrop {
-	position: absolute;
-	inset: 0;
-	background: rgba(0,0,0,0.7);
-}
-.project-readme-float .project-readme__panel {
-	position: relative;
-	max-width: 900px;
-	width: calc(100% - 40px);
-	max-height: 85vh;
-	overflow: auto;
-	background: var(--card-bg, #fff);
-	color: var(--text-color, #222);
-	padding: 1rem 1.25rem;
-	border-radius: 10px;
-	box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-	z-index: 12010;
-}
-.project-readme__close {
-	position: absolute;
-	right: 8px;
-	top: 6px;
-	border: none;
-	background: transparent;
-	font-size: 22px;
-	cursor: pointer;
-}
-.project-readme__content {
-	margin-top: 1.25rem;
-}
+  /* Floating README panel (About) */
+  .project-readme-float {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 12000;
+  }
+  .project-readme-float .project-readme__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .project-readme-float .project-readme__panel {
+    position: relative;
+    max-width: 900px;
+    width: calc(100% - 40px);
+    max-height: 85vh;
+    overflow: auto;
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #222);
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    z-index: 12010;
+  }
+  .project-readme__close {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .project-readme__content {
+    margin-top: 1.25rem;
+  }
 }
 
 /* Stack carousel CSS moved to theme.css (lines 1218-1370) to avoid duplication and git conflicts */

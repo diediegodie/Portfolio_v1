@@ -5,16 +5,16 @@
 
 const TextScramble = (() => {
   // Character pool for random cycling
-  const DEFAULT_CHARS = '!@#$%^&*()_+={}[]|;:,.<>?/~`';
-  
+  const DEFAULT_CHARS = "!@#$%^&*()_+={}[]|;:,.<>?/~`";
+
   // Easing functions
   const easings = {
-    linear: t => t,
-    easeIn: t => t * t,
-    easeOut: t => t * (2 - t),
-    easeInOut: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    linear: (t) => t,
+    easeIn: (t) => t * t,
+    easeOut: (t) => t * (2 - t),
+    easeInOut: (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
   };
-  
+
   /**
    * Animate a single text element with scramble effect
    * @param {HTMLElement} element - Element to animate
@@ -26,15 +26,19 @@ const TextScramble = (() => {
     const {
       duration = 600,
       characterSet = DEFAULT_CHARS,
-      easing = 'easeOut',
-      signal = null
+      easing = "easeOut",
+      signal = null,
     } = options;
 
     const easingFn = easings[easing] || easings.linear;
 
     // If already aborted, set final text and resolve immediately
     if (signal && signal.aborted) {
-      try { element.textContent = finalText; } catch (e) { /* ignore */ }
+      try {
+        element.textContent = finalText;
+      } catch (e) {
+        /* ignore */
+      }
       return Promise.resolve();
     }
 
@@ -45,19 +49,27 @@ const TextScramble = (() => {
 
       const cleanUp = () => {
         if (rafId) cancelAnimationFrame(rafId);
-        if (signal && typeof onAbort === 'function') signal.removeEventListener('abort', onAbort);
+        if (signal && typeof onAbort === "function")
+          signal.removeEventListener("abort", onAbort);
       };
 
       const onAbort = () => {
         aborted = true;
-        try { element.textContent = finalText; } catch (e) { /* ignore */ }
+        try {
+          element.textContent = finalText;
+        } catch (e) {
+          /* ignore */
+        }
         cleanUp();
         resolve();
       };
 
       if (signal) {
-        if (signal.aborted) { onAbort(); return; }
-        signal.addEventListener('abort', onAbort, { once: true });
+        if (signal.aborted) {
+          onAbort();
+          return;
+        }
+        signal.addEventListener("abort", onAbort, { once: true });
       }
 
       const animate = (currentTime) => {
@@ -66,22 +78,31 @@ const TextScramble = (() => {
         const progress = Math.min(elapsed / duration, 1);
         const easedProgress = easingFn(progress);
 
-        let displayText = '';
+        let displayText = "";
         for (let i = 0; i < finalText.length; i++) {
           const charProgress = easedProgress * finalText.length;
           if (i < charProgress) {
             displayText += finalText[i];
           } else {
-            displayText += characterSet[Math.floor(Math.random() * characterSet.length)];
+            displayText +=
+              characterSet[Math.floor(Math.random() * characterSet.length)];
           }
         }
 
-        try { element.textContent = displayText; } catch (e) { /* ignore if node removed */ }
+        try {
+          element.textContent = displayText;
+        } catch (e) {
+          /* ignore if node removed */
+        }
 
         if (progress < 1) {
           rafId = requestAnimationFrame(animate);
         } else {
-          try { element.textContent = finalText; } catch (e) { /* ignore */ }
+          try {
+            element.textContent = finalText;
+          } catch (e) {
+            /* ignore */
+          }
           cleanUp();
           resolve();
         }
@@ -89,10 +110,9 @@ const TextScramble = (() => {
 
       // Start the first frame
       rafId = requestAnimationFrame(animate);
-
     });
   }
-  
+
   /**
    * Animate multiple elements
    * @param {Array|NodeList} elements - Array of {element, text, duration}
@@ -102,9 +122,9 @@ const TextScramble = (() => {
   function animateMultiple(elements, options = {}) {
     const {
       characterSet = DEFAULT_CHARS,
-      easing = 'easeOut',
+      easing = "easeOut",
       staggerDelay = 50,
-      signal = null
+      signal = null,
     } = options;
 
     const promises = Array.from(elements).map((item, index) => {
@@ -112,13 +132,18 @@ const TextScramble = (() => {
         const delay = index * staggerDelay;
         const timerId = setTimeout(() => {
           // If the signal was aborted between scheduling and start, resolve immediately
-          if (signal && signal.aborted) { resolve(); return; }
+          if (signal && signal.aborted) {
+            resolve();
+            return;
+          }
           animateElement(item.element, item.text, {
             duration: item.duration,
             characterSet,
             easing,
-            signal
-          }).then(resolve).catch(() => resolve());
+            signal,
+          })
+            .then(resolve)
+            .catch(() => resolve());
         }, delay);
 
         // If aborted before the timeout fires, clear timeout and resolve
@@ -127,10 +152,14 @@ const TextScramble = (() => {
             clearTimeout(timerId);
             resolve();
           } else {
-            signal.addEventListener('abort', () => {
-              clearTimeout(timerId);
-              resolve();
-            }, { once: true });
+            signal.addEventListener(
+              "abort",
+              () => {
+                clearTimeout(timerId);
+                resolve();
+              },
+              { once: true }
+            );
           }
         }
       });
@@ -138,9 +167,9 @@ const TextScramble = (() => {
 
     return Promise.all(promises);
   }
-  
+
   return {
     animateElement,
-    animateMultiple
+    animateMultiple,
   };
 })();

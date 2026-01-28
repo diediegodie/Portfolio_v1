@@ -28,12 +28,17 @@ class TechCarousel {
     this.gap = 44; // Matches CSS gap
     // Transition / state
     this.isTransitioning = false;
-    this.trackTransition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    this.trackTransition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
     // Tooltip helpers
     this.tooltip = null;
-    this.tooltipId = `tech-tooltip-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+    this.tooltipId = `tech-tooltip-${Date.now()}-${Math.floor(
+      Math.random() * 1000
+    )}`;
     this._tooltipHandlers = null;
-    this._prefersReducedMotion = (typeof window !== 'undefined' && window.matchMedia) ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+    this._prefersReducedMotion =
+      typeof window !== "undefined" && window.matchMedia
+        ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        : false;
 
     // Initialize
     this.init();
@@ -47,15 +52,15 @@ class TechCarousel {
       return;
     }
 
-    this.track = this.carousel.querySelector('[data-carousel-track]');
-    this.dotsContainer = this.carousel.querySelector('[data-carousel-dots]');
-    this.viewport = this.carousel.querySelector('.tech-carousel-viewport');
-    this.navLeft = this.carousel.querySelector('.carousel-nav-left');
-    this.navRight = this.carousel.querySelector('.carousel-nav-right');
+    this.track = this.carousel.querySelector("[data-carousel-track]");
+    this.dotsContainer = this.carousel.querySelector("[data-carousel-dots]");
+    this.viewport = this.carousel.querySelector(".tech-carousel-viewport");
+    this.navLeft = this.carousel.querySelector(".carousel-nav-left");
+    this.navRight = this.carousel.querySelector(".carousel-nav-right");
 
     // Dots container is optional (hidden via CSS)
     if (!this.track || !this.viewport) {
-      console.error('Required carousel elements not found');
+      console.error("Required carousel elements not found");
       return;
     }
 
@@ -65,7 +70,10 @@ class TechCarousel {
     // Listen for transform transition ends to detect when we crossed into clones
     // store bound handler so it can be removed on destroy
     this._boundHandleTransitionEnd = this.handleTransitionEnd.bind(this);
-    this.track.addEventListener('transitionend', this._boundHandleTransitionEnd);
+    this.track.addEventListener(
+      "transitionend",
+      this._boundHandleTransitionEnd
+    );
 
     // Set up event listeners
     this.attachEventListeners();
@@ -74,20 +82,26 @@ class TechCarousel {
     this.updateDimensions();
 
     // Warm image cache for clones (non-blocking)
-    if (typeof this.preloadImages === 'function') {
+    if (typeof this.preloadImages === "function") {
       this.preloadImages().catch(() => {});
     }
 
     // Start in the middle block (originals)
     this.currentIndex = this.originalCount;
     // Position without animation first
-    this.track.style.transition = 'none';
+    this.track.style.transition = "none";
     this.updateCarousel(false);
     // Restore transition next frame
-    requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
+    requestAnimationFrame(() => {
+      this.track.style.transition = this.trackTransition;
+    });
 
     // Enable tooltip behavior (wires tabindex/ARIA and listeners)
-    try { this.enableTooltip(); } catch (e) { /* non-fatal */ }
+    try {
+      this.enableTooltip();
+    } catch (e) {
+      /* non-fatal */
+    }
 
     // Start auto-scroll
     this.startAutoScroll();
@@ -95,7 +109,7 @@ class TechCarousel {
 
   generateIcons() {
     // Build: [tail clones (full set)] + [originals] + [head clones (full set)]
-    this.track.innerHTML = '';
+    this.track.innerHTML = "";
     const tailFrag = document.createDocumentFragment();
     const originalsFrag = document.createDocumentFragment();
     const headFrag = document.createDocumentFragment();
@@ -127,21 +141,21 @@ class TechCarousel {
   }
 
   createIconElement(icon, originalIndex, isClone = false) {
-    const iconItem = document.createElement('div');
-    iconItem.className = 'tech-icon-item';
-    iconItem.setAttribute('data-original-index', originalIndex);
-    if (isClone) iconItem.setAttribute('data-clone', 'true');
+    const iconItem = document.createElement("div");
+    iconItem.className = "tech-icon-item";
+    iconItem.setAttribute("data-original-index", originalIndex);
+    if (isClone) iconItem.setAttribute("data-clone", "true");
 
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = icon.src;
     img.alt = icon.alt;
     // For clones, prefer eager loading and higher priority to avoid late paint during snaps
     if (isClone) {
-      img.loading = 'eager';
-      img.setAttribute('fetchpriority', 'high');
-      img.decoding = 'async';
+      img.loading = "eager";
+      img.setAttribute("fetchpriority", "high");
+      img.decoding = "async";
     } else {
-      img.loading = 'lazy';
+      img.loading = "lazy";
     }
 
     iconItem.appendChild(img);
@@ -149,30 +163,35 @@ class TechCarousel {
   }
 
   disableItemTransitions() {
-    const items = this.track.querySelectorAll('.tech-icon-item');
-    items.forEach(i => i.classList.add('no-transition'));
+    const items = this.track.querySelectorAll(".tech-icon-item");
+    items.forEach((i) => i.classList.add("no-transition"));
   }
 
   restoreItemTransitions() {
-    const items = this.track.querySelectorAll('.tech-icon-item.no-transition');
-    items.forEach(i => i.classList.remove('no-transition'));
+    const items = this.track.querySelectorAll(".tech-icon-item.no-transition");
+    items.forEach((i) => i.classList.remove("no-transition"));
   }
 
   preloadImages() {
-    return Promise.all(this.icons.map(icon => new Promise(resolve => {
-      const img = new Image();
-      img.onload = img.onerror = resolve;
-      img.src = icon.src;
-    })));
+    return Promise.all(
+      this.icons.map(
+        (icon) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.onload = img.onerror = resolve;
+            img.src = icon.src;
+          })
+      )
+    );
   }
 
   /* Tooltip methods */
   createTooltip() {
     if (this.tooltip) return;
-    this.tooltip = document.createElement('div');
-    this.tooltip.className = 'tech-tooltip';
-    this.tooltip.setAttribute('role', 'tooltip');
-    this.tooltip.setAttribute('aria-hidden', 'true');
+    this.tooltip = document.createElement("div");
+    this.tooltip.className = "tech-tooltip";
+    this.tooltip.setAttribute("role", "tooltip");
+    this.tooltip.setAttribute("aria-hidden", "true");
     this.tooltip.id = this.tooltipId;
     document.body.appendChild(this.tooltip);
   }
@@ -180,27 +199,27 @@ class TechCarousel {
   showTooltip(text) {
     this.createTooltip();
     this.tooltip.textContent = text;
-    this.tooltip.setAttribute('aria-hidden', 'false');
-    this.tooltip.classList.add('visible');
-    this.tooltip.classList.remove('below');
+    this.tooltip.setAttribute("aria-hidden", "false");
+    this.tooltip.classList.add("visible");
+    this.tooltip.classList.remove("below");
   }
 
   hideTooltip() {
     if (!this.tooltip) return;
-    this.tooltip.setAttribute('aria-hidden', 'true');
-    this.tooltip.classList.remove('visible', 'below');
+    this.tooltip.setAttribute("aria-hidden", "true");
+    this.tooltip.classList.remove("visible", "below");
   }
 
   positionTooltip(clientX, clientY, element, isCursor = true) {
     if (!this.tooltip) this.createTooltip();
     const tt = this.tooltip;
-    tt.style.left = '0px';
-    tt.style.top = '0px';
-    tt.style.display = 'block';
-    tt.classList.remove('below');
+    tt.style.left = "0px";
+    tt.style.top = "0px";
+    tt.style.display = "block";
+    tt.classList.remove("below");
     // allow DOM to measure
     const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
-    if (isCursor && typeof clientX === 'number') {
+    if (isCursor && typeof clientX === "number") {
       const rect = tt.getBoundingClientRect();
       const half = rect.width / 2 || 48;
       let left = clamp(clientX, half + 12, window.innerWidth - half - 12);
@@ -208,7 +227,7 @@ class TechCarousel {
       let top = clientY - 20;
       if (top - rect.height < 12) {
         top = clientY + 20;
-        tt.classList.add('below');
+        tt.classList.add("below");
       }
       tt.style.left = `${left}px`;
       tt.style.top = `${top}px`;
@@ -223,7 +242,7 @@ class TechCarousel {
       const rect = tt.getBoundingClientRect();
       if (rect.top < 12) {
         tt.style.top = `${elRect.bottom + 14}px`;
-        tt.classList.add('below');
+        tt.classList.add("below");
       }
     }
   }
@@ -231,9 +250,9 @@ class TechCarousel {
   enableTooltip() {
     this.createTooltip();
     // ensure icons are keyboard-focusable and reference tooltip
-    this.track.querySelectorAll('.tech-icon-item').forEach(item => {
-      if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
-      item.setAttribute('aria-describedby', this.tooltipId);
+    this.track.querySelectorAll(".tech-icon-item").forEach((item) => {
+      if (!item.hasAttribute("tabindex")) item.setAttribute("tabindex", "0");
+      item.setAttribute("aria-describedby", this.tooltipId);
     });
 
     const isReduced = this._prefersReducedMotion;
@@ -245,69 +264,96 @@ class TechCarousel {
     };
 
     const onEnter = (e) => {
-      const item = e.target.closest('.tech-icon-item');
+      const item = e.target.closest(".tech-icon-item");
       if (!item) return;
       // Show tooltip only for the centered item
-      if (!item.classList.contains('center')) return;
+      if (!item.classList.contains("center")) return;
       activeItem = item;
-      const img = item.querySelector('img');
-      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      const img = item.querySelector("img");
+      const label =
+        img && img.alt
+          ? img.alt
+          : item.getAttribute("data-icon") ||
+            item.getAttribute("data-original-index") ||
+            "";
       this.showTooltip(label);
-      if (!isReduced && typeof e.clientX === 'number') {
+      if (!isReduced && typeof e.clientX === "number") {
         this.positionTooltip(e.clientX, e.clientY, item, true);
-        document.addEventListener('pointermove', pointerMove, { passive: true });
+        document.addEventListener("pointermove", pointerMove, {
+          passive: true,
+        });
       } else {
         this.positionTooltip(null, null, item, false);
       }
     };
 
     const onLeave = (e) => {
-      const item = e.target.closest('.tech-icon-item');
+      const item = e.target.closest(".tech-icon-item");
       if (!item) return;
       activeItem = null;
-      document.removeEventListener('pointermove', pointerMove);
+      document.removeEventListener("pointermove", pointerMove);
       this.hideTooltip();
     };
 
     const onFocus = (e) => {
-      const item = e.target.closest('.tech-icon-item');
+      const item = e.target.closest(".tech-icon-item");
       if (!item) return;
       // Only show label if this item is the visible center
-      if (!item.classList.contains('center')) return;
-      const img = item.querySelector('img');
-      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      if (!item.classList.contains("center")) return;
+      const img = item.querySelector("img");
+      const label =
+        img && img.alt
+          ? img.alt
+          : item.getAttribute("data-icon") ||
+            item.getAttribute("data-original-index") ||
+            "";
       this.showTooltip(label);
       this.positionTooltip(null, null, item, false);
     };
 
-    const onBlur = () => { this.hideTooltip(); };
+    const onBlur = () => {
+      this.hideTooltip();
+    };
 
     const onPointerDown = (e) => {
-      if (e.pointerType !== 'touch') return;
-      const item = e.target.closest('.tech-icon-item');
+      if (e.pointerType !== "touch") return;
+      const item = e.target.closest(".tech-icon-item");
       if (!item) return;
       // Only show touch tooltip for centered item
-      if (!item.classList.contains('center')) return;
-      const img = item.querySelector('img');
-      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      if (!item.classList.contains("center")) return;
+      const img = item.querySelector("img");
+      const label =
+        img && img.alt
+          ? img.alt
+          : item.getAttribute("data-icon") ||
+            item.getAttribute("data-original-index") ||
+            "";
       this.showTooltip(label);
       this.positionTooltip(e.clientX || 0, e.clientY || 0, item, false);
       setTimeout(() => this.hideTooltip(), 1400);
     };
 
     // store handlers for cleanup
-    this._tooltipHandlers = { onEnter, onLeave, onFocus, onBlur, onPointerDown };
+    this._tooltipHandlers = {
+      onEnter,
+      onLeave,
+      onFocus,
+      onBlur,
+      onPointerDown,
+    };
 
     // delegated listeners
-    this.track.addEventListener('pointerenter', onEnter, true);
-    this.track.addEventListener('pointerleave', onLeave, true);
-    this.track.addEventListener('focusin', onFocus, true);
-    this.track.addEventListener('focusout', onBlur, true);
-    this.track.addEventListener('pointerdown', onPointerDown, { passive: true });
+    this.track.addEventListener("pointerenter", onEnter, true);
+    this.track.addEventListener("pointerleave", onLeave, true);
+    this.track.addEventListener("focusin", onFocus, true);
+    this.track.addEventListener("focusout", onBlur, true);
+    this.track.addEventListener("pointerdown", onPointerDown, {
+      passive: true,
+    });
   }
 
   generateDots() {
-    // Dot generation intentionally disabled — no-op to keep API stable
+    // Dot generation intentionally disabled — no-op kept for API compatibility
     return;
   }
 
@@ -317,29 +363,22 @@ class TechCarousel {
 
     // Navigation arrows
     if (this.navLeft) {
-      this._handlers.navLeftClick = () => { this.prev(); this.resetAutoScroll(); };
-      this.navLeft.addEventListener('click', this._handlers.navLeftClick);
+      this._handlers.navLeftClick = () => {
+        this.prev();
+        this.resetAutoScroll();
+      };
+      this.navLeft.addEventListener("click", this._handlers.navLeftClick);
     }
 
     if (this.navRight) {
-      this._handlers.navRightClick = () => { this.next(); this.resetAutoScroll(); };
-      this.navRight.addEventListener('click', this._handlers.navRightClick);
+      this._handlers.navRightClick = () => {
+        this.next();
+        this.resetAutoScroll();
+      };
+      this.navRight.addEventListener("click", this._handlers.navRightClick);
     }
 
-    // Progress dots (optional - may not exist if hidden)
-    if (this.dotsContainer) {
-      const dots = this.dotsContainer.querySelectorAll('.carousel-dot');
-      this._handlers.dotClicks = [];
-      dots.forEach(dot => {
-        const handler = () => {
-          const index = parseInt(dot.getAttribute('data-index'), 10);
-          this.goToIndex(index);
-          this.resetAutoScroll();
-        };
-        dot.addEventListener('click', handler);
-        this._handlers.dotClicks.push({ dot, handler });
-      });
-    }
+    // Progress dots were removed from the UI; no dot listeners are registered.
 
     // Pause-on-hover removed so carousel always auto-scrolls
     // (Intentionally do not register mouseenter/mouseleave handlers.)
@@ -351,18 +390,20 @@ class TechCarousel {
       this._handlers.resizeTimeout = setTimeout(() => {
         this.updateDimensions();
         // reposition without animation during resize
-        this.track.style.transition = 'none';
+        this.track.style.transition = "none";
         this.updateCarousel(false);
         void this.track.offsetWidth;
-        requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
+        requestAnimationFrame(() => {
+          this.track.style.transition = this.trackTransition;
+        });
       }, 300);
     };
-    window.addEventListener('resize', this._handlers.onResize);
+    window.addEventListener("resize", this._handlers.onResize);
   }
 
   updateDimensions() {
     // Get actual rendered dimensions from CSS
-    const iconItems = this.track.querySelectorAll('.tech-icon-item');
+    const iconItems = this.track.querySelectorAll(".tech-icon-item");
     if (iconItems.length > 0) {
       const firstIcon = iconItems[0];
       const computedStyle = window.getComputedStyle(firstIcon);
@@ -375,12 +416,12 @@ class TechCarousel {
 
   updateCarousel(animate = true) {
     // Update icon highlighting
-    const iconItems = this.track.querySelectorAll('.tech-icon-item');
+    const iconItems = this.track.querySelectorAll(".tech-icon-item");
     iconItems.forEach((item, index) => {
       if (index === this.currentIndex) {
-        item.classList.add('center');
+        item.classList.add("center");
       } else {
-        item.classList.remove('center');
+        item.classList.remove("center");
       }
     });
 
@@ -388,44 +429,30 @@ class TechCarousel {
     const viewportWidth = this.viewport.offsetWidth;
 
     // Position of current icon's center in the track
-    const iconCenterInTrack = this.currentIndex * (this.iconWidth + this.gap) + (this.iconWidth / 2);
+    const iconCenterInTrack =
+      this.currentIndex * (this.iconWidth + this.gap) + this.iconWidth / 2;
 
     // Offset needed to center that icon in viewport
-    const offset = (viewportWidth / 2) - iconCenterInTrack;
+    const offset = viewportWidth / 2 - iconCenterInTrack;
 
     // Apply transform
     const transformStr = `translate3d(${offset}px, 0, 0)`;
     if (!animate) {
-      this.track.style.transition = 'none';
+      this.track.style.transition = "none";
       this.track.style.transform = transformStr;
       return;
     }
     this.track.style.transform = transformStr;
-
-      // Dot UI removed — no-op to keep API stable
-      this.updateDots = () => {
-        return;
-      };
-  }
-
-  updateDots() {
-    // Dots container is optional (hidden via CSS)
-    if (!this.dotsContainer) {
-      return;
-    }
-
-    // Dot UI removed — no-op to keep API stable
-    return;
   }
 
   handleTransitionEnd(e) {
     // only handle the track's transform transitions
-    if (e.target !== this.track || e.propertyName !== 'transform') return;
+    if (e.target !== this.track || e.propertyName !== "transform") return;
 
     // Forward wrap: entered appended head clones
     if (this.currentIndex >= this.originalCount * 2) {
       // disable track transition + item transitions, reposition to originals, then restore
-      this.track.style.transition = 'none';
+      this.track.style.transition = "none";
       this.disableItemTransitions();
       this.currentIndex -= this.originalCount;
       this.updateCarousel(false); // position without animation or item transitions
@@ -437,7 +464,7 @@ class TechCarousel {
       });
     } else if (this.currentIndex < this.originalCount) {
       // Backward wrap: entered prepended tail clones
-      this.track.style.transition = 'none';
+      this.track.style.transition = "none";
       this.disableItemTransitions();
       this.currentIndex += this.originalCount;
       this.updateCarousel(false);
@@ -491,10 +518,12 @@ class TechCarousel {
   }
 
   pauseAutoScroll() {
+    // Pause/resume helpers deprecated (pause-on-hover removed).
     this.stopAutoScroll();
   }
 
   resumeAutoScroll() {
+    // Kept for backwards compatibility but simply restarts auto-scroll.
     this.startAutoScroll();
   }
 
@@ -510,35 +539,59 @@ class TechCarousel {
     // Remove transitionend listener
     try {
       if (this._boundHandleTransitionEnd && this.track) {
-        this.track.removeEventListener('transitionend', this._boundHandleTransitionEnd);
+        this.track.removeEventListener(
+          "transitionend",
+          this._boundHandleTransitionEnd
+        );
         this._boundHandleTransitionEnd = null;
       }
-    } catch (e) { /* non-fatal */ }
+    } catch (e) {
+      /* non-fatal */
+    }
 
     // Remove nav/dot listeners and carousel mouse listeners, window resize
     try {
       if (this._handlers) {
-        if (this.navLeft && this._handlers.navLeftClick) this.navLeft.removeEventListener('click', this._handlers.navLeftClick);
-        if (this.navRight && this._handlers.navRightClick) this.navRight.removeEventListener('click', this._handlers.navRightClick);
-        if (this._handlers.dotClicks && Array.isArray(this._handlers.dotClicks)) {
-          this._handlers.dotClicks.forEach(({ dot, handler }) => { dot.removeEventListener('click', handler); });
-        }
-        if (this.carousel && this._handlers.mouseEnter) this.carousel.removeEventListener('mouseenter', this._handlers.mouseEnter);
-        if (this.carousel && this._handlers.mouseLeave) this.carousel.removeEventListener('mouseleave', this._handlers.mouseLeave);
-        if (this._handlers.onResize) window.removeEventListener('resize', this._handlers.onResize);
-        if (this._handlers.resizeTimeout) clearTimeout(this._handlers.resizeTimeout);
+        if (this.navLeft && this._handlers.navLeftClick)
+          this.navLeft.removeEventListener(
+            "click",
+            this._handlers.navLeftClick
+          );
+        if (this.navRight && this._handlers.navRightClick)
+          this.navRight.removeEventListener(
+            "click",
+            this._handlers.navRightClick
+          );
+        // dotClicks cleanup removed — no dot listeners are registered in attachEventListeners
+        if (this.carousel && this._handlers.mouseEnter)
+          this.carousel.removeEventListener(
+            "mouseenter",
+            this._handlers.mouseEnter
+          );
+        if (this.carousel && this._handlers.mouseLeave)
+          this.carousel.removeEventListener(
+            "mouseleave",
+            this._handlers.mouseLeave
+          );
+        if (this._handlers.onResize)
+          window.removeEventListener("resize", this._handlers.onResize);
+        if (this._handlers.resizeTimeout)
+          clearTimeout(this._handlers.resizeTimeout);
         this._handlers = null;
       }
-    } catch (e) { /* non-fatal */ }
+    } catch (e) {
+      /* non-fatal */
+    }
 
     // Clean up tooltip listeners and element
     if (this._tooltipHandlers && this.track) {
-      const { onEnter, onLeave, onFocus, onBlur, onPointerDown } = this._tooltipHandlers;
-      this.track.removeEventListener('pointerenter', onEnter, true);
-      this.track.removeEventListener('pointerleave', onLeave, true);
-      this.track.removeEventListener('focusin', onFocus, true);
-      this.track.removeEventListener('focusout', onBlur, true);
-      this.track.removeEventListener('pointerdown', onPointerDown);
+      const { onEnter, onLeave, onFocus, onBlur, onPointerDown } =
+        this._tooltipHandlers;
+      this.track.removeEventListener("pointerenter", onEnter, true);
+      this.track.removeEventListener("pointerleave", onLeave, true);
+      this.track.removeEventListener("focusin", onFocus, true);
+      this.track.removeEventListener("focusout", onBlur, true);
+      this.track.removeEventListener("pointerdown", onPointerDown);
       this._tooltipHandlers = null;
     }
     if (this.tooltip && this.tooltip.parentNode) {
@@ -555,21 +608,33 @@ class TechCarousel {
 
 // Icon data configuration
 const BACKEND_ICONS = [
-  { id: 'python', src: '/static/icons/about-icons/python.svg', alt: 'Python' },
-  { id: 'flask', src: '/static/icons/about-icons/flask.svg', alt: 'Flask' },
-  { id: 'rest-api', src: '/static/icons/about-icons/rest-api.svg', alt: 'REST API' },
-  { id: 'postgres', src: '/static/icons/about-icons/postgres.svg', alt: 'PostgreSQL' },
-  { id: 'docker', src: '/static/icons/about-icons/docker.svg', alt: 'Docker' },
-  { id: 'linux', src: '/static/icons/about-icons/linux.svg', alt: 'Linux' },
-  { id: 'git', src: '/static/icons/about-icons/git.svg', alt: 'Git' },
-  { id: 'github', src: '/static/icons/about-icons/github.svg', alt: 'GitHub' },
-  { id: 'ci-cd', src: '/static/icons/about-icons/ci-cd.svg', alt: 'CI/CD' }
+  { id: "python", src: "/static/icons/about-icons/python.svg", alt: "Python" },
+  { id: "flask", src: "/static/icons/about-icons/flask.svg", alt: "Flask" },
+  {
+    id: "rest-api",
+    src: "/static/icons/about-icons/rest-api.svg",
+    alt: "REST API",
+  },
+  {
+    id: "postgres",
+    src: "/static/icons/about-icons/postgres.svg",
+    alt: "PostgreSQL",
+  },
+  { id: "docker", src: "/static/icons/about-icons/docker.svg", alt: "Docker" },
+  { id: "linux", src: "/static/icons/about-icons/linux.svg", alt: "Linux" },
+  { id: "git", src: "/static/icons/about-icons/git.svg", alt: "Git" },
+  { id: "github", src: "/static/icons/about-icons/github.svg", alt: "GitHub" },
+  { id: "ci-cd", src: "/static/icons/about-icons/ci-cd.svg", alt: "CI/CD" },
 ];
 
 const FRONTEND_ICONS = [
-  { id: 'html', src: '/static/icons/about-icons/html.svg', alt: 'HTML5' },
-  { id: 'css', src: '/static/icons/about-icons/css.svg', alt: 'CSS3' },
-  { id: 'javascript', src: '/static/icons/about-icons/javascript.svg', alt: 'JavaScript' }
+  { id: "html", src: "/static/icons/about-icons/html.svg", alt: "HTML5" },
+  { id: "css", src: "/static/icons/about-icons/css.svg", alt: "CSS3" },
+  {
+    id: "javascript",
+    src: "/static/icons/about-icons/javascript.svg",
+    alt: "JavaScript",
+  },
 ];
 
 /* Module-level instance holders so carousels can be recreated/destroyed */
@@ -579,18 +644,30 @@ let __aboutFrontendCarousel = null;
 /* Ensure carousels exist (idempotent) */
 window.ensureAboutCarousels = function ensureAboutCarousels() {
   try {
-    const backendRoot = document.querySelector('.about__backend [data-carousel="backend"]');
+    const backendRoot = document.querySelector(
+      '.about__backend [data-carousel="backend"]'
+    );
     if (backendRoot && !__aboutBackendCarousel) {
-      __aboutBackendCarousel = new TechCarousel('.about__backend', BACKEND_ICONS, {
-        autoScrollInterval: 3000
-      });
+      __aboutBackendCarousel = new TechCarousel(
+        ".about__backend",
+        BACKEND_ICONS,
+        {
+          autoScrollInterval: 3000,
+        }
+      );
     }
-    const frontendRoot = document.querySelector('.about__frontend [data-carousel="frontend"]');
+    const frontendRoot = document.querySelector(
+      '.about__frontend [data-carousel="frontend"]'
+    );
     if (frontendRoot && !__aboutFrontendCarousel) {
-      __aboutFrontendCarousel = new TechCarousel('.about__frontend', FRONTEND_ICONS, { autoScrollInterval: 3000 });
+      __aboutFrontendCarousel = new TechCarousel(
+        ".about__frontend",
+        FRONTEND_ICONS,
+        { autoScrollInterval: 3000 }
+      );
     }
   } catch (e) {
-    console.debug('ensureAboutCarousels error', e);
+    console.debug("ensureAboutCarousels error", e);
   }
 };
 
@@ -606,12 +683,12 @@ window.destroyAboutCarousels = function destroyAboutCarousels() {
       __aboutFrontendCarousel = null;
     }
   } catch (e) {
-    console.debug('destroyAboutCarousels error', e);
+    console.debug("destroyAboutCarousels error", e);
   }
 };
 
 /* Keep DOMContentLoaded bootstrap but delegate to ensureAboutCarousels (idempotent) */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Create carousels if present in DOM
   window.ensureAboutCarousels && window.ensureAboutCarousels();
 });
