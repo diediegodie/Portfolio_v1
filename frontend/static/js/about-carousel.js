@@ -50,9 +50,8 @@ class TechCarousel {
       return;
     }
 
-    // Generate icons and dots
+    // Generate icons (dot UI removed)
     this.generateIcons();
-    this.generateDots();
 
     // Set up event listeners
     this.attachEventListeners();
@@ -89,32 +88,8 @@ class TechCarousel {
   }
 
   generateDots() {
-    // Dots container is optional (hidden via CSS)
-    if (!this.dotsContainer) {
-      return;
-    }
-
-    // Clear existing dots
-    this.dotsContainer.innerHTML = '';
-
-    // Create dot elements
-    this.icons.forEach((icon, index) => {
-      const dot = document.createElement('button');
-      dot.className = 'carousel-dot';
-      dot.setAttribute('role', 'tab');
-      dot.setAttribute('aria-label', `${icon.alt} (${index + 1} of ${this.icons.length})`);
-      dot.setAttribute('data-index', index);
-      dot.type = 'button';
-
-      if (index === 0) {
-        dot.classList.add('active');
-        dot.setAttribute('aria-selected', 'true');
-      } else {
-        dot.setAttribute('aria-selected', 'false');
-      }
-
-      this.dotsContainer.appendChild(dot);
-    });
+    // Dot generation intentionally disabled — no-op to keep API stable
+    return;
   }
 
   attachEventListeners() {
@@ -198,8 +173,10 @@ class TechCarousel {
     // Apply transform
     this.track.style.transform = `translateX(${offset}px)`;
 
-    // Update dots
-    this.updateDots();
+      // Dot UI removed — no-op to keep API stable
+      this.updateDots = () => {
+        return;
+      };
   }
 
   updateDots() {
@@ -208,16 +185,8 @@ class TechCarousel {
       return;
     }
 
-    const dots = this.dotsContainer.querySelectorAll('.carousel-dot');
-    dots.forEach((dot, index) => {
-      if (index === this.currentIndex) {
-        dot.classList.add('active');
-        dot.setAttribute('aria-selected', 'true');
-      } else {
-        dot.classList.remove('active');
-        dot.setAttribute('aria-selected', 'false');
-      }
-    });
+    // Dot UI removed — no-op to keep API stable
+    return;
   }
 
   next() {
@@ -306,8 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Frontend carousel will be initialized in Phase 4
-  // const frontendCarousel = document.querySelector('.about__frontend [data-carousel="frontend"]');
-  // if (frontendCarousel) {
-  //   new TechCarousel('.about__frontend', FRONTEND_ICONS, { autoScrollInterval: 3000 });
-  // }
+  const frontendCarousel = document.querySelector('.about__frontend [data-carousel="frontend"]');
+  if (frontendCarousel) {
+    new TechCarousel('.about__frontend', FRONTEND_ICONS, { autoScrollInterval: 3000 });
+  }
 });

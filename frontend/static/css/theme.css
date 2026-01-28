@@ -1145,8 +1145,7 @@ html[data-theme='dark'] .project-readme__content code {
 }
 
 /* BEGIN: About modal refactor additions */
-.about-tech-list { list-style: none; padding: 0; margin: 0; }
-.about-tech-list li { margin-bottom: var(--spacing-sm); }
+/* Removed .about-tech-list rules (carousel now used) */
 
 /* Ensure about-modal grid remains 2x2 on desktop using existing grid rules */
 .about-modal__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
@@ -1159,18 +1158,6 @@ html[data-theme='dark'] .project-readme__content code {
 
 /* BEGIN: About modal refinements: centered lists and stacked CTAs */
 .about-modal__grid .about-card > h3 {
-  text-align: center;
-}
-
-.about-tech-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  align-items: center;
-  justify-content: center;
   text-align: center;
 }
 
@@ -1317,36 +1304,7 @@ html[data-theme='dark'] .project-readme__content code {
   stroke-width: 2.5;
 }
 
-/* Progress dots */
-.carousel-dots {
-  display: none;
-}
-
-.carousel-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 2px solid var(--text-color, #222);
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-}
-
-.carousel-dot:hover {
-  transform: scale(1.2);
-  border-color: var(--accent, #007bff);
-}
-
-.carousel-dot:focus-visible {
-  outline: 2px solid var(--accent, #007bff);
-  outline-offset: 3px;
-}
-
-.carousel-dot.active {
-  background: var(--text-color, #222);
-  border-color: var(--text-color, #222);
-}
+/* Progress dot styles removed (dots UI deprecated) */
 
 /* Dark theme adjustments */
 html[data-theme='dark'] .carousel-nav {
@@ -1359,13 +1317,7 @@ html[data-theme='dark'] .carousel-nav:hover {
   background: var(--muted-bg, #3a3a3a);
 }
 
-html[data-theme='dark'] .carousel-dot {
-  border-color: var(--text-color, #e0e0e0);
-}
-
-html[data-theme='dark'] .carousel-dot.active {
-  background: var(--text-color, #e0e0e0);
-}
+/* Dark theme dot styles removed (dots UI deprecated) */
 
 /* Responsive adjustments for mobile */
 @media (max-width: 720px) {
@@ -1404,11 +1356,7 @@ html[data-theme='dark'] .carousel-dot.active {
     right: 4px;
   }
 
-  .carousel-dot {
-    width: 7px;
-    height: 7px;
   }
-}
 
 /* Extra small screens */
 @media (max-width: 480px) {
@@ -1425,15 +1373,7 @@ html[data-theme='dark'] .carousel-dot.active {
     height: 60px;
   }
 
-  .carousel-dots {
-    gap: 6px;
   }
-
-  .carousel-dot {
-    width: 6px;
-    height: 6px;
-  }
-}
 
 /* END: Tech Stack Carousel Styles */
 
