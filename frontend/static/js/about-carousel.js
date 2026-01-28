@@ -29,6 +29,11 @@ class TechCarousel {
     // Transition / state
     this.isTransitioning = false;
     this.trackTransition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    // Tooltip helpers
+    this.tooltip = null;
+    this.tooltipId = `tech-tooltip-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+    this._tooltipHandlers = null;
+    this._prefersReducedMotion = (typeof window !== 'undefined' && window.matchMedia) ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
 
     // Initialize
     this.init();
@@ -78,6 +83,9 @@ class TechCarousel {
     this.updateCarousel(false);
     // Restore transition next frame
     requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
+
+    // Enable tooltip behavior (wires tabindex/ARIA and listeners)
+    try { this.enableTooltip(); } catch (e) { /* non-fatal */ }
 
     // Start auto-scroll
     this.startAutoScroll();
@@ -154,6 +162,140 @@ class TechCarousel {
       img.onload = img.onerror = resolve;
       img.src = icon.src;
     })));
+  }
+
+  /* Tooltip methods */
+  createTooltip() {
+    if (this.tooltip) return;
+    this.tooltip = document.createElement('div');
+    this.tooltip.className = 'tech-tooltip';
+    this.tooltip.setAttribute('role', 'tooltip');
+    this.tooltip.setAttribute('aria-hidden', 'true');
+    this.tooltip.id = this.tooltipId;
+    document.body.appendChild(this.tooltip);
+  }
+
+  showTooltip(text) {
+    this.createTooltip();
+    this.tooltip.textContent = text;
+    this.tooltip.setAttribute('aria-hidden', 'false');
+    this.tooltip.classList.add('visible');
+    this.tooltip.classList.remove('below');
+  }
+
+  hideTooltip() {
+    if (!this.tooltip) return;
+    this.tooltip.setAttribute('aria-hidden', 'true');
+    this.tooltip.classList.remove('visible', 'below');
+  }
+
+  positionTooltip(clientX, clientY, element, isCursor = true) {
+    if (!this.tooltip) this.createTooltip();
+    const tt = this.tooltip;
+    tt.style.left = '0px';
+    tt.style.top = '0px';
+    tt.style.display = 'block';
+    tt.classList.remove('below');
+    // allow DOM to measure
+    const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
+    if (isCursor && typeof clientX === 'number') {
+      const rect = tt.getBoundingClientRect();
+      const half = rect.width / 2 || 48;
+      let left = clamp(clientX, half + 12, window.innerWidth - half - 12);
+      // increase vertical gap between cursor and tooltip
+      let top = clientY - 20;
+      if (top - rect.height < 12) {
+        top = clientY + 20;
+        tt.classList.add('below');
+      }
+      tt.style.left = `${left}px`;
+      tt.style.top = `${top}px`;
+    } else if (element) {
+      const elRect = element.getBoundingClientRect();
+      let left = elRect.left + elRect.width / 2;
+      // anchor a bit further above element
+      let top = elRect.top - 14;
+      left = clamp(left, 12, window.innerWidth - 12);
+      tt.style.left = `${left}px`;
+      tt.style.top = `${top}px`;
+      const rect = tt.getBoundingClientRect();
+      if (rect.top < 12) {
+        tt.style.top = `${elRect.bottom + 14}px`;
+        tt.classList.add('below');
+      }
+    }
+  }
+
+  enableTooltip() {
+    this.createTooltip();
+    // ensure icons are keyboard-focusable and reference tooltip
+    this.track.querySelectorAll('.tech-icon-item').forEach(item => {
+      if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-describedby', this.tooltipId);
+    });
+
+    const isReduced = this._prefersReducedMotion;
+    let activeItem = null;
+
+    const pointerMove = (e) => {
+      if (!activeItem) return;
+      this.positionTooltip(e.clientX, e.clientY, activeItem, true);
+    };
+
+    const onEnter = (e) => {
+      const item = e.target.closest('.tech-icon-item');
+      if (!item) return;
+      activeItem = item;
+      const img = item.querySelector('img');
+      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      this.showTooltip(label);
+      if (!isReduced && typeof e.clientX === 'number') {
+        this.positionTooltip(e.clientX, e.clientY, item, true);
+        document.addEventListener('pointermove', pointerMove, { passive: true });
+      } else {
+        this.positionTooltip(null, null, item, false);
+      }
+    };
+
+    const onLeave = (e) => {
+      const item = e.target.closest('.tech-icon-item');
+      if (!item) return;
+      activeItem = null;
+      document.removeEventListener('pointermove', pointerMove);
+      this.hideTooltip();
+    };
+
+    const onFocus = (e) => {
+      const item = e.target.closest('.tech-icon-item');
+      if (!item) return;
+      const img = item.querySelector('img');
+      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      this.showTooltip(label);
+      this.positionTooltip(null, null, item, false);
+    };
+
+    const onBlur = () => { this.hideTooltip(); };
+
+    const onPointerDown = (e) => {
+      if (e.pointerType !== 'touch') return;
+      const item = e.target.closest('.tech-icon-item');
+      if (!item) return;
+      const img = item.querySelector('img');
+      const label = (img && img.alt) ? img.alt : (item.getAttribute('data-icon') || item.getAttribute('data-original-index') || '');
+      this.showTooltip(label);
+      this.positionTooltip(e.clientX || 0, e.clientY || 0, item, false);
+      setTimeout(() => this.hideTooltip(), 1400);
+    };
+
+    // store handlers for cleanup
+    this._tooltipHandlers = { onEnter, onLeave, onFocus, onBlur, onPointerDown };
+
+    // delegated listeners
+    this.track.addEventListener('pointerenter', onEnter, true);
+    this.track.addEventListener('pointerleave', onLeave, true);
+    this.track.addEventListener('focusin', onFocus, true);
+    this.track.addEventListener('focusout', onBlur, true);
+    this.track.addEventListener('pointerdown', onPointerDown, { passive: true });
   }
 
   generateDots() {
@@ -355,7 +497,20 @@ class TechCarousel {
 
   destroy() {
     this.stopAutoScroll();
-    // Clean up event listeners if needed
+    // Clean up tooltip listeners and element
+    if (this._tooltipHandlers && this.track) {
+      const { onEnter, onLeave, onFocus, onBlur, onPointerDown } = this._tooltipHandlers;
+      this.track.removeEventListener('pointerenter', onEnter, true);
+      this.track.removeEventListener('pointerleave', onLeave, true);
+      this.track.removeEventListener('focusin', onFocus, true);
+      this.track.removeEventListener('focusout', onBlur, true);
+      this.track.removeEventListener('pointerdown', onPointerDown);
+      this._tooltipHandlers = null;
+    }
+    if (this.tooltip && this.tooltip.parentNode) {
+      this.tooltip.parentNode.removeChild(this.tooltip);
+      this.tooltip = null;
+    }
   }
 }
 

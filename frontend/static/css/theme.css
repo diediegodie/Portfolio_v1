@@ -1470,3 +1470,98 @@ html[data-theme='dark'] .carousel-nav:hover {
   backface-visibility: hidden;
   transform: translateZ(0);
 }
+
+/* Tooltip for tech icons (floating label) */
+.tech-tooltip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  border-radius: 8px;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 140ms ease, transform 140ms ease;
+  will-change: transform, opacity;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+.tech-tooltip.visible {
+  opacity: 1;
+  transform: translate(-50%, -140%) scale(1);
+}
+.tech-tooltip.below {
+  transform: translate(-50%, 8px) !important;
+  transform-origin: top center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tech-tooltip { transition: none; }
+}
+
+/* REVISED: Tech icon purple glow — center-only, smaller, unclipped */
+/* CSS variables and defaults (derived from project purple #bd93f9) */
+:root {
+  --tech-glow-inner: rgba(189,147,249,0.92);
+  --tech-glow-mid: rgba(189,147,249,0.28);
+  --tech-glow-outer: rgba(189,147,249,0.06);
+  --tech-glow-size: 140%; /* smaller, concentrated glow */
+  --tech-glow-blur: 22px; /* soft blur without hard edges */
+}
+
+/* Slightly stronger mid/outer on dark for contrast */
+html[data-theme='dark'] {
+  --tech-glow-mid: rgba(189,147,249,0.42);
+  --tech-glow-outer: rgba(189,147,249,0.12);
+}
+
+/* Allow glow to bleed (prevent clipping) at carousel level only. Do NOT change global card overflow. */
+.tech-carousel, .tech-carousel-viewport { overflow: visible; }
+
+/* Host for glow pseudo-element */
+.tech-icon-item {
+  position: relative;
+  overflow: visible; /* ensure glow can extend slightly */
+  will-change: transform, opacity;
+}
+
+/* Glow pseudo-element kept subtle and centered only */
+.tech-icon-item::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--tech-glow-size);
+  height: var(--tech-glow-size);
+  transform: translate(-50%, -50%) scale(0.82); /* compact by default */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1; /* behind the image (images sit at z-index:2) */
+  background: radial-gradient(circle at center, var(--tech-glow-inner) 0%, var(--tech-glow-mid) 28%, var(--tech-glow-outer) 60%, transparent 72%);
+  filter: blur(var(--tech-glow-blur));
+  opacity: 0;
+  transition: opacity 180ms cubic-bezier(0.2,0.8,0.2,1), transform 180ms cubic-bezier(0.2,0.8,0.2,1);
+  mix-blend-mode: screen;
+}
+
+/* Keep image above the glow */
+.tech-icon-item img { position: relative; z-index: 2; }
+
+/* SHOW glow ONLY for the centered item (no hover/focus triggers) */
+.tech-icon-item.center::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Respect existing 'no-transition' helper used during snap */
+.tech-icon-item.no-transition::before { transition: none !important; }
+
+/* Reduced motion: disable transforms/transitions but keep a static glow */
+@media (prefers-reduced-motion: reduce) {
+  .tech-icon-item::before { transition: none; filter: blur(calc(var(--tech-glow-blur) * 0.6)); }
+  .tech-icon-item.center::before { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}

@@ -23,50 +23,73 @@ const TextScramble = (() => {
    * @returns {Promise} Resolves when animation completes
    */
   function animateElement(element, finalText, options = {}) {
+    const {
+      duration = 600,
+      characterSet = DEFAULT_CHARS,
+      easing = 'easeOut',
+      signal = null
+    } = options;
+
+    const easingFn = easings[easing] || easings.linear;
+
+    // If already aborted, set final text and resolve immediately
+    if (signal && signal.aborted) {
+      try { element.textContent = finalText; } catch (e) { /* ignore */ }
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
-      const {
-        duration = 600,
-        characterSet = DEFAULT_CHARS,
-        easing = 'easeOut'
-      } = options;
-      
-      const easingFn = easings[easing] || easings.linear;
-      const startTime = performance.now();
-      
+      let rafId = null;
+      let startTime = performance.now();
+      let aborted = false;
+
+      const cleanUp = () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        if (signal && typeof onAbort === 'function') signal.removeEventListener('abort', onAbort);
+      };
+
+      const onAbort = () => {
+        aborted = true;
+        try { element.textContent = finalText; } catch (e) { /* ignore */ }
+        cleanUp();
+        resolve();
+      };
+
+      if (signal) {
+        if (signal.aborted) { onAbort(); return; }
+        signal.addEventListener('abort', onAbort, { once: true });
+      }
+
       const animate = (currentTime) => {
+        if (aborted) return;
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easedProgress = easingFn(progress);
-        
+
         let displayText = '';
-        
         for (let i = 0; i < finalText.length; i++) {
           const charProgress = easedProgress * finalText.length;
-          
           if (i < charProgress) {
-            // Character is revealed
             displayText += finalText[i];
           } else {
-            // Character is scrambled
-            const randomChar = characterSet[
-              Math.floor(Math.random() * characterSet.length)
-            ];
-            displayText += randomChar;
+            displayText += characterSet[Math.floor(Math.random() * characterSet.length)];
           }
         }
-        
-        element.textContent = displayText;
-        
+
+        try { element.textContent = displayText; } catch (e) { /* ignore if node removed */ }
+
         if (progress < 1) {
-          requestAnimationFrame(animate);
+          rafId = requestAnimationFrame(animate);
         } else {
-          // Ensure final text is correct
-          element.textContent = finalText;
+          try { element.textContent = finalText; } catch (e) { /* ignore */ }
+          cleanUp();
           resolve();
         }
       };
-      
-      requestAnimationFrame(animate);
+
+      // Start the first frame
+      rafId = requestAnimationFrame(animate);
+
     });
   }
   
@@ -80,27 +103,40 @@ const TextScramble = (() => {
     const {
       characterSet = DEFAULT_CHARS,
       easing = 'easeOut',
-      staggerDelay = 50
+      staggerDelay = 50,
+      signal = null
     } = options;
-    
-    return Promise.all(
-      Array.from(elements).map((item, index) => {
+
+    const promises = Array.from(elements).map((item, index) => {
+      return new Promise((resolve) => {
         const delay = index * staggerDelay;
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            animateElement(
-              item.element,
-              item.text,
-              {
-                duration: item.duration,
-                characterSet,
-                easing
-              }
-            ).then(resolve);
-          }, delay);
-        });
-      })
-    );
+        const timerId = setTimeout(() => {
+          // If the signal was aborted between scheduling and start, resolve immediately
+          if (signal && signal.aborted) { resolve(); return; }
+          animateElement(item.element, item.text, {
+            duration: item.duration,
+            characterSet,
+            easing,
+            signal
+          }).then(resolve).catch(() => resolve());
+        }, delay);
+
+        // If aborted before the timeout fires, clear timeout and resolve
+        if (signal) {
+          if (signal.aborted) {
+            clearTimeout(timerId);
+            resolve();
+          } else {
+            signal.addEventListener('abort', () => {
+              clearTimeout(timerId);
+              resolve();
+            }, { once: true });
+          }
+        }
+      });
+    });
+
+    return Promise.all(promises);
   }
   
   return {

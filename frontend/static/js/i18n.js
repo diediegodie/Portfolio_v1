@@ -17,14 +17,25 @@ document.addEventListener('DOMContentLoaded', function() {
     { key: 'buttons.contact', duration: 1000 }
   ];
 
-  // Helper: Check if currently on home page
+  // Helper: Check if currently on home page (visible)
   function isHomePageVisible() {
-    return document.getElementById('home-main') !== null;
+    const el = document.getElementById('home-main');
+    if (!el) return false;
+    // If main content is marked inert (modal open) or hidden, treat as not visible
+    if (el.hasAttribute && el.hasAttribute('inert')) return false;
+    const rect = el.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).display !== 'none';
   }
 
-  // Helper: Cancel any in-progress animations
+  // Helper: Cancel any in-progress animations (supports AbortController)
   let currentAnimationPromise = null;
+  let currentAnimationController = null;
   function cancelRunningAnimations() {
+    // Abort any in-progress scramble animation using AbortController to stop rAF loops
+    if (currentAnimationController) {
+      try { currentAnimationController.abort(); } catch (e) { /* ignore */ }
+      currentAnimationController = null;
+    }
     currentAnimationPromise = null;
   }
 
@@ -124,13 +135,13 @@ document.addEventListener('DOMContentLoaded', function() {
   window.i18n.updateAll = function(lang, animate = false) {
     const dict = (window.i18n.cache && window.i18n.cache[lang]) ? window.i18n.cache[lang] : {};
 
-    // Determine if we should animate
-    const shouldAnimate = animate && isHomePageVisible();
+    // Determine if we should animate: only if caller requested animation, home is visible/in-focus, and page is visible
+    const shouldAnimate = animate && isHomePageVisible() && (typeof document !== 'undefined' ? document.visibilityState === 'visible' : true);
+
+    // Cancel any previous animation runs (this will abort running rAF loops)
+    cancelRunningAnimations();
 
     if (shouldAnimate) {
-      // Cancel any running animation
-      cancelRunningAnimations();
-
       // Prepare animated elements
       const elementsToAnimate = [];
 
@@ -146,22 +157,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
 
-      // Start animation
-      currentAnimationPromise = TextScramble.animateMultiple(
-        elementsToAnimate,
-        {
-          characterSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-          easing: 'easeOut',
-          staggerDelay: 80  // Slight cascade effect
-        }
-      ).then(() => {
-        // After animation, update non-animated elements on home page
-        updateNonAnimatedElements(lang);
-        // Update all attribute elements (modals, etc.)
+      // Create a controller so we can abort these animations if needed
+      try {
+        currentAnimationController = new AbortController();
+        const signal = currentAnimationController.signal;
+
+        // Start cancellable animation; pass signal to TextScramble
+        currentAnimationPromise = TextScramble.animateMultiple(
+          elementsToAnimate,
+          {
+            characterSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+            easing: 'easeOut',
+            staggerDelay: 80,
+            signal
+          }
+        ).then(() => {
+          // Clear controller once finished
+          currentAnimationController = null;
+          // After animation completes, update non-animated and attribute elements and metadata
+          updateNonAnimatedElements(lang);
+          updateAttributeElements(lang);
+          updateMetadata(lang);
+        }).catch(() => {
+          // On unexpected error, ensure controller cleared and fallback to non-animated update path
+          currentAnimationController = null;
+          updateNonAnimatedElements(lang);
+          updateAttributeElements(lang);
+          updateMetadata(lang);
+        });
+      } catch (e) {
+        // Fallback: if AbortController unsupported or any runtime error, fall back to non-cancellable animation
+        currentAnimationController = null;
+        cancelRunningAnimations();
+        updateAllElements(lang);
         updateAttributeElements(lang);
-        // Update metadata
         updateMetadata(lang);
-      });
+      }
     } else {
       // Standard update (used for modals, theme toggle, etc.)
       updateAllElements(lang);
@@ -169,6 +200,9 @@ document.addEventListener('DOMContentLoaded', function() {
       updateMetadata(lang);
     }
   };
+
+  /* Expose cancellation on window.i18n so other modules (like modal) can explicitly stop scrambles */
+  window.i18n.cancelRunningAnimations = cancelRunningAnimations;
 
   // initial run
   window.i18n.updateAll(currentLang);

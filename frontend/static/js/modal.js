@@ -39,7 +39,12 @@
       modal.dataset.open = 'true';
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
-      if (mainContent) { mainContent.setAttribute('inert', ''); mainContent.setAttribute('aria-hidden', 'true'); }
+      if (mainContent) { mainContent.setAttribute('inert', ''); mainContent.setAttribute('aria-hidden', 'true');
+        // stop in-progress home text scrambles to free CPU
+        if (window.i18n && typeof window.i18n.cancelRunningAnimations === 'function') {
+          try { window.i18n.cancelRunningAnimations(); } catch (e) { /* ignore */ }
+        }
+      }
       if (themeSwitch) { themeSwitch.setAttribute('inert', ''); themeSwitch.setAttribute('aria-hidden', 'true'); }
       if (headerEl) { headerEl.setAttribute('inert', ''); headerEl.setAttribute('aria-hidden', 'true'); }
       if (heroEl) { heroEl.setAttribute('inert', ''); heroEl.setAttribute('aria-hidden', 'true'); }
