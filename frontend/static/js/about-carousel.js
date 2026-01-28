@@ -9,7 +9,8 @@ class TechCarousel {
     // Configuration
     this.carouselSelector = carouselSelector;
     this.icons = icons;
-    this.currentIndex = 0;
+    this.originalCount = icons.length; // number of original icons
+    this.currentIndex = 0; // will be set to originalCount in init
     this.autoScrollInterval = options.autoScrollInterval || 3000;
     this.isAutoScrolling = false;
     this.intervalId = null;
@@ -25,6 +26,9 @@ class TechCarousel {
     // Dimensions (calculated dynamically)
     this.iconWidth = 100; // Base size, matches CSS
     this.gap = 44; // Matches CSS gap
+    // Transition / state
+    this.isTransitioning = false;
+    this.trackTransition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
 
     // Initialize
     this.init();
@@ -50,8 +54,11 @@ class TechCarousel {
       return;
     }
 
-    // Generate icons (dot UI removed)
+    // Generate icons into a 3x track: [tail clones] + [originals] + [head clones]
     this.generateIcons();
+
+    // Listen for transform transition ends to detect when we crossed into clones
+    this.track.addEventListener('transitionend', this.handleTransitionEnd.bind(this));
 
     // Set up event listeners
     this.attachEventListeners();
@@ -59,32 +66,94 @@ class TechCarousel {
     // Calculate dimensions
     this.updateDimensions();
 
-    // Initial render
-    this.updateCarousel();
+    // Warm image cache for clones (non-blocking)
+    if (typeof this.preloadImages === 'function') {
+      this.preloadImages().catch(() => {});
+    }
+
+    // Start in the middle block (originals)
+    this.currentIndex = this.originalCount;
+    // Position without animation first
+    this.track.style.transition = 'none';
+    this.updateCarousel(false);
+    // Restore transition next frame
+    requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
 
     // Start auto-scroll
     this.startAutoScroll();
   }
 
   generateIcons() {
-    // Clear existing content
+    // Build: [tail clones (full set)] + [originals] + [head clones (full set)]
     this.track.innerHTML = '';
+    const tailFrag = document.createDocumentFragment();
+    const originalsFrag = document.createDocumentFragment();
+    const headFrag = document.createDocumentFragment();
 
-    // Create icon elements
-    this.icons.forEach((icon, index) => {
-      const iconItem = document.createElement('div');
-      iconItem.className = 'tech-icon-item';
-      iconItem.setAttribute('data-index', index);
-      iconItem.setAttribute('data-icon', icon.id);
-
-      const img = document.createElement('img');
-      img.src = icon.src;
-      img.alt = icon.alt;
-      img.loading = 'lazy';
-
-      iconItem.appendChild(img);
-      this.track.appendChild(iconItem);
+    // tail clones (full copy)
+    this.icons.forEach((icon, idx) => {
+      const el = this.createIconElement(icon, idx, true);
+      tailFrag.appendChild(el);
     });
+
+    // originals
+    this.icons.forEach((icon, idx) => {
+      const el = this.createIconElement(icon, idx, false);
+      originalsFrag.appendChild(el);
+    });
+
+    // head clones (full copy)
+    this.icons.forEach((icon, idx) => {
+      const el = this.createIconElement(icon, idx, true);
+      headFrag.appendChild(el);
+    });
+
+    // append: tail + originals + head
+    this.track.appendChild(tailFrag);
+    this.track.appendChild(originalsFrag);
+    this.track.appendChild(headFrag);
+
+    this.totalCount = this.track.children.length; // 3 * originalCount
+  }
+
+  createIconElement(icon, originalIndex, isClone = false) {
+    const iconItem = document.createElement('div');
+    iconItem.className = 'tech-icon-item';
+    iconItem.setAttribute('data-original-index', originalIndex);
+    if (isClone) iconItem.setAttribute('data-clone', 'true');
+
+    const img = document.createElement('img');
+    img.src = icon.src;
+    img.alt = icon.alt;
+    // For clones, prefer eager loading and higher priority to avoid late paint during snaps
+    if (isClone) {
+      img.loading = 'eager';
+      img.setAttribute('fetchpriority', 'high');
+      img.decoding = 'async';
+    } else {
+      img.loading = 'lazy';
+    }
+
+    iconItem.appendChild(img);
+    return iconItem;
+  }
+
+  disableItemTransitions() {
+    const items = this.track.querySelectorAll('.tech-icon-item');
+    items.forEach(i => i.classList.add('no-transition'));
+  }
+
+  restoreItemTransitions() {
+    const items = this.track.querySelectorAll('.tech-icon-item.no-transition');
+    items.forEach(i => i.classList.remove('no-transition'));
+  }
+
+  preloadImages() {
+    return Promise.all(this.icons.map(icon => new Promise(resolve => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;
+      img.src = icon.src;
+    })));
   }
 
   generateDots() {
@@ -132,7 +201,11 @@ class TechCarousel {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         this.updateDimensions();
-        this.updateCarousel();
+        // reposition without animation during resize
+        this.track.style.transition = 'none';
+        this.updateCarousel(false);
+        void this.track.offsetWidth;
+        requestAnimationFrame(() => { this.track.style.transition = this.trackTransition; });
       }, 300);
     });
   }
@@ -150,7 +223,7 @@ class TechCarousel {
     }
   }
 
-  updateCarousel() {
+  updateCarousel(animate = true) {
     // Update icon highlighting
     const iconItems = this.track.querySelectorAll('.tech-icon-item');
     iconItems.forEach((item, index) => {
@@ -171,7 +244,13 @@ class TechCarousel {
     const offset = (viewportWidth / 2) - iconCenterInTrack;
 
     // Apply transform
-    this.track.style.transform = `translateX(${offset}px)`;
+    const transformStr = `translate3d(${offset}px, 0, 0)`;
+    if (!animate) {
+      this.track.style.transition = 'none';
+      this.track.style.transform = transformStr;
+      return;
+    }
+    this.track.style.transform = transformStr;
 
       // Dot UI removed — no-op to keep API stable
       this.updateDots = () => {
@@ -189,19 +268,55 @@ class TechCarousel {
     return;
   }
 
+  handleTransitionEnd(e) {
+    // only handle the track's transform transitions
+    if (e.target !== this.track || e.propertyName !== 'transform') return;
+
+    // Forward wrap: entered appended head clones
+    if (this.currentIndex >= this.originalCount * 2) {
+      // disable track transition + item transitions, reposition to originals, then restore
+      this.track.style.transition = 'none';
+      this.disableItemTransitions();
+      this.currentIndex -= this.originalCount;
+      this.updateCarousel(false); // position without animation or item transitions
+      // force reflow
+      void this.track.offsetWidth;
+      requestAnimationFrame(() => {
+        this.track.style.transition = this.trackTransition;
+        this.restoreItemTransitions();
+      });
+    } else if (this.currentIndex < this.originalCount) {
+      // Backward wrap: entered prepended tail clones
+      this.track.style.transition = 'none';
+      this.disableItemTransitions();
+      this.currentIndex += this.originalCount;
+      this.updateCarousel(false);
+      void this.track.offsetWidth;
+      requestAnimationFrame(() => {
+        this.track.style.transition = this.trackTransition;
+        this.restoreItemTransitions();
+      });
+    }
+    this.isTransitioning = false;
+  }
+
   next() {
-    this.currentIndex = (this.currentIndex + 1) % this.icons.length;
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+    this.currentIndex++;
     this.updateCarousel();
   }
 
   prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.icons.length) % this.icons.length;
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+    this.currentIndex--;
     this.updateCarousel();
   }
 
   goToIndex(index) {
-    if (index >= 0 && index < this.icons.length) {
-      this.currentIndex = index;
+    if (index >= 0 && index < this.originalCount) {
+      this.currentIndex = this.originalCount + index;
       this.updateCarousel();
     }
   }
