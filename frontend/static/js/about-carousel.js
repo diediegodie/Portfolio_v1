@@ -655,6 +655,59 @@ window.ensureAboutCarousels = function ensureAboutCarousels() {
           autoScrollInterval: 3000,
         }
       );
+    } else if (backendRoot && __aboutBackendCarousel) {
+      // If an instance already exists (initialized while modal hidden),
+      // recalc dimensions and reposition now that layout is available.
+      try {
+        const inst = __aboutBackendCarousel;
+        inst.updateDimensions();
+        // temporarily suspend transitions while we snap to the correct position
+        const prevTransition = inst.track.style.transition || "";
+        inst.track.style.transition = "none";
+        inst.updateCarousel(false);
+        // force a reflow so the no-transition position is applied
+        void inst.track.offsetWidth;
+        // restore transition next frame, with a short setTimeout fallback
+        const restore = () => {
+          try {
+            inst.track.style.transition = inst.trackTransition || prevTransition || "";
+            // ensure we are not stuck in a transitioning state
+            inst.isTransitioning = false;
+          } catch (_) {}
+        };
+        if (typeof requestAnimationFrame === "function") {
+          requestAnimationFrame(() => {
+            restore();
+            setTimeout(restore, 40);
+          });
+        } else {
+          setTimeout(restore, 0);
+        }
+        // Ensure nav handlers exist (only add if missing to avoid duplicates)
+        if (inst.navLeft && (!inst._handlers || !inst._handlers.navLeftClick)) {
+          inst._handlers = inst._handlers || {};
+          inst._handlers.navLeftClick = () => {
+            inst.prev();
+            inst.resetAutoScroll();
+          };
+          inst.navLeft.addEventListener("click", inst._handlers.navLeftClick);
+        }
+        if (inst.navRight && (!inst._handlers || !inst._handlers.navRightClick)) {
+          inst._handlers = inst._handlers || {};
+          inst._handlers.navRightClick = () => {
+            inst.next();
+            inst.resetAutoScroll();
+          };
+          inst.navRight.addEventListener("click", inst._handlers.navRightClick);
+        }
+      } catch (e) {
+        console.debug("ensureAboutCarousels backend recalc error", e);
+        try {
+          __aboutBackendCarousel.isTransitioning = false;
+          __aboutBackendCarousel.track.style.transition =
+            __aboutBackendCarousel.trackTransition || "";
+        } catch (_) {}
+      }
     }
     const frontendRoot = document.querySelector(
       '.about__frontend [data-carousel="frontend"]'
@@ -665,6 +718,52 @@ window.ensureAboutCarousels = function ensureAboutCarousels() {
         FRONTEND_ICONS,
         { autoScrollInterval: 3000 }
       );
+    } else if (frontendRoot && __aboutFrontendCarousel) {
+      try {
+        const inst = __aboutFrontendCarousel;
+        inst.updateDimensions();
+        const prevTransition = inst.track.style.transition || "";
+        inst.track.style.transition = "none";
+        inst.updateCarousel(false);
+        void inst.track.offsetWidth;
+        const restore = () => {
+          try {
+            inst.track.style.transition = inst.trackTransition || prevTransition || "";
+            inst.isTransitioning = false;
+          } catch (_) {}
+        };
+        if (typeof requestAnimationFrame === "function") {
+          requestAnimationFrame(() => {
+            restore();
+            setTimeout(restore, 40);
+          });
+        } else {
+          setTimeout(restore, 0);
+        }
+        if (inst.navLeft && (!inst._handlers || !inst._handlers.navLeftClick)) {
+          inst._handlers = inst._handlers || {};
+          inst._handlers.navLeftClick = () => {
+            inst.prev();
+            inst.resetAutoScroll();
+          };
+          inst.navLeft.addEventListener("click", inst._handlers.navLeftClick);
+        }
+        if (inst.navRight && (!inst._handlers || !inst._handlers.navRightClick)) {
+          inst._handlers = inst._handlers || {};
+          inst._handlers.navRightClick = () => {
+            inst.next();
+            inst.resetAutoScroll();
+          };
+          inst.navRight.addEventListener("click", inst._handlers.navRightClick);
+        }
+      } catch (e) {
+        console.debug("ensureAboutCarousels frontend recalc error", e);
+        try {
+          __aboutFrontendCarousel.isTransitioning = false;
+          __aboutFrontendCarousel.track.style.transition =
+            __aboutFrontendCarousel.trackTransition || "";
+        } catch (_) {}
+      }
     }
   } catch (e) {
     console.debug("ensureAboutCarousels error", e);
