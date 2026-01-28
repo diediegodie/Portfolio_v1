@@ -41,10 +41,10 @@
 /* Unified modal card button style - all modals use the standardized .card__btn base */
 .work-modal__btn,
 .about-modal__btn,
-.contact-modal__btn {
+.contact-modal__btn,
   /* All styles inherited from .card__btn base class */
   /* No additional declarations needed - complete standardization */
-}
+
 
 /* Hover/focus state for all modal buttons - consistent across modals */
 .work-modal__btn:hover,
@@ -1270,9 +1270,7 @@ html[data-theme="dark"] .work-card {
   background: var(--bg-color);
   color: var(--text-color);
 }
-.project-readme__close {
-  /* no-op: visual controlled by .modal-close */
-}
+
 .project-readme__close .modal-close__icon {
   width: 22px;
   height: 22px;
@@ -1707,10 +1705,10 @@ html[data-theme="dark"] .carousel-nav:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease, filter 0.36s ease;
   opacity: 0.5;
   transform: scale(0.85) translateZ(0);
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
   backface-visibility: hidden;
   position: relative;
   overflow: visible;
@@ -1760,6 +1758,44 @@ html[data-theme="dark"] .carousel-nav:hover {
   z-index: 3002;
   display: inline-block;
   text-align: center;
+}
+
+/* Make side (non-centered) icons more transparent in About modal on desktop only
+   Keep centered icon at full opacity; preserve mobile readability */
+@media (min-width: 721px) {
+  .about-modal .tech-icon-item:not(.center) {
+    opacity: 0.25; /* adjust between 0.2 - 0.35 if needed */
+  }
+}
+
+@media (max-width: 720px) {
+  .about-modal .tech-icon-item:not(.center) {
+    opacity: 0.25; /* match desktop opacity on mobile as requested */
+  }
+}
+/* Desaturate side icons (grayscale) and ensure smooth filter transition
+   Keep centered icon full-color and fully opaque */
+.about-modal .tech-icon-item img,
+.about-modal .tech-icon-item svg {
+  transition: transform 0.4s ease, opacity 0.4s ease, filter 0.36s ease;
+}
+
+.about-modal .tech-icon-item:not(.center) img,
+.about-modal .tech-icon-item:not(.center) svg {
+  filter: grayscale(100%) saturate(0%) brightness(0.95);
+  opacity: 0.25; /* keep chosen side-icon opacity */
+}
+
+.about-modal .tech-icon-item.center img,
+.about-modal .tech-icon-item.center svg {
+  filter: none;
+  opacity: 1;
+}
+
+/* Ensure nested images/SVGs inherit the transition disabling during carousel wrap */
+.tech-icon-item.no-transition img,
+.tech-icon-item.no-transition svg {
+  transition: none !important;
 }
 .tech-tooltip::before {
   content: "";

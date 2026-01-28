@@ -11,7 +11,7 @@ class TechCarousel {
     this.icons = icons;
     this.originalCount = icons.length; // number of original icons
     this.currentIndex = 0; // will be set to originalCount in init
-    this.autoScrollInterval = options.autoScrollInterval || 3000;
+    this.autoScrollInterval = options.autoScrollInterval || 2000;
     this.isAutoScrolling = false;
     this.intervalId = null;
 
@@ -164,12 +164,20 @@ class TechCarousel {
 
   disableItemTransitions() {
     const items = this.track.querySelectorAll(".tech-icon-item");
-    items.forEach((i) => i.classList.add("no-transition"));
+    items.forEach((i) => {
+      i.classList.add("no-transition");
+      // also disable transitions on nested images/SVGs to avoid filter/opacity flick
+      i.querySelectorAll("img, svg").forEach((el) => el.classList.add("no-transition"));
+    });
   }
 
   restoreItemTransitions() {
     const items = this.track.querySelectorAll(".tech-icon-item.no-transition");
-    items.forEach((i) => i.classList.remove("no-transition"));
+    items.forEach((i) => {
+      i.classList.remove("no-transition");
+      // restore nested images/SVGs
+      i.querySelectorAll("img, svg.no-transition").forEach((el) => el.classList.remove("no-transition"));
+    });
   }
 
   preloadImages() {
@@ -223,10 +231,20 @@ class TechCarousel {
       const rect = tt.getBoundingClientRect();
       const half = rect.width / 2 || 48;
       let left = clamp(clientX, half + 12, window.innerWidth - half - 12);
-      // increase vertical gap between cursor and tooltip (doubled)
-      let top = clientY - 40;
-      if (top - rect.height < 12) {
-        top = clientY + 40;
+      // prefer placing tooltip below the cursor; keep a larger vertical gap (56px)
+      let top = clientY + 60;
+      // If not enough space below, flip above; otherwise mark as 'below'
+      if (top + rect.height > window.innerHeight - 12) {
+        // flip above cursor
+        top = clientY - 60;
+        // if above would be off-screen, clamp to a safe vertical center near cursor
+        if (top - rect.height < 12) {
+          // center tooltip vertically around cursor as a fallback
+          top = clamp(clientY - rect.height / 2, 12, window.innerHeight - rect.height - 12);
+        } else {
+          tt.classList.remove("below");
+        }
+      } else {
         tt.classList.add("below");
       }
       tt.style.left = `${left}px`;
@@ -652,7 +670,7 @@ window.ensureAboutCarousels = function ensureAboutCarousels() {
         ".about__backend",
         BACKEND_ICONS,
         {
-          autoScrollInterval: 3000,
+          autoScrollInterval: 2000,
         }
       );
     } else if (backendRoot && __aboutBackendCarousel) {
@@ -716,7 +734,7 @@ window.ensureAboutCarousels = function ensureAboutCarousels() {
       __aboutFrontendCarousel = new TechCarousel(
         ".about__frontend",
         FRONTEND_ICONS,
-        { autoScrollInterval: 3000 }
+        { autoScrollInterval: 2000 }
       );
     } else if (frontendRoot && __aboutFrontendCarousel) {
       try {
