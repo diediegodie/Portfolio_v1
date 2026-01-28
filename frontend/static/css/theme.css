@@ -971,8 +971,8 @@ html[data-theme='dark'] .work-card {
 .image-lightbox .modal-close,
 .project-readme__panel .modal-close {
   position: absolute;
-  top: -12px;
-  right: -12px;
+  top: 12px;
+  right: 12px;
 }
 
 /* Floating project README panel (used by About button) */
@@ -1147,17 +1147,6 @@ html[data-theme='dark'] .project-readme__content code {
 /* BEGIN: About modal refactor additions */
 .about-tech-list { list-style: none; padding: 0; margin: 0; }
 .about-tech-list li { margin-bottom: var(--spacing-sm); }
-.about-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: var(--muted-bg);
-  color: var(--text-color);
-  font-weight: 600;
-  margin-right: 8px;
-  transition: transform .18s ease, opacity .18s ease;
-}
-.about-badge:hover { transform: translateY(-3px); opacity: .95; }
 
 /* Ensure about-modal grid remains 2x2 on desktop using existing grid rules */
 .about-modal__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
@@ -1214,6 +1203,239 @@ html[data-theme='dark'] .project-readme__content code {
   .about__connect .about-modal__btn { width: 92%; }
 }
 /* END: About modal refinements */
+
+/* BEGIN: Tech Stack Carousel Styles */
+
+/* Carousel container - relative positioning for nav buttons */
+.tech-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm, 0.75rem);
+  padding: 0;
+}
+
+/* Viewport - visible area showing 3 icons */
+.tech-carousel-viewport {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Track - horizontal container for all icons */
+.tech-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Individual icon items */
+.tech-icon-item {
+  flex: 0 0 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0.5;
+  transform: scale(0.85);
+}
+
+.tech-icon-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Center icon highlight - applied via JavaScript */
+.tech-icon-item.center {
+  opacity: 1;
+  transform: scale(1.65);
+  z-index: 2;
+}
+
+/* Navigation arrows */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  box-shadow: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0.85;
+  transition: background 0.26s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.26s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-nav:hover {
+  background: rgba(0, 0, 0, 0.65);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: none;
+  opacity: 1;
+}
+
+.carousel-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-nav:focus-visible {
+  outline: 2px solid var(--accent, #007bff);
+  outline-offset: 2px;
+}
+
+.carousel-nav-left {
+  left: 8px;
+}
+
+.carousel-nav-right {
+  right: 8px;
+}
+
+.carousel-nav svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+
+/* Progress dots */
+.carousel-dots {
+  display: none;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--text-color, #222);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.carousel-dot:hover {
+  transform: scale(1.2);
+  border-color: var(--accent, #007bff);
+}
+
+.carousel-dot:focus-visible {
+  outline: 2px solid var(--accent, #007bff);
+  outline-offset: 3px;
+}
+
+.carousel-dot.active {
+  background: var(--text-color, #222);
+  border-color: var(--text-color, #222);
+}
+
+/* Dark theme adjustments */
+html[data-theme='dark'] .carousel-nav {
+  background: var(--surface, #2a2a2a);
+  color: var(--text-color, #e0e0e0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme='dark'] .carousel-nav:hover {
+  background: var(--muted-bg, #3a3a3a);
+}
+
+html[data-theme='dark'] .carousel-dot {
+  border-color: var(--text-color, #e0e0e0);
+}
+
+html[data-theme='dark'] .carousel-dot.active {
+  background: var(--text-color, #e0e0e0);
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 720px) {
+  .tech-carousel-viewport {
+    height: 150px;
+  }
+
+  .tech-carousel-track {
+    gap: 36px;
+  }
+
+  .tech-icon-item {
+    flex: 0 0 75px;
+    height: 75px;
+  }
+
+  .tech-icon-item.center {
+    transform: scale(1.5);
+  }
+
+  .carousel-nav {
+    width: 32px;
+    height: 32px;
+  }
+
+  .carousel-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .carousel-nav-left {
+    left: 4px;
+  }
+
+  .carousel-nav-right {
+    right: 4px;
+  }
+
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .tech-carousel-viewport {
+    height: 130px;
+  }
+
+  .tech-carousel-track {
+    gap: 32px;
+  }
+
+  .tech-icon-item {
+    flex: 0 0 60px;
+    height: 60px;
+  }
+
+  .carousel-dots {
+    gap: 6px;
+  }
+
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* END: Tech Stack Carousel Styles */
 
 /* Lightbox overlay */
 .lightbox {
