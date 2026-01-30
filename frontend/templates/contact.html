@@ -17,21 +17,15 @@
       </button>
     </header>
     <div class="contact-modal__grid">
-      <!-- Card 1: Texts (Centered) -->
+      <!-- Card 1: Professional Summary style (match about card) -->
       <article class="contact-card contact__intro modal__card" role="listitem">
-        <!-- Inline envelope SVG (decorative, aria-hidden) -->
-        <div class="contact-card__content center-text">
-          <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;">
-            <path
-              d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5h-13A2.5 2.5 0 0 0 3 7.5z">
-            </path>
-            <polyline points="3.5 7.5 12 13 20.5 7.5"></polyline>
-          </svg>
-
-          <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
-          <p data-i18n="contact.intro_short">{{ _('contact.intro_short') }}</p>
-          <p data-i18n="contact.availability">{{ _('contact.availability') }}</p>
+        <h3 data-i18n="contact.intro_title">{{ _('contact.intro_title') }}</h3>
+        <p class="muted lead" data-i18n="contact.resumo_text">{{ _('contact.resumo_text') | safe }}</p>
+        <div class="card__actions" style="justify-content:center;">
+          {% if _('contact.cta.resume') %}
+          <a class="contact-modal__btn card__btn" href="/static/PDF/diego_cv.pdf" target="_blank" rel="noopener"
+            data-i18n="contact.cta.resume">{{ _('contact.cta.resume') }}</a>
+          {% endif %}
         </div>
       </article>
 
@@ -39,21 +33,83 @@
       <article class="contact-card contact__actions modal__card" role="listitem">
         <div class="contact-card__content">
           <h3 data-i18n="contact.actions_title">{{ _('contact.actions_title') }}</h3>
+
           <div class="contact-card__links">
-            <a class="contact-modal__btn card__btn" href="mailto:contato@example.com" data-i18n="contact.cta.email">{{
-              _('contact.cta.email') }}</a>
-            <a class="contact-modal__btn card__btn" href="{{ config.GITHUB_URL }}" target="_blank" rel="noopener"
-              data-i18n="contact.cta.github">{{ _('contact.cta.github') }}</a>
-            <a class="contact-modal__btn card__btn" href="{{ config.LINKEDIN_URL }}" target="_blank" rel="noopener"
-              data-i18n="contact.cta.linkedin">{{ _('contact.cta.linkedin') }}</a>
+
+            <a class="contact-modal__btn card__btn" href="{{ _('contact.social.github_url') }}" target="_blank"
+              rel="noopener" data-i18n="contact.social.github">{{ _('contact.social.github') }}</a>
+            <a class="contact-modal__btn card__btn" href="{{ _('contact.social.linkedin_url') }}" target="_blank"
+              rel="noopener" data-i18n="contact.social.linkedin">{{ _('contact.social.linkedin') }}</a>
+            {% if _('contact.cta.schedule') and _('contact.schedule_url') %}
+            <a class="contact-modal__btn card__btn" href="{{ _('contact.schedule_url') }}" target="_blank"
+              rel="noopener" data-i18n="contact.cta.schedule">{{ _('contact.cta.schedule') }}</a>
+            {% endif %}
             <!-- Optional: Instagram if available in config -->
             {% if config.INSTAGRAM_URL %}
             <a class="contact-modal__btn card__btn" href="{{ config.INSTAGRAM_URL }}" target="_blank" rel="noopener"
               data-i18n="contact.cta.instagram">{{ _('contact.cta.instagram') }}</a>
             {% endif %}
+            {% if _('contact.cta.copy_email') and _('contact.email') %}
+            <button type="button" class="contact-modal__btn card__btn" data-copy-email="{{ _('contact.email') }}"
+              data-i18n="contact.cta.copy_email" aria-label="{{ _('contact.cta.copy_email') }}">{{
+              _('contact.cta.copy_email') }}</button>
+            {% endif %}
           </div>
+        </div>
+      </article>
+
+      <!-- Card 3: Message Form -->
+      <article class="contact-card contact__form modal__card modal__card--wide" role="listitem">
+        <div class="contact-card__content">
+          <h3 data-i18n="contact.form.title">{{ _('contact.form.title') }}</h3>
+          <form id="contact-form" class="contact-form" action="/contact" method="post" novalidate>
+            <div class="form-row">
+              <label for="contact-name" data-i18n="contact.form.name_label">{{ _('contact.form.name_label') }}</label>
+              <input id="contact-name" name="name" type="text" required autocomplete="name" />
+            </div>
+
+            <div class="form-row">
+              <label for="contact-email" data-i18n="contact.form.email_label">{{ _('contact.form.email_label')
+                }}</label>
+              <input id="contact-email" name="email" type="email" required autocomplete="email" />
+            </div>
+
+            <div class="form-row">
+              <label for="contact-subject" data-i18n="contact.form.subject_label">{{ _('contact.form.subject_label')
+                }}</label>
+              <input id="contact-subject" name="subject" type="text" />
+            </div>
+
+            <div class="form-row">
+              <label for="contact-message" data-i18n="contact.form.message_label">{{ _('contact.form.message_label')
+                }}</label>
+              <textarea id="contact-message" name="message" rows="6" required></textarea>
+            </div>
+
+            <!-- Honeypot anti-spam field (hidden from users) -->
+            <div style="position:absolute;left:-10000px;top:auto;overflow:hidden;" aria-hidden="true">
+              <label for="hp">Do not fill</label>
+              <input id="hp" name="hp" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="form-row">
+              <label>
+                <input type="checkbox" name="consent" required /> <span data-i18n="contact.form.consent_text">{{
+                  _('contact.form.consent_text') }}</span>
+              </label>
+            </div>
+
+            <div class="card__actions">
+              <button type="submit" class="card__btn">{{ _('contact.form.submit') }}</button>
+            </div>
+
+            <div id="contact-form-status" role="status" aria-live="polite" class="muted" hidden></div>
+          </form>
         </div>
       </article>
     </div>
   </div>
+  <div id="aria-live-contact" aria-live="polite" style="position:absolute;left:-10000px;top:auto;overflow:hidden;"
+    aria-atomic="true"></div>
+
 </div>

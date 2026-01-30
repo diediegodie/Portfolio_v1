@@ -82,28 +82,32 @@
   },
   "contact": {
     "title": "Contact",
-    "intro_title": "Get in Touch",
-    "intro": "I'm always interested in hearing about new opportunities and connecting with fellow developers.",
-    "email_title": "Email",
-    "email": "contact@example.com",
-    "social_title": "Follow",
+    "intro_title": "Get in touch",
+    "resumo_text": "If you have a project, role, or idea to discuss, feel free to reach out via email or LinkedIn. I'm open to freelance work, collaborations, and full‑time opportunities; let's start a conversation to see how we can work together.",
+    "email": "diego.rodriguez.backend@gmail.com",
     "social": {
       "github": "GitHub",
-      "linkedin": "LinkedIn"
+      "linkedin": "LinkedIn",
+      "github_url": "https://github.com/diediegodie",
+      "linkedin_url": "https://www.linkedin.com/in/diegobackend"
     },
-    "social_github": "GitHub",
-    "social_linkedin": "LinkedIn",
-    "availability_title": "Availability",
     "availability": "Currently open for freelance projects and full-time opportunities.",
     "cta": {
-      "email": "Send Email",
-      "github": "GitHub",
-      "linkedin": "LinkedIn",
-      "instagram": "Instagram",
-      "connect": "Connect"
+      "resume": "Resumé",
+      "schedule": "Schedule a meeting",
+      "copy_email": "Copy email"
     },
-    "intro_short": "I'm always interested in hearing about new opportunities and connecting with fellow developers.",
-    "actions_title": "Actions"
+    "actions_title": "Contact options",
+    "form": {
+      "title": "Send a message",
+      "name_label": "Name",
+      "email_label": "Email",
+      "subject_label": "Subject",
+      "message_label": "Message",
+      "consent_text": "",
+      "submit": "Send"
+    },
+    "email_subject": "Contact via portfolio"
   },
   "toggle": {
     "theme": "Toggle dark mode",

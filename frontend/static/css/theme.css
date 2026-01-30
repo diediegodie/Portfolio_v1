@@ -363,6 +363,14 @@ html[data-theme="dark"] .contact-modal__btn[aria-disabled="true"] {
   gap: var(--spacing-lg);
   align-items: start;
 }
+/* Wide modal card helper: span both columns and center content on larger screens */
+.modal__card--wide {
+  grid-column: 1 / -1;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: none;
+  width: 100%;
+}
 /* Canonical modal/card rule: apply same visual size to all cards including footers */
 .about-card,
 .work-card,
@@ -427,6 +435,21 @@ html[data-theme="dark"] .contact-modal__btn[aria-disabled="true"] {
   .contact-modal__grid {
     grid-template-columns: 1fr;
   }
+  /* On small screens ensure wide cards collapse to normal flow */
+  .modal__card--wide {
+    grid-column: auto;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Contact-specific spacing adjustments: bring cards closer and match about modal rhythm */
+.contact-modal__grid {
+  gap: var(--spacing-md); /* a bit tighter than default */
+}
+.contact-modal .modal__card {
+  margin: var(--spacing-sm) auto; /* reduce vertical margin between cards */
 }
 .modal__overlay {
   background-color: var(--bg-color);
