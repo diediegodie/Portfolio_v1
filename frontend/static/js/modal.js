@@ -166,7 +166,15 @@
       trigger.addEventListener("click", openModal);
     });
     if (closeButton) closeButton.addEventListener("click", closeModal);
-    if (overlay) overlay.addEventListener("click", closeModal);
+    if (overlay) {
+      overlay.addEventListener("click", function (e) {
+        // Don't close modal if Resume button was clicked
+        if (e.target.id === "resume-btn" || e.target.closest("#resume-btn")) {
+          return;
+        }
+        closeModal();
+      });
+    }
     document.addEventListener("keydown", handleKeyDown);
   }
 

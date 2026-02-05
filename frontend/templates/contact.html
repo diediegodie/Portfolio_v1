@@ -23,8 +23,8 @@
         <p class="muted lead" data-i18n="contact.resumo_text">{{ _('contact.resumo_text') | safe }}</p>
         <div class="card__actions" style="justify-content:center;">
           {% if _('contact.cta.resume') %}
-          <a class="contact-modal__btn card__btn" href="/static/PDF/diego_cv.pdf" target="_blank" rel="noopener"
-            data-i18n="contact.cta.resume">{{ _('contact.cta.resume') }}</a>
+          <button id="resume-btn" type="button" class="contact-modal__btn card__btn" data-i18n="contact.cta.resume">{{
+            _('contact.cta.resume') }}</button>
           {% endif %}
         </div>
       </article>
