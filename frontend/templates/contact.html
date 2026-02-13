@@ -92,10 +92,17 @@
               <input id="hp" name="hp" tabindex="-1" autocomplete="off" />
             </div>
 
-            <div class="form-row">
-              <label>
-                <input type="checkbox" name="consent" required /> <span data-i18n="contact.form.consent_text">{{
-                  _('contact.form.consent_text') }}</span>
+            <!-- Processing notice: explains how the message and data are used -->
+            <div class="form-row consent-row" id="contact-consent-row" aria-describedby="contact-consent-desc">
+              <p id="contact-consent-desc" class="muted small" data-i18n="contact.form.processing_notice">
+                {{ _('contact.form.processing_notice') | safe }}
+                &nbsp;<a href="/privacy" class="muted-link" data-i18n="links.privacy">{{ _('links.privacy') }}</a>
+              </p>
+
+              <!-- Optional marketing/newsletter consent (NOT required) -->
+              <label class="muted" for="consent_marketing">
+                <input id="consent_marketing" type="checkbox" name="consent_marketing" value="yes" /> 
+                <span data-i18n="contact.form.marketing_consent">{{ _('contact.form.marketing_consent') }}</span>
               </label>
             </div>
 

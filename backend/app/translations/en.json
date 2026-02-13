@@ -104,7 +104,8 @@
       "email_label": "Email",
       "subject_label": "Subject",
       "message_label": "Message",
-      "consent_text": "",
+      "processing_notice": "By submitting this form you consent to your message and contact details being used to respond to your inquiry. We will not share your data.",
+      "marketing_consent": "I agree",
       "submit": "Send"
     },
     "email_subject": "Contact via portfolio"
@@ -116,5 +117,8 @@
   "lang": {
     "en": "EN-US",
     "pt": "PT-BR"
+  },
+  "links": {
+    "privacy": "Privacy Policy"
   }
 }

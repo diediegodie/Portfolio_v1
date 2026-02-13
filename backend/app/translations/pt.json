@@ -104,7 +104,8 @@
       "email_label": "E‑mail",
       "subject_label": "Assunto",
       "message_label": "Mensagem",
-      "consent_text": "",
+      "processing_notice": "Ao enviar este formulário você concorda que sua mensagem e informações de contato serão usadas para responder sua solicitação. Não compartilharemos seus dados.",
+      "marketing_consent": "Concordo",
       "submit": "Enviar"
     },
     "email_subject": "Contato via portfólio"
@@ -116,5 +117,8 @@
   "lang": {
     "en": "EN-US",
     "pt": "PT-BR"
+  },
+  "links": {
+    "privacy": "Política de Privacidade"
   }
 }
