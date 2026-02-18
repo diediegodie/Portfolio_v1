@@ -104,8 +104,12 @@
       "email_label": "E‑mail",
       "subject_label": "Assunto",
       "message_label": "Mensagem",
-      "processing_notice": "Ao enviar este formulário você concorda que sua mensagem e informações de contato serão usadas para responder sua solicitação. Não compartilharemos seus dados.",
+      "processing_notice": "Ao enviar este formulário você concorda que sua mensagem e informações de contato serão usadas somente para responder à sua solicitação. Não compartilharei seus dados.",
       "marketing_consent": "Concordo",
+      "sending": "Enviando…",
+      "success": "Mensagem enviada!",
+      "error": "Algo deu errado. Tente novamente.",
+      "consent_required": "Por favor, concorde com a caixa antes de enviar",
       "submit": "Enviar"
     },
     "email_subject": "Contato via portfólio"

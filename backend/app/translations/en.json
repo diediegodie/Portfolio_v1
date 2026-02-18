@@ -104,8 +104,12 @@
       "email_label": "Email",
       "subject_label": "Subject",
       "message_label": "Message",
-      "processing_notice": "By submitting this form you consent to your message and contact details being used to respond to your inquiry. We will not share your data.",
+      "processing_notice": "By submitting this form you consent to your message and contact details being used only to respond to your inquiry. I will not share your data.",
       "marketing_consent": "I agree",
+      "sending": "Sending…",
+      "success": "Message sent!",
+      "error": "Something went wrong. Please try again.",
+      "consent_required": "Please agree to the checkbox before sending",
       "submit": "Send"
     },
     "email_subject": "Contact via portfolio"
