@@ -301,6 +301,23 @@ html[data-theme="dark"] .contact-modal__btn[aria-disabled="true"] {
   width: 100%;
 }
 
+/* Social links layout: horizontal on desktop, vertical on mobile */
+.contact-social-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .contact-social-links {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
 /* ========== Contact Form — centered, rounded inputs ========== */
 .contact__form .contact-card__content form#contact-form {
   display: flex;
