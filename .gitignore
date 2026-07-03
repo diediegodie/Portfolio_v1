@@ -121,11 +121,7 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-# Reports, coverage, and test output
-reports/
-
 # Project docs
-docs/
 .github/instructions
 node_modules/
 # Ignore lock files if not needed
