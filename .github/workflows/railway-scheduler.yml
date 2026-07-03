@@ -1,0 +1,31 @@
+name: Railway Service Scheduler
+
+on:
+  workflow_dispatch:   # permite rodar manualmente
+  schedule:
+    - cron: "0 11 * * *"
+    - cron: "0 23 * * *"
+
+jobs:
+  railway-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pause Service
+        if: github.event.schedule == '0 23 * * *'
+        run: |
+          curl -X POST https://backboard.railway.app/graphql/v2 \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
+            -d '{
+              "query": "mutation { serviceInstanceUpdate(serviceId: \"091b247d-e42f-488d-a5ef-de49f997dd1d\", input: { numReplicas: 0 }) }"
+            }'
+
+      - name: Resume Service
+        if: github.event.schedule == '0 11 * * *'
+        run: |
+          curl -X POST https://backboard.railway.app/graphql/v2 \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
+            -d '{
+              "query": "mutation { serviceInstanceUpdate(serviceId: \"091b247d-e42f-488d-a5ef-de49f997dd1d\", input: { numReplicas: 1 }) }"
+            }'
