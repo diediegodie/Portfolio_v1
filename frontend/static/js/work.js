@@ -9,6 +9,36 @@ window.initModal &&
 
 // work images: enable in-card carousel navigation and a clickable lightbox with side navigation
 (function () {
+  function resolveKey(dct, dottedKey) {
+    if (!dct || !dottedKey) return undefined;
+    if (Object.prototype.hasOwnProperty.call(dct, dottedKey))
+      return dct[dottedKey];
+    const parts = dottedKey.split(".");
+    let cur = dct;
+    for (let i = 0; i < parts.length; i++) {
+      if (!cur || typeof cur !== "object" || !(parts[i] in cur))
+        return undefined;
+      cur = cur[parts[i]];
+    }
+    return cur;
+  }
+
+  function t(key, fallback = "") {
+    const cache = (window.i18n && window.i18n.cache) || {};
+    const lang =
+      (window.i18n && window.i18n.current) ||
+      document.documentElement.lang ||
+      "en";
+    const primary = resolveKey(cache[lang], key);
+    if (typeof primary === "string" && primary) return primary;
+    const enValue = resolveKey(cache.en, key);
+    if (typeof enValue === "string" && enValue) return enValue;
+    const altLang = lang === "en" ? "pt" : "en";
+    const altValue = resolveKey(cache[altLang], key);
+    if (typeof altValue === "string" && altValue) return altValue;
+    return fallback;
+  }
+
   function initWorkImages() {
     const cards = Array.from(document.querySelectorAll(".work-card"));
     if (!cards.length) return;
@@ -20,16 +50,22 @@ window.initModal &&
       lightbox = document.createElement("div");
       lightbox.className = "lightbox";
       lightbox.innerHTML = `
-        <button class="modal-close lightbox-close lightbox__close" type="button" aria-label="Close">
+        <button class="modal-close lightbox-close lightbox__close" type="button" aria-label="${t(
+          "modal.close"
+        )}">
           <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round">
             <line x1="8" y1="8" x2="24" y2="24" />
             <line x1="24" y1="8" x2="8" y2="24" />
           </svg>
         </button>
-        <button class="image-nav image-prev lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous"><span class="icon">‹</span></button>
+        <button class="image-nav image-prev lightbox__nav lightbox__nav--prev" type="button" aria-label="${t(
+          "buttons.prev"
+        )}"><span class="icon">‹</span></button>
         <img class="lightbox-img lightbox__image" src="" alt="" />
-        <button class="image-nav image-next lightbox__nav lightbox__nav--next" type="button" aria-label="Next"><span class="icon">›</span></button>
+        <button class="image-nav image-next lightbox__nav lightbox__nav--next" type="button" aria-label="${t(
+          "buttons.next"
+        )}"><span class="icon">›</span></button>
       `;
       document.body.appendChild(lightbox);
 
@@ -241,14 +277,16 @@ window.initModal &&
     panel.style.cssText =
       "position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:10000;";
     panel.innerHTML = `
-        <button class="modal-close lightbox-close readme-panel__close" type="button" aria-label="Close">
+        <button class="modal-close lightbox-close readme-panel__close" type="button" aria-label="${t(
+          "modal.close"
+        )}">
           <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="8" y1="8" x2="24" y2="24" />
             <line x1="24" y1="8" x2="8" y2="24" />
           </svg>
         </button>
         <div class="project-readme__panel" style="max-width:min(1000px,94vw);max-height:calc(100vh - 80px);overflow:auto;border-radius:var(--radius-md);padding:var(--spacing-md);box-shadow:var(--shadow-sm);background:var(--bg-color);color:var(--text-color);">
-          <div class="project-readme__content">Loading...</div>
+          <div class="project-readme__content">${t("work.loading")}</div>
         </div>
       `;
     document.body.appendChild(panel);
@@ -284,7 +322,8 @@ window.initModal &&
       cache.set(key, html);
       return html;
     } catch (e) {
-      cache.set(key, `<p>Unable to load README: ${e.message}</p>`);
+      const msg = t("work.readme_unavailable").replace("{0}", e.message || "");
+      cache.set(key, `<p>${msg}</p>`);
       return cache.get(key);
     }
   }
@@ -303,13 +342,13 @@ window.initModal &&
         const content = panel.querySelector(".project-readme__content");
         panel.style.display = "flex";
         document.body.style.overflow = "hidden";
-        content.innerHTML = "<p>Loading README…</p>";
+        content.innerHTML = `<p>${t("work.readme_loading")}</p>`;
         if (!parsed) {
-          content.innerHTML = "<p>Invalid GitHub URL</p>";
+          content.innerHTML = `<p>${t("work.invalid_github_url")}</p>`;
           return;
         }
         const html = await fetchReadmeHtml(parsed.owner, parsed.repo);
-        content.innerHTML = html || "<p>No README found.</p>";
+        content.innerHTML = html || `<p>${t("work.no_readme")}</p>`;
       });
     });
   }

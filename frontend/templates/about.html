@@ -4,7 +4,9 @@
         <header class="about-modal__header">
             <div>
                 <p class="muted" data-i18n="modal.header">{{ _('modal.header') }}</p>
-                <h2 id="about-dialog-title" data-i18n="about.title">{{ _('about.title') }}</h2>
+                <h2 id="about-dialog-title" data-i18n="about.title">
+                    {{ _('about.title') }}
+                </h2>
             </div>
             <button class="modal-close" type="button" data-about-close data-i18n-attr="aria-label:modal.close">
                 <svg class="modal-close__icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
@@ -28,7 +30,9 @@
                 <h3 data-i18n="about.backend_title">{{ _('about.backend_title') }}</h3>
                 <div class="tech-carousel" data-carousel="backend">
                     <!-- Navigation: Left Arrow -->
-                    <button class="carousel-nav carousel-nav-left" aria-label="Previous icon" type="button">
+                    <button class="carousel-nav carousel-nav-left" type="button"
+                        data-i18n-attr="aria-label:about.carousel_prev_icon"
+                        aria-label="{{ _('about.carousel_prev_icon') }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
@@ -43,21 +47,26 @@
                     </div>
 
                     <!-- Navigation: Right Arrow -->
-                    <button class="carousel-nav carousel-nav-right" aria-label="Next icon" type="button">
+                    <button class="carousel-nav carousel-nav-right" type="button"
+                        data-i18n-attr="aria-label:about.carousel_next_icon"
+                        aria-label="{{ _('about.carousel_next_icon') }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </button>
-
                 </div>
             </article>
 
             <!-- Card 3: Frontend (icon carousel) -->
             <article class="about-card about__frontend modal__card" role="listitem">
-                <h3 data-i18n="about.frontend_title">{{ _('about.frontend_title') }}</h3>
+                <h3 data-i18n="about.frontend_title">
+                    {{ _('about.frontend_title') }}
+                </h3>
                 <div class="tech-carousel" data-carousel="frontend">
-                    <button class="carousel-nav carousel-nav-left" aria-label="Previous icon" type="button">
+                    <button class="carousel-nav carousel-nav-left" type="button"
+                        data-i18n-attr="aria-label:about.carousel_prev_icon"
+                        aria-label="{{ _('about.carousel_prev_icon') }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
@@ -70,7 +79,9 @@
                         </div>
                     </div>
 
-                    <button class="carousel-nav carousel-nav-right" aria-label="Next icon" type="button">
+                    <button class="carousel-nav carousel-nav-right" type="button"
+                        data-i18n-attr="aria-label:about.carousel_next_icon"
+                        aria-label="{{ _('about.carousel_next_icon') }}">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -79,8 +90,6 @@
                     <!-- NOTE: No progress dots included (backend omitted them) -->
                 </div>
             </article>
-
-
         </div>
     </div>
 </div>

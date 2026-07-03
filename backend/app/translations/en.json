@@ -1,9 +1,9 @@
 {
   "home": {
-    "title": "Diego Rodriguez - Fullstack Developer",
+    "title": "Diego Rodriguez - Backend Developer",
     "name": "Diego Rodriguez",
-    "role": "Fullstack Developer",
-    "location": "Based in Brazil"
+    "role": "Backend Developer",
+    "location": "São Paulo, Brazil | Open to Remote and Hybrid Roles"
   },
   "buttons": {
     "work": "WORK",
@@ -24,6 +24,12 @@
     "title": "Work",
     "no_data": "No project data",
     "project_aria": "Project illustration for {0}",
+    "about_project_aria": "About project",
+    "loading": "Loading...",
+    "readme_loading": "Loading README...",
+    "readme_unavailable": "Unable to load README: {0}",
+    "invalid_github_url": "Invalid GitHub URL",
+    "no_readme": "No README found.",
     "projects": [
       {
         "title": "Tattoo Studio Management System",
@@ -45,33 +51,37 @@
   },
   "about": {
     "title": "About",
+    "carousel_prev_icon": "Previous icon",
+    "carousel_next_icon": "Next icon",
     "summary_title": "Professional Summary",
-    "summary": "I’m a Fullstack developer in career transition, fully committed to building practical, real‑world applications through consistent, focused, and self‑directed learning. My current work involves designing and developing Fullstack systems using technologies like Python, Flask, PostgreSQL, Docker, and RESTful APIs. I’ve built a strong technical foundation in computer networks, web protocols, Linux, version control (Git & GitHub), and software architecture. All my progress is backed by hands‑on projects available on my GitHub. I also leverage AI tools to accelerate learning, improve code quality, and experiment with creative problem‑solving techniques. Currently focused on deepening my backend expertise and contributing to meaningful projects; I’m open to opportunities where I can grow, collaborate, and turn knowledge into impact.",
+    "summary": "Backend Developer focused on production-ready systems using Python and modern APIs. I design and build resilient, secure, and scalable backend services with FastAPI/Flask, SQLAlchemy/Alembic, PostgreSQL, Docker, and CI/CD. My current work emphasizes authentication and authorization (OAuth2, JWT, RBAC, WebAuthn/passkeys), automated testing with Pytest, and secure application design. I use AI tools strategically (MCP and local agents) to accelerate debugging, prototyping, and documentation, always with direct human validation for architecture and technical decisions.",
     "background_title": "Background",
-    "background": "Self‑taught Fullstack Developer (May 2025 – Present) based in São Paulo, Brazil. Engaged in a structured, full‑time study plan combining theory with hands‑on projects. Focus areas: Python, Flask, PostgreSQL, Docker & Kubernetes, CI/CD, testing, networking, Linux, Git, HTML5/CSS3, and Flet. Projects and code are version‑controlled and published on GitHub.",
+    "background": "Independent Software Developer (May 2025 - Present): building backend systems for real clients and internal products with production-oriented architecture, security, and delivery workflows. Tattoo Artist & Creative Entrepreneur (Jan 2011 - Jul 2025): managed high-volume client projects end-to-end, strengthening ownership, communication, and problem-solving under pressure. Customer Service Representative at MAPFRE (Oct 2016 - Jan 2018): handled high-volume bilingual support in Portuguese and Spanish, developing practical user-experience and system-usability insight.",
     "skills_title": "Skills & Expertise",
     "skills": [
-      "Python, Flask",
-      "PostgreSQL, SQL",
-      "Docker, CI/CD, Testing",
-      "Git, Linux, REST APIs, System Design"
+      "Python, FastAPI, Flask",
+      "SQLAlchemy, Alembic, PostgreSQL, SQL",
+      "Docker, GitHub Actions, CI/CD, deployment workflows",
+      "OAuth2, JWT, RBAC, WebAuthn/passkeys",
+      "Pytest, automated testing, integration testing",
+      "Security practices, API integrations, webhooks, backend service design"
     ],
-    "skill_1": "Python, Flask",
-    "skill_2": "PostgreSQL, SQL",
-    "skill_3": "Docker, CI/CD, Testing",
-    "skill_4": "Git, Linux, REST APIs, System Design",
+    "skill_1": "Python, FastAPI, Flask",
+    "skill_2": "SQLAlchemy, Alembic, PostgreSQL, SQL",
+    "skill_3": "Docker, GitHub Actions, CI/CD",
+    "skill_4": "OAuth2, JWT, RBAC, WebAuthn/passkeys",
     "philosophy_title": "Philosophy",
     "philosophy": "Practical, learning‑by‑doing approach; pragmatic engineering with iterative improvement; leverage AI tools to accelerate learning and improve code quality.",
     "personal_title": "Personal Note",
     "personal": "Former freelance tattoo artist (14+ years), bringing autonomy, adaptability, client‑focused communication, and strong problem‑solving skills to software development.",
     "backend_title": "Backend / DevOps",
     "backend_group_1_title": "Backend",
-    "backend_group_1": "Python, Flask, PostgreSQL, REST APIs",
+    "backend_group_1": "Python, FastAPI, Flask, SQLAlchemy, Alembic, PostgreSQL",
     "backend_group_2_title": "DevOps",
-    "backend_group_2": "Docker, CI/CD, Git/GitHub, Linux",
+    "backend_group_2": "Docker, GitHub Actions, CI/CD, Linux, deployment workflows",
     "frontend_title": "Frontend",
-    "frontend_group_1": "HTML5, CSS3, Flet, responsive design",
-    "frontend_group_2": "Modern frontend patterns & accessibility",
+    "frontend_group_1": "HTML5, CSS3, JavaScript, Angular basics",
+    "frontend_group_2": "Responsive UI, accessibility, clean integration with backend APIs",
     "connect_title": "Connect",
     "cta": {
       "contact": "Contact",
@@ -83,7 +93,7 @@
   "contact": {
     "title": "Contact",
     "intro_title": "Get in touch",
-    "resumo_text": "If you have a project, role, or idea to discuss, feel free to reach out via email or LinkedIn. I'm open to freelance work, collaborations, and full‑time opportunities; let's start a conversation to see how we can work together.",
+    "resumo_text": "Open to remote and hybrid Backend Developer roles, plus selected freelance backend projects. If you need support with Python APIs, authentication, data modeling, CI/CD, or backend architecture, contact me via email or LinkedIn.",
     "email": "diego.rodriguez.backend@gmail.com",
     "social": {
       "github": "GitHub",
@@ -93,16 +103,18 @@
     },
     "availability": "Currently open for freelance projects and full-time opportunities.",
     "cta": {
-      "resume": "Resumé",
+      "resume": "Resume",
       "schedule": "Schedule a meeting",
       "copy_email": "Copy email"
     },
     "schedule_url": "https://calendar.app.google/xegXvydSFq8vi9VH7",
+    "honeypot_label": "Do not fill",
     "actions_title": "Contact options",
     "form": {
       "title": "Send a message",
       "name_label": "Name",
       "email_label": "Email",
+      "required_fields": "Please complete the required fields.",
       "subject_label": "Subject",
       "message_label": "Message",
       "processing_notice": "By submitting this form you consent to your message and contact details being used only to respond to your inquiry. I will not share your data.",
@@ -118,6 +130,10 @@
   "toggle": {
     "theme": "Toggle dark mode",
     "lang": "Toggle language"
+  },
+  "theme": {
+    "dark_active": "Dark Mode (Active)",
+    "light_active": "Light Mode (Active)"
   },
   "lang": {
     "en": "EN-US",

@@ -8,50 +8,61 @@ window.initModal &&
   });
 
 // Copy-email handler: copies email from [data-copy-email] and announces to #aria-live-contact
-(function(){
+(function () {
   if (window.__contact_copy_email_attached) return;
   window.__contact_copy_email_attached = true;
 
-  function announce(msg){
-    var el = document.getElementById('aria-live-contact');
+  function announce(msg) {
+    var el = document.getElementById("aria-live-contact");
     if (!el) return;
     el.textContent = msg;
   }
 
-  document.addEventListener('click', function(e){
-    var btn = e.target.closest && e.target.closest('[data-copy-email]');
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("[data-copy-email]");
     if (!btn) return;
-    var email = btn.getAttribute('data-copy-email');
+    var email = btn.getAttribute("data-copy-email");
     if (!email) return;
-    var label = (btn.getAttribute('aria-label') || btn.textContent || '').trim();
+    var label = (
+      btn.getAttribute("aria-label") ||
+      btn.textContent ||
+      ""
+    ).trim();
 
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(email).then(function(){
-        announce(label ? (label + ' ' + email) : email);
-      }, function(){ announce(label || ''); });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(
+        function () {
+          announce(label ? label + " " + email : email);
+        },
+        function () {
+          announce(label || "");
+        }
+      );
     } else {
-      try{
-        var ta = document.createElement('textarea');
+      try {
+        var ta = document.createElement("textarea");
         ta.value = email;
-        ta.setAttribute('readonly','');
-        ta.style.position = 'absolute';
-        ta.style.left = '-9999px';
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
         document.body.appendChild(ta);
         ta.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(ta);
-        announce(label ? (label + ' ' + email) : email);
-      }catch(err){ announce(label || ''); }
+        announce(label ? label + " " + email : email);
+      } catch (err) {
+        announce(label || "");
+      }
     }
   });
 })();
 
-(function(){
+(function () {
   if (window.__contact_form_handler_attached) return;
   window.__contact_form_handler_attached = true;
 
-  var form = document.getElementById('contact-form');
-  var status = document.getElementById('contact-form-status');
+  var form = document.getElementById("contact-form");
+  var status = document.getElementById("contact-form-status");
   var submitBtn = form && form.querySelector('button[type="submit"]');
   if (!form || !status || !submitBtn) return;
 
@@ -65,112 +76,107 @@ window.initModal &&
   var isSubmitting = false;
   var originalButtonContent = submitBtn.innerHTML;
 
-  function resolveKey(source, dottedKey){
+  function resolveKey(source, dottedKey) {
     if (!source || !dottedKey) return undefined;
-    if (Object.prototype.hasOwnProperty.call(source, dottedKey)) return source[dottedKey];
-    var parts = dottedKey.split('.');
+    if (Object.prototype.hasOwnProperty.call(source, dottedKey))
+      return source[dottedKey];
+    var parts = dottedKey.split(".");
     var cur = source;
-    for (var i = 0; i < parts.length; i++){
-      if (!cur || typeof cur !== 'object' || !(parts[i] in cur)) return undefined;
+    for (var i = 0; i < parts.length; i++) {
+      if (!cur || typeof cur !== "object" || !(parts[i] in cur))
+        return undefined;
       cur = cur[parts[i]];
     }
     return cur;
   }
 
-  function getDictionary(){
+  function getDictionary() {
     var cache = window.i18n && window.i18n.cache;
-    var lang = window.i18n && window.i18n.current
-      ? window.i18n.current
-      : document.documentElement.lang || 'en';
+    var lang =
+      window.i18n && window.i18n.current
+        ? window.i18n.current
+        : document.documentElement.lang || "en";
     return cache && cache[lang] ? cache[lang] : {};
   }
 
-  function translate(key, fallback){
+  function translate(key, fallback) {
     var dict = getDictionary();
     var value = resolveKey(dict, key);
-    return typeof value === 'string' && value ? value : fallback || '';
+    return typeof value === "string" && value ? value : fallback || "";
   }
 
-  function updateStatus(message){
-    if (!message){
-      status.textContent = '';
-      status.setAttribute('hidden', '');
+  function updateStatus(message) {
+    if (!message) {
+      status.textContent = "";
+      status.setAttribute("hidden", "");
       return;
     }
     status.textContent = message;
-    status.removeAttribute('hidden');
+    status.removeAttribute("hidden");
   }
 
-  function showError(message){
+  function showError(message) {
     updateStatus(message);
   }
 
-  function showSuccess(message){
+  function showSuccess(message) {
     updateStatus(message);
   }
 
-  function disableButton(){
+  function disableButton() {
     originalButtonContent = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.setAttribute('aria-busy', 'true');
-    submitBtn.innerHTML = translate('contact.form.sending', 'Sending…');
+    submitBtn.setAttribute("aria-busy", "true");
+    submitBtn.innerHTML = translate("contact.form.sending");
   }
 
-  function resetButton(){
+  function resetButton() {
     submitBtn.disabled = false;
-    submitBtn.removeAttribute('aria-busy');
+    submitBtn.removeAttribute("aria-busy");
     submitBtn.innerHTML = originalButtonContent;
   }
 
-  function validate(){
-    var requiredMessage = translate(
-      'contact.form.error',
-      'Please complete the required fields.'
-    );
+  function validate() {
+    var requiredMessage = translate("contact.form.required_fields");
 
-    if (nameInput && !nameInput.value.trim()){
+    if (nameInput && !nameInput.value.trim()) {
       showError(requiredMessage);
       nameInput.focus();
       return false;
     }
 
-    var emailValue = emailInput ? emailInput.value.trim() : '';
+    var emailValue = emailInput ? emailInput.value.trim() : "";
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailValue || !emailPattern.test(emailValue)){
+    if (!emailValue || !emailPattern.test(emailValue)) {
       showError(requiredMessage);
       emailInput && emailInput.focus();
       return false;
     }
 
-    var messageValue = messageInput ? messageInput.value.trim() : '';
-    if (!messageValue){
+    var messageValue = messageInput ? messageInput.value.trim() : "";
+    if (!messageValue) {
       showError(requiredMessage);
       messageInput && messageInput.focus();
       return false;
     }
 
-    if (consentInput && !consentInput.checked){
-      showError(
-        translate(
-          'contact.form.consent_required',
-          'Please agree to the checkbox before sending.'
-        )
-      );
+    if (consentInput && !consentInput.checked) {
+      showError(translate("contact.form.consent_required"));
       consentInput.focus();
       return false;
     }
 
-    if (honeypotInput && honeypotInput.value.trim()){
-      showError(translate('contact.form.error', 'Message could not be sent.'));
+    if (honeypotInput && honeypotInput.value.trim()) {
+      showError(translate("contact.form.error"));
       return false;
     }
 
     return true;
   }
 
-  form.addEventListener('submit', function(event){
+  form.addEventListener("submit", function (event) {
     if (!window.fetch) return;
-    if (isSubmitting){
+    if (isSubmitting) {
       event.preventDefault();
       return;
     }
@@ -180,34 +186,34 @@ window.initModal &&
     if (!validate()) return;
 
     var payload = {
-      name: nameInput ? nameInput.value.trim() : '',
-      email: emailInput ? emailInput.value.trim() : '',
-      subject: subjectInput ? subjectInput.value.trim() : '',
-      message: messageInput ? messageInput.value.trim() : '',
+      name: nameInput ? nameInput.value.trim() : "",
+      email: emailInput ? emailInput.value.trim() : "",
+      subject: subjectInput ? subjectInput.value.trim() : "",
+      message: messageInput ? messageInput.value.trim() : "",
       consent_marketing: consentInput ? !!consentInput.checked : false,
     };
 
     isSubmitting = true;
     disableButton();
-    updateStatus('');
+    updateStatus("");
 
-    fetch('/contact', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("/contact", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
-      .then(function(response){
+      .then(function (response) {
         return response
           .json()
-          .catch(function(){
+          .catch(function () {
             return null;
           })
-          .then(function(data){
-            if (!response.ok){
+          .then(function (data) {
+            if (!response.ok) {
               var message =
                 (data && (data.error || data.message)) ||
-                translate('contact.form.error', 'Something went wrong.');
+                translate("contact.form.error");
               var err = new Error(message);
               err.fallback = message;
               throw err;
@@ -215,28 +221,23 @@ window.initModal &&
             return data;
           });
       })
-      .then(function(data){
+      .then(function (data) {
         var successMessage =
-          (data && data.message) ||
-          translate('contact.form.success', 'Message sent!');
+          (data && data.message) || translate("contact.form.success");
         showSuccess(successMessage);
         form.reset();
       })
-      .catch(function(err){
+      .catch(function (err) {
         var fallbackMessage =
-          (err && err.message) ||
-          translate(
-            'contact.form.error',
-            'Something went wrong. Please try again.'
-          );
+          (err && err.message) || translate("contact.form.error");
         showError(fallbackMessage);
         console.error(err);
       })
-      .finally(function(){
+      .finally(function () {
         isSubmitting = false;
         resetButton();
-        if (honeypotInput){
-          honeypotInput.value = '';
+        if (honeypotInput) {
+          honeypotInput.value = "";
         }
       });
   });

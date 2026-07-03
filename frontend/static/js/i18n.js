@@ -72,12 +72,27 @@ document.addEventListener("DOMContentLoaded", function () {
     return cur;
   }
 
+  function getValueWithFallback(lang, key) {
+    const cache = window.i18n.cache || {};
+    const defaultLang = "en";
+    const primary = cache[lang] || {};
+    const primaryVal = resolveKey(primary, key);
+    if (primaryVal !== undefined) return primaryVal;
+
+    const defaultDict = cache[defaultLang] || {};
+    const defaultVal = resolveKey(defaultDict, key);
+    if (defaultVal !== undefined) return defaultVal;
+
+    const altLang = lang === "en" ? "pt" : "en";
+    const altDict = cache[altLang] || {};
+    const altVal = resolveKey(altDict, key);
+    if (altVal !== undefined) return altVal;
+
+    return undefined;
+  }
+
   // Update non-animated elements on home page
   function updateNonAnimatedElements(lang) {
-    const dict =
-      window.i18n.cache && window.i18n.cache[lang]
-        ? window.i18n.cache[lang]
-        : {};
     const animatedKeys = ANIMATED_HOME_ELEMENTS.map((c) => c.key);
 
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
@@ -86,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Skip already animated elements
       if (animatedKeys.includes(key)) return;
 
-      const val = resolveKey(dict, key);
+      const val = getValueWithFallback(lang, key);
       if (val === undefined) return;
       const fallback = el.getAttribute("data-i18n-fallback") || "";
       const final =
@@ -97,15 +112,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update all elements with data-i18n attributes
   function updateAllElements(lang) {
-    const dict =
-      window.i18n.cache && window.i18n.cache[lang]
-        ? window.i18n.cache[lang]
-        : {};
-
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       const key = el.getAttribute("data-i18n");
       if (!key) return;
-      const val = resolveKey(dict, key);
+      const val = getValueWithFallback(lang, key);
       if (val === undefined) return;
       const fallback = el.getAttribute("data-i18n-fallback") || "";
       const final =
@@ -116,11 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update all elements with data-i18n-attr attributes
   function updateAttributeElements(lang) {
-    const dict =
-      window.i18n.cache && window.i18n.cache[lang]
-        ? window.i18n.cache[lang]
-        : {};
-
     document.querySelectorAll("[data-i18n-attr]").forEach(function (el) {
       const map = el.getAttribute("data-i18n-attr");
       if (!map) return;
@@ -130,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (parts.length < 2) return;
         const attr = parts[0].trim();
         const key = parts.slice(1).join(":").trim();
-        const val = resolveKey(dict, key);
+        const val = getValueWithFallback(lang, key);
         if (val === undefined) return;
         const fallback = el.getAttribute("data-i18n-fallback") || "";
         // replace placeholder {0} with fallback if present
@@ -163,11 +168,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Main updateAll function with optional animation support
   window.i18n.updateAll = function (lang, animate = false) {
-    const dict =
-      window.i18n.cache && window.i18n.cache[lang]
-        ? window.i18n.cache[lang]
-        : {};
-
     // Determine if we should animate: only if caller requested animation, home is visible/in-focus, and page is visible
     const shouldAnimate =
       animate &&
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ANIMATED_HOME_ELEMENTS.forEach((config) => {
         const element = document.querySelector(`[data-i18n="${config.key}"]`);
         if (element) {
-          const finalText = resolveKey(dict, config.key) || "";
+          const finalText = getValueWithFallback(lang, config.key) || "";
           elementsToAnimate.push({
             element: element,
             text: finalText,
