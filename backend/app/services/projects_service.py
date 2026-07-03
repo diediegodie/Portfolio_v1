@@ -3,7 +3,7 @@ from pathlib import Path
 import markdown
 
 from ..repositories import projects_repository
-from app.utils import i18n
+from ..utils import i18n
 
 
 def list_projects() -> List[Dict]:

@@ -10,12 +10,7 @@ from flask import (
     session,
     url_for,
 )
-
-try:
-    from backend.app.utils import i18n
-except ModuleNotFoundError:
-    from app.utils import i18n
-
+from backend.app.utils import i18n
 
 app = Flask(
     __name__,
@@ -98,10 +93,7 @@ def set_language(lang):
 
 @app.route("/")
 def home():
-    try:
-        from backend.app.services import projects_service
-    except ModuleNotFoundError:
-        from app.services import projects_service
+    from backend.app.services import projects_service
 
     projects = projects_service.list_projects()
     return render_template("home.html", projects=projects)
@@ -127,7 +119,5 @@ def contact():
 
 
 if __name__ == "__main__":
-    import os
-
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="127.0.0.1", port=port, debug=True)
