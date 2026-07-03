@@ -10,6 +10,7 @@ from flask import (
     session,
     url_for,
 )
+
 try:
     from backend.app.utils import i18n
 except ModuleNotFoundError:
@@ -28,6 +29,7 @@ app.secret_key = secret_key
 
 # Simple validation pattern (not exhaustive) for client-provided emails
 EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
 
 def _normalize_contact_payload():
     data = request.get_json(silent=True)
@@ -52,6 +54,7 @@ def _normalize_contact_payload():
         "hp": _clean(data.get("hp")),
     }
 
+
 def _json_error_response(message=None):
     payload = {
         "status": "error",
@@ -61,11 +64,13 @@ def _json_error_response(message=None):
         return jsonify(payload), 400
     return redirect(request.referrer or url_for("home"))
 
+
 def _json_success_response():
     payload = {"status": "ok", "message": i18n._("contact.form.success")}
     if not request.is_json:
         return redirect(request.referrer or url_for("home"))
     return jsonify(payload)
+
 
 # Load translations at startup
 i18n.load_translations()
@@ -115,12 +120,7 @@ def contact():
     if hp:
         return _json_error_response()
 
-    if (
-        not name
-        or not email
-        or not message
-        or not EMAIL_PATTERN.match(email)
-    ):
+    if not name or not email or not message or not EMAIL_PATTERN.match(email):
         return _json_error_response()
 
     return _json_success_response()
