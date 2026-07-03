@@ -10,7 +10,10 @@ from flask import (
     session,
     url_for,
 )
-from app.utils import i18n
+try:
+    from backend.app.utils import i18n
+except ModuleNotFoundError:
+    from app.utils import i18n
 
 
 app = Flask(
@@ -18,7 +21,10 @@ app = Flask(
     template_folder="../frontend/templates",
     static_folder="../frontend/static",
 )
-app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-in-production")
+secret_key = os.environ.get("SECRET_KEY")
+if not secret_key:
+    raise RuntimeError("SECRET_KEY environment variable is required")
+app.secret_key = secret_key
 
 # Simple validation pattern (not exhaustive) for client-provided emails
 EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
@@ -87,7 +93,10 @@ def set_language(lang):
 
 @app.route("/")
 def home():
-    from app.services import projects_service
+    try:
+        from backend.app.services import projects_service
+    except ModuleNotFoundError:
+        from app.services import projects_service
 
     projects = projects_service.list_projects()
     return render_template("home.html", projects=projects)
