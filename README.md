@@ -1,50 +1,53 @@
-# Backend Developer Portfolio
-**Production-grade portfolio for a backend developer.**
+# Diego - Portfolio_v1
+ 
+<!-- Este projeto foi desenvolvido para apresentar minhas habilidades em **engenharia backend** e minha atenção ao **design minimalista**. -->
+
+This project was developed to showcase my skills in **backend engineering** and my attention to **minimalist design**.
+
+Access the site: [diego.rodriguez.backend](https://web-production-eb8ba.up.railway.app)
 
 ---
 
-## Architecture Principles
-- **Clean Architecture** and **Layered Design**
-- Blueprints handle routing only
-- Services encapsulate business logic
-- Repositories manage data access
-- Models define data structure
-- Utils are stateless and reusable
+## About the project
+
+This portfolio is more than just a showcase of work:  
+- Reflects my experience with **Flask** and **PostgreSQL**  
+- Demonstrates the application of **Clean Architecture**  
+- Includes modern features like **dark mode** and **internationalization (i18n)**  
+- Built with **vanilla JavaScript** to maintain lightweight and performance  
 
 ---
 
-## Internationalization Strategy
-- **Default language:** English (en)
-- **Alternative:** Portuguese (pt-BR)
-- **Approach:**
-	- Server-side rendering
-	- Shared translation keys in JSON files
-	- Fallback to English if translation is missing
+## Objective
+
+Create a digital space that showcases:
+- My journey and projects
+- My approach to architecture and design
+- How I apply best development practices in real projects
 
 ---
 
-## Development Workflow
-- **Linting & Formatting:**
-	- Python: [Black](https://black.readthedocs.io/)
-	- Frontend: [Prettier](https://prettier.io/), [Stylelint](https://stylelint.io/)
-- **Docker:**
-	- `Dockerfile` and `docker-compose.yml` exist for future use (currently empty)
+## Technologies Used
+
+- **Backend:** Flask (Python)  
+- **Database:** PostgreSQL  
+- **Frontend:** HTML, CSS, Vanilla JavaScript  
+- **Infrastructure:** Railway (deployment and hosting)  
 
 ---
 
-## Future Work
-- Populate real project and blog data
-- Implement admin dashboard and authentication
-- Complete Docker deployment and CI/CD pipeline
-- Add automated tests and coverage reporting
-- Polish i18n and accessibility for all content
+## Author
+
+**Diego**  
+Backend Engineer passionate about clean architecture, modular design, and elegant solutions.  
+
+Get in touch:  
+- [LinkedIn](https://www.linkedin.com/in/diegobackend/)
+ 
 
 ---
 
-*Note: Frontend assets are served via Flask static folder. Docker and CI/CD setup are planned for future releases.*
+## Status
 
----
-
-## Credits
-- Designed and developed by Diego Rodriguez
-- Inspired by best practices in fullstack engineering and UI/UX design
+The project is in development and constantly evolving.  
+New ideas and improvements will be incorporated over time.
