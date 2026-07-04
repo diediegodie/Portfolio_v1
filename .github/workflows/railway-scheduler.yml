@@ -20,13 +20,14 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Autenticar Railway
-        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
-
       - name: Resume Service (escala para 1 réplica)
         if: github.event.schedule == '0 6 * * 1-5'
         run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 1
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Pause Service (escala para 0 réplicas)
         if: github.event.schedule == '0 18 * * 1-5'
         run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 0
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
