@@ -19,3 +19,5 @@ jobs:
         run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 0
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: 20cf59a4-f179-4e70-adca-42c06360986c
+          RAILWAY_ENVIRONMENT_ID: 78256919-3101-408d-874d-e60d6f4e63b4
