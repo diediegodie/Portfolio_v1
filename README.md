@@ -4,7 +4,7 @@
 
 This project was developed to showcase my skills in **backend engineering** and my attention to **minimalist design**.
 
-Access the site: [diego.rodriguez.backend](https://web-production-eb8ba.up.railway.app)
+Access the site: [web-production-eb8ba.up.railway.app](https://web-production-eb8ba.up.railway.app)
 
 ---
 
