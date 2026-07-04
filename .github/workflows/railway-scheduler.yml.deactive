@@ -18,12 +18,15 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Configurar contexto do Railway
+        run: railway link --project 20cf59a4-f179-4e70-adca-42c06360986c --environment 78256919-3101-408d-874d-e60d6f4e63b4
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
       - name: Ativar serviço (1 réplica)
         run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 1
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: 20cf59a4-f179-4e70-adca-42c06360986c
-          RAILWAY_ENVIRONMENT_ID: 78256919-3101-408d-874d-e60d6f4e63b4
 
   railway-down:
     if: github.event.schedule == '0 21 * * 1-5'
@@ -37,9 +40,12 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Configurar contexto do Railway
+        run: railway link --project 20cf59a4-f179-4e70-adca-42c06360986c --environment 78256919-3101-408d-874d-e60d6f4e63b4
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
       - name: Derrubar serviço (0 réplicas)
         run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 0
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: 20cf59a4-f179-4e70-adca-42c06360986c
-          RAILWAY_ENVIRONMENT_ID: 78256919-3101-408d-874d-e60d6f4e63b4
