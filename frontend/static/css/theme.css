@@ -1908,8 +1908,7 @@ html[data-theme="dark"] .carousel-nav:hover {
   position: fixed;
   left: 0;
   top: 0;
-  /* doubled vertical offset for the floating label */
-  transform: translate(-50%, -280%) scale(0.98);
+  transform: translateX(-50%);
   opacity: 0;
   padding: 10px 14px;
   background: rgba(255, 255, 255, 0.03);
@@ -1990,11 +1989,10 @@ html[data-theme="dark"] .carousel-nav:hover {
 }
 .tech-tooltip.visible {
   opacity: 1;
-  transform: translate(-50%, -140%) scale(1);
+  transform: translateX(-50%) scale(1);
 }
 .tech-tooltip.below {
-  /* doubled below offset */
-  transform: translate(-50%, 16px) !important;
+  transform: translateX(-50%) !important;
   transform-origin: top center;
 }
 @media (prefers-reduced-motion: reduce) {

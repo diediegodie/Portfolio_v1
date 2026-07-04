@@ -254,6 +254,32 @@ window.initModal &&
 (function () {
   const cache = new Map();
 
+  function resolveKey(dct, dottedKey) {
+    if (!dct || !dottedKey) return undefined;
+    if (Object.prototype.hasOwnProperty.call(dct, dottedKey)) return dct[dottedKey];
+    const parts = dottedKey.split(".");
+    let cur = dct;
+    for (let i = 0; i < parts.length; i++) {
+      if (!cur || typeof cur !== "object" || !(parts[i] in cur)) return undefined;
+      cur = cur[parts[i]];
+    }
+    return cur;
+  }
+
+  function t(key, fallback = "") {
+    const cache = (window.i18n && window.i18n.cache) || {};
+    const lang =
+      (window.i18n && window.i18n.current) || document.documentElement.lang || "en";
+    const primary = resolveKey(cache[lang], key);
+    if (typeof primary === "string" && primary) return primary;
+    const enValue = resolveKey(cache.en, key);
+    if (typeof enValue === "string" && enValue) return enValue;
+    const altLang = lang === "en" ? "pt" : "en";
+    const altValue = resolveKey(cache[altLang], key);
+    if (typeof altValue === "string" && altValue) return altValue;
+    return fallback;
+  }
+
   function parseOwnerRepo(url) {
     try {
       const u = new URL(url);

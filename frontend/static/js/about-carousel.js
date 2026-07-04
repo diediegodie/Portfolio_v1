@@ -227,40 +227,19 @@ class TechCarousel {
     tt.classList.remove("below");
     // allow DOM to measure
     const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
-    if (isCursor && typeof clientX === "number") {
-      const rect = tt.getBoundingClientRect();
-      const half = rect.width / 2 || 48;
-      let left = clamp(clientX, half + 12, window.innerWidth - half - 12);
-      // prefer placing tooltip below the cursor; keep a larger vertical gap (56px)
-      let top = clientY + 60;
-      // If not enough space below, flip above; otherwise mark as 'below'
-      if (top + rect.height > window.innerHeight - 12) {
-        // flip above cursor
-        top = clientY - 60;
-        // if above would be off-screen, clamp to a safe vertical center near cursor
-        if (top - rect.height < 12) {
-          // center tooltip vertically around cursor as a fallback
-          top = clamp(clientY - rect.height / 2, 12, window.innerHeight - rect.height - 12);
-        } else {
-          tt.classList.remove("below");
-        }
-      } else {
-        tt.classList.add("below");
-      }
-      tt.style.left = `${left}px`;
-      tt.style.top = `${top}px`;
-    } else if (element) {
+    if (element) {
       const elRect = element.getBoundingClientRect();
       let left = elRect.left + elRect.width / 2;
-      // anchor a bit further above element
-      let top = elRect.top - 28;
+      let top = elRect.bottom + 12;
       left = clamp(left, 12, window.innerWidth - 12);
+      top = clamp(top, 12, window.innerHeight - 12);
       tt.style.left = `${left}px`;
       tt.style.top = `${top}px`;
+      tt.classList.add("below");
       const rect = tt.getBoundingClientRect();
-      if (rect.top < 12) {
-        tt.style.top = `${elRect.bottom + 28}px`;
-        tt.classList.add("below");
+      if (rect.bottom > window.innerHeight - 12) {
+        tt.style.top = `${Math.max(12, elRect.top - rect.height - 12)}px`;
+        tt.classList.remove("below");
       }
     }
   }
@@ -297,7 +276,7 @@ class TechCarousel {
       this.showTooltip(label);
       if (!isReduced && typeof e.clientX === "number") {
         this.positionTooltip(e.clientX, e.clientY, item, true);
-        document.addEventListener("pointermove", pointerMove, {
+        this.track.addEventListener("pointermove", pointerMove, {
           passive: true,
         });
       } else {
@@ -309,7 +288,7 @@ class TechCarousel {
       const item = e.target.closest(".tech-icon-item");
       if (!item) return;
       activeItem = null;
-      document.removeEventListener("pointermove", pointerMove);
+      this.track.removeEventListener("pointermove", pointerMove);
       this.hideTooltip();
     };
 

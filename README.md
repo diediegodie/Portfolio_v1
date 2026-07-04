@@ -1,6 +1,4 @@
 # Diego - Portfolio_v1
- 
-<!-- Este projeto foi desenvolvido para apresentar minhas habilidades em **engenharia backend** e minha atenção ao **design minimalista**. -->
 
 This project was developed to showcase my skills in **backend engineering** and my attention to **minimalist design**.
 

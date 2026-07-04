@@ -20,7 +20,7 @@
         <div class="work-modal__grid" role="list">
             {% for project in projects %}
             <article class="work-card" role="listitem" data-project-index="{{ loop.index0 }}"
-                data-images="{{ project.images | default([]) | tojson | safe }}"
+                data-images='{{ project.images | default([]) | tojson | safe }}'
                 data-github-url="{{ project.github_url }}">
                 <div class="work-card__image" aria-hidden="true" data-i18n-attr="aria-label:work.project_aria"
                     data-i18n-fallback="{{ project.title if project.title else _('work.no_data') }}">

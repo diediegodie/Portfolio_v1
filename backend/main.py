@@ -1,5 +1,8 @@
 import os
 import re
+import sys
+from pathlib import Path
+from dotenv import load_dotenv
 from flask import (
     Flask,
     jsonify,
@@ -10,6 +13,13 @@ from flask import (
     session,
     url_for,
 )
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if ROOT_DIR.as_posix() not in sys.path:
+    sys.path.insert(0, ROOT_DIR.as_posix())
+
+load_dotenv(ROOT_DIR / ".env")
+
 from backend.app.utils import i18n
 
 app = Flask(
