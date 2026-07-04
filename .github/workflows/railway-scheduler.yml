@@ -3,29 +3,25 @@ name: Railway Service Scheduler
 on:
   workflow_dispatch:   # permite rodar manualmente
   schedule:
-    - cron: "0 11 * * *"
-    - cron: "0 23 * * *"
+    # Ativa às 6h de segunda a sexta
+    - cron: "0 6 * * 1-5"
+    # Pausa às 18h de segunda a sexta
+    - cron: "0 18 * * 1-5"
 
 jobs:
   railway-service:
     runs-on: ubuntu-latest
     steps:
-      - name: Pause Service
-        if: github.event.schedule == '0 23 * * *'
-        run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
-            -d '{
-              "query": "mutation { serviceInstanceUpdate(serviceId: \"091b247d-e42f-488d-a5ef-de49f997dd1d\", input: { numReplicas: 0 }) }"
-            }'
+      - name: Instalar Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
 
-      - name: Resume Service
-        if: github.event.schedule == '0 11 * * *'
-        run: |
-          curl -X POST https://backboard.railway.app/graphql/v2 \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
-            -d '{
-              "query": "mutation { serviceInstanceUpdate(serviceId: \"091b247d-e42f-488d-a5ef-de49f997dd1d\", input: { numReplicas: 1 }) }"
-            }'
+      - name: Autenticar Railway
+        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Resume Service (escala para 1 réplica)
+        if: github.event.schedule == '0 6 * * 1-5'
+        run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 1
+
+      - name: Pause Service (escala para 0 réplicas)
+        if: github.event.schedule == '0 18 * * 1-5'
+        run: railway scale 091b247d-e42f-488d-a5ef-de49f997dd1d 0
