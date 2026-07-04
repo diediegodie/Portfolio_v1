@@ -4,7 +4,7 @@
 
 This project was developed to showcase my skills in **backend engineering** and my attention to **minimalist design**.
 
-Access the site: [web-production-eb8ba.up.railway.app](https://web-production-eb8ba.up.railway.app)
+Access this portfolio clicking [here](https://web-production-eb8ba.up.railway.app).
 
 ---
 
