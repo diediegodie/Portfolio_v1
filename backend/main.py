@@ -20,6 +20,7 @@ if ROOT_DIR.as_posix() not in sys.path:
 
 load_dotenv(ROOT_DIR / ".env")
 
+from backend.app.db import SessionLocal
 from backend.app.utils import i18n
 
 app = Flask(
@@ -105,7 +106,8 @@ def set_language(lang):
 def home():
     from backend.app.services import projects_service
 
-    projects = projects_service.list_projects()
+    with SessionLocal() as db:
+        projects = projects_service.list_projects(db)
     return render_template("home.html", projects=projects)
 
 
