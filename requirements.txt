@@ -13,7 +13,7 @@ pathspec==1.0.3
 platformdirs==4.5.1
 psycopg2-binary==2.9.11
 python-dotenv==1.2.1
-SQLAlchemy==2.0.19
+SQLAlchemy==2.0.51
 alembic==1.11.1
 pytokens==0.4.0
 Werkzeug==3.1.4
