@@ -141,9 +141,6 @@ yarn.lock
 # Ignore log files
 *.log
 
-# Ignore migrations (if not tracked)
-backend/migrations/
-
 # Ignore secret/config files
 secrets.json
 config.json
