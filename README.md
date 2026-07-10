@@ -30,7 +30,7 @@ Create a digital space that showcases:
 - **Backend:** Flask (Python)  
 - **Database:** PostgreSQL  
 - **Frontend:** HTML, CSS, Vanilla JavaScript  
-- **Infrastructure:** Railway (deployment and hosting)  
+- **Infrastructure:** Render (deployment and hosting)  
 
 ---
 
