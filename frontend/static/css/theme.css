@@ -1715,16 +1715,16 @@ html[data-theme="dark"] .project-readme__content code {
 @media (min-width: 721px) {
   .about-modal__panel {
     /* Reduce canonical modal card height for About modal only */
-    --modal-card-fixed-height: 320px; /* was 360px; originally 440px at :root */
+    --modal-card-fixed-height: 260px; /* more compact About cards */
     /* Keep work-card derived height proportionate and sensible */
-    --work-card-fixed-height: max(480px, calc(var(--modal-card-fixed-height) * 1.25));
+    --work-card-fixed-height: max(440px, calc(var(--modal-card-fixed-height) * 1.25));
   }
 }
 
 /* Mobile: preserve original mobile sizing behavior for the About modal */
 @media (max-width: 720px) {
   .about-modal__panel {
-    --modal-card-fixed-height: min(340px, 58vh);
+    --modal-card-fixed-height: min(300px, 46vh);
     --work-card-fixed-height: var(--work-card-fixed-height-mobile);
   }
 }
@@ -1732,6 +1732,18 @@ html[data-theme="dark"] .project-readme__content code {
 /* BEGIN: About modal refinements: centered lists and stacked CTAs */
 .about-modal__grid .about-card > h3 {
   text-align: center;
+}
+
+.about-modal__panel .about__aboutme {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.about-modal__panel .about__aboutme > p {
+  flex: 0 0 auto;
+  overflow: visible;
 }
 
 /* Keep badges unaffected elsewhere but backend/frontend lists use plain text (no badges) */
@@ -1992,6 +2004,23 @@ html[data-theme="dark"] .carousel-nav:hover {
   opacity: 1;
   transform: scale(1.65) translateZ(0);
   z-index: 3;
+}
+
+.about-modal__panel .tech-icon-item {
+  max-width: 80px;
+  max-height: 80px;
+  flex: 0 0 80px;
+  height: 80px;
+}
+
+.about-modal__panel .tech-icon-item img,
+.about-modal__panel .tech-icon-item svg {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.about-modal__panel .tech-icon-item.center {
+  transform: scale(1.4) translateZ(0);
 }
 
 /* Tooltip for tech icons (floating label) */
