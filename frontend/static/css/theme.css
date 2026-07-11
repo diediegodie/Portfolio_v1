@@ -318,6 +318,77 @@ html[data-theme="dark"] .contact-modal__btn[aria-disabled="true"] {
   }
 }
 
+.contact__merged-card .contact-card__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 60%) minmax(0, 40%);
+  gap: var(--spacing-lg);
+  align-items: stretch;
+}
+
+.contact__merged-card .contact-card__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.contact__merged-card .contact-card__column--links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-lg) 0;
+}
+
+.contact__merged-card .contact-card__button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: center;
+  width: auto;
+  max-width: 18rem;
+}
+
+.contact__merged-card .contact-card__button-stack .contact-modal__btn {
+  width: auto;
+  min-width: 0;
+  justify-content: center;
+}
+
+.contact__merged-card {
+  min-height: auto;
+  max-height: none;
+  height: auto;
+  overflow: visible;
+}
+
+.contact__merged-card .contact-card__grid {
+  align-items: stretch;
+}
+
+@media (max-width: 760px) {
+  .contact__merged-card .contact-card__grid {
+    grid-template-columns: 1fr;
+  }
+  .contact__merged-card .contact-card__column--links {
+    align-items: center;
+    justify-content: center;
+  }
+  .contact__merged-card {
+    min-height: auto;
+    max-height: none;
+    height: auto;
+    overflow: visible;
+  }
+  .contact__merged-card .contact-card__button-stack {
+    width: 100%;
+    max-width: none;
+  }
+  .contact__merged-card .contact-card__button-stack .contact-modal__btn {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* ========== Contact Form — centered, rounded inputs ========== */
 .contact__form .contact-card__content form#contact-form {
   display: flex;
@@ -553,6 +624,26 @@ html[data-theme="dark"] .contact-modal__btn[aria-disabled="true"] {
   overflow: auto;
   padding-right: 0.75rem;
   line-height: 1.6;
+}
+
+/* Strong override for merged contact card height so it follows content size */
+.contact__merged-card {
+  min-height: auto !important;
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.contact__merged-card .contact-card__column--links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact__merged-card .contact-card__button-stack {
+  width: auto;
+  max-width: 18rem;
 }
 
 /* Mobile behavior: adjust canonical height relative to viewport */
