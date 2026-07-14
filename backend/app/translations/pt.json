@@ -30,24 +30,16 @@
     "readme_unavailable": "Não foi possível carregar o README: {0}",
     "invalid_github_url": "URL do GitHub inválida",
     "no_readme": "Nenhum README encontrado.",
-    "projects": [
-      {
-        "title": "Sistema de Gestão para Estúdios de Tatuagem",
+    "projects": {
+      "tattoo": {
+        "title": "Tattoo Studio System v4",
         "description": "Plataforma de gestão completa para estúdios de tatuagem: gerenciamento de clientes (sincronização com JotForm), agendamento de sessões com Google Calendar, controle de estoque e geração automática de extratos financeiros mensais. Desenvolvido com Flask, SQLAlchemy, PostgreSQL e Docker; inclui autenticação Google OAuth e jobs agendados."
       },
-      {
-        "title": "API de Tarefas",
-        "description": "API REST para gerenciamento de tarefas com workers em background."
-      },
-      {
-        "title": "Backend do Portfólio",
-        "description": "O backend que serve este portfólio e as traduções de conteúdo."
-      },
-      {
-        "title": "Frontend do Portfólio",
-        "description": "Frontend do portfólio com modal responsivo e UI baseada em cards."
+      "scambo": {
+        "title": "Scambo Test Flet v1",
+        "description": "Uma plataforma social para trocas seguras de bens/serviços sem dinheiro. Construída com Flet (Python), interface Material Design, camada de dados simulada e arquitetura limpa."
       }
-    ]
+    }
   },
   "about": {
     "title": "Sobre",

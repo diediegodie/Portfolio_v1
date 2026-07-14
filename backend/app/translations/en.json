@@ -30,24 +30,16 @@
     "readme_unavailable": "Unable to load README: {0}",
     "invalid_github_url": "Invalid GitHub URL",
     "no_readme": "No README found.",
-    "projects": [
-      {
-        "title": "Tattoo Studio Management System",
+    "projects": {
+      "tattoo": {
+        "title": "Tattoo Studio System v4",
         "description": "Comprehensive management platform for tattoo studios: client management (JotForm sync), session scheduling with Google Calendar, inventory control, and automated monthly financial statements. Built with Flask, SQLAlchemy, PostgreSQL and Docker; includes Google OAuth and background jobs for automation."
       },
-      {
-        "title": "Task API",
-        "description": "REST API for task management with background workers."
-      },
-      {
-        "title": "Portfolio Backend",
-        "description": "The backend serving this portfolio and content translations."
-      },
-      {
-        "title": "Portfolio Frontend",
-        "description": "Frontend for the portfolio with responsive modal and card UI."
+      "scambo": {
+        "title": "Scambo Test Flet v1",
+        "description": "A social platform for secure bartering and trading goods/services without money. Built with Flet (Python) featuring Material Design UI, mock data layer, and clean architecture."
       }
-    ]
+    }
   },
   "about": {
     "title": "About",
