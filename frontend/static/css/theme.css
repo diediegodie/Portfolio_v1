@@ -1066,16 +1066,17 @@ html[lang^="pt"] .lang-label.pt {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-md);
     align-items: start;
-    /* ensure each grid row equals the modal card height so spanning works predictably */
+    /* keep fixed row sizing so the carousel layout remains stable */
     grid-auto-rows: var(--modal-card-fixed-height);
   }
 
   /* professional summary (first card) spans two rows */
   .about__aboutme {
     grid-row: span 2;
-    /* make the card height equal to two rows + the row gap so visuals align */
+    /* keep the card height fixed while text can scroll internally */
     min-height: calc(var(--modal-card-fixed-height) * 2 + var(--spacing-md));
     max-height: calc(var(--modal-card-fixed-height) * 2 + var(--spacing-md));
+    overflow: hidden;
   }
 
   /* stack the animated carousels in the right column */
@@ -1734,16 +1735,27 @@ html[data-theme="dark"] .project-readme__content code {
   text-align: center;
 }
 
-.about-modal__panel .about__aboutme {
+.about-modal__panel .about__aboutme,
+.contact-modal .contact-card__column--main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: var(--spacing-lg);
+  overflow: hidden;
 }
 
-.about-modal__panel .about__aboutme > p {
-  flex: 0 0 auto;
-  overflow: visible;
+.about-modal__panel .about__aboutme > h3,
+.contact-modal .contact-card__column--main > h3 {
+  margin-bottom: 0;
+}
+
+.about-modal__panel .about__aboutme > p,
+.contact-modal .contact-card__column--main > p {
+  flex: 1 1 auto;
+  overflow: auto;
+  margin: 0;
+  padding-right: 0.5rem;
 }
 
 /* Keep badges unaffected elsewhere but backend/frontend lists use plain text (no badges) */
