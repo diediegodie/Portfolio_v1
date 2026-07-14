@@ -13,6 +13,9 @@ from flask import (
     session,
     url_for,
 )
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Email, Mail
+from python_http_client.exceptions import HTTPError
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if ROOT_DIR.as_posix() not in sys.path:
@@ -78,6 +81,48 @@ def _json_success_response():
     return jsonify(payload)
 
 
+def send_email(name: str, email: str, subject: str, message: str):
+    sendgrid_api_key = os.environ.get("SENDGRID_API_KEY")
+    dest_email = os.environ.get("DEST_EMAIL")
+    from_email = os.environ.get("SENDGRID_FROM_EMAIL")
+
+    if not sendgrid_api_key or not dest_email or not from_email:
+        raise RuntimeError(
+            "SENDGRID_API_KEY, DEST_EMAIL and SENDGRID_FROM_EMAIL must be configured in environment"
+        )
+
+    body = (
+        f"Contact form submission:\n\n"
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Subject: {subject or '(no subject)'}\n\n"
+        f"Message:\n{message}"
+    )
+
+    mail = Mail(
+        from_email=from_email,
+        to_emails=dest_email,
+        subject=subject or "New contact form submission",
+        plain_text_content=body,
+    )
+
+    if email:
+        mail.reply_to = Email(email)
+
+    sg = SendGridAPIClient(sendgrid_api_key)
+    try:
+        response = sg.send(mail)
+        return response
+    except HTTPError as http_err:
+        app.logger.error(
+            "SendGrid HTTP error: %s %s %s",
+            http_err.status_code,
+            http_err.body,
+            http_err.headers,
+        )
+        raise
+
+
 # Load translations at startup
 i18n.load_translations()
 
@@ -118,6 +163,7 @@ def contact():
 
     name = payload.get("name")
     email = payload.get("email")
+    subject = payload.get("subject") or ""
     message = payload.get("message")
     hp = payload.get("hp")
 
@@ -125,6 +171,12 @@ def contact():
         return _json_error_response()
 
     if not name or not email or not message or not EMAIL_PATTERN.match(email):
+        return _json_error_response()
+
+    try:
+        send_email(name, email, subject, message)
+    except Exception as err:
+        app.logger.exception("Failed to send contact email")
         return _json_error_response()
 
     return _json_success_response()
