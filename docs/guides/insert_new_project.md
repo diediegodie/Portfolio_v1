@@ -138,21 +138,21 @@ The frontend template will use these values as image URLs via `url_for('static',
 
 ### README
 
-If a project has a README, place it in the repository and set `readme_path` to its relative path from the backend repository root.
+If a project has a README, do NOT copy it into the backend. Instead set `readme_path` to the relative path inside the original GitHub repository where the README lives. The backend service will fetch the file from the remote repository (e.g. `owner/repo`) using that path, convert the Markdown to HTML, and render it in the frontend.
 
-Example:
-
-```
-backend/app/repositories/mock_project_v1/README.md
-```
-
-Then store:
+Example for a README located at the repository root:
 
 ```sql
-readme_path = 'mock_project_v1/README.md'
+readme_path = 'README.md'
 ```
 
-The service layer reads this file and converts it from Markdown to HTML.
+Example for a README in a subfolder inside the repo:
+
+```sql
+readme_path = 'docs/README.md'
+```
+
+The service layer will fetch the referenced path from the project's GitHub repo and convert it from Markdown to HTML.
 
 ## 4. Full Cycle Summary
 

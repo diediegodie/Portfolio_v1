@@ -39,6 +39,11 @@
         "title": "Scambo Test Flet v1",
         "description": "Uma plataforma social para trocas seguras de bens/serviços sem dinheiro. Construída com Flet (Python), interface Material Design, camada de dados simulada e arquitetura limpa."
       }
+      ,
+      "easypassword": {
+        "title": "EasyPassword",
+        "description": "Gerenciador e gerador de senhas simples para criar senhas fortes e seguras rapidamente."
+      }
     }
   },
   "about": {

@@ -50,10 +50,10 @@
                     {% endif %}
                 </div>
                 <div class="work-card__content">
-                    <h3 data-i18n="work.projects.{{ loop.index0 }}.title" data-i18n-fallback="{{ project.title }}">
+                    <h3 data-i18n="{{ project.title_key }}" data-i18n-fallback="{{ project.title }}">
                         {{ project.title }}
                     </h3>
-                    <p class="card-description" data-i18n="work.projects.{{ loop.index0 }}.description"
+                    <p class="card-description" data-i18n="{{ project.description_key }}"
                         data-i18n-fallback="{{ project.description }}">
                         {{ project.description }}
                     </p>
