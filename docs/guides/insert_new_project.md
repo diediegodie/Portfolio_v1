@@ -1,6 +1,8 @@
 # Guide: Inserting a New Project into the Portfolio Site
 
-This guide explains how to add a new project to the portfolio site based on the current architecture.
+- This guide explains how to add a new project to the portfolio site based on the current architecture.
+- This includes database insertion, translation JSON updates, and asset management (images and README).
+- All the information in this file are placeholders and examples. You should replace them with a real project data.
 
 ## 1. Database Insertion
 

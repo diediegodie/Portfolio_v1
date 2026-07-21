@@ -43,6 +43,10 @@
       "easypassword": {
         "title": "EasyPassword",
         "description": "Gerenciador e gerador de senhas simples para criar senhas fortes e seguras rapidamente."
+      },
+      "study_notebook_v4": {
+        "title": "Study Notebook v4",
+        "description": "Um aplicativo moderno de caderno de estudos construído com Python, Flask e SQLite. Possui suporte a markdown, organização de notas e uma interface limpa e responsiva para aprendizado eficaz."
       }
     }
   },

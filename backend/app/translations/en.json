@@ -43,6 +43,10 @@
       "easypassword": {
         "title": "EasyPassword",
         "description": "Simple password wallet and generator for creating strong and secure passwords quickly."
+      },
+      "study_notebook_v4": {
+        "title": "Study Notebook v4",
+        "description": "A modern study notebook application built with Python, Flask, and SQLite. Features markdown support, note organization, and a clean, responsive interface for effective learning."
       }
     }
   },
